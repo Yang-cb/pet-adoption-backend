@@ -1,0 +1,20 @@
+spring:
+  security:
+    jwt:
+      secret: C66}0o92
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://8.130.107.120:3306/security?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+    username: root
+    password: root
+  data:
+    redis:
+      host: 8.130.107.120
+      port: 6379
+  mail:
+    host: smtp.163.com
+    username: yang_ovo430@163.com
+    password: YPBVJBPSVBCYKWEE
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true #开启驼峰命名转换
