@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
         Account account = accountMapper.getByUsername(username);
         // 没查到
         if (Objects.isNull(account)) {
-            return null;
+            throw new UsernameNotFoundException("用户名或密码错误");
         }
         return User.withUsername(username)
                 .password(account.getPassword())

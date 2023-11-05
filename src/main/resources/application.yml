@@ -1,5 +1,9 @@
 spring:
   security:
+    # 前端地址
+    frontend:
+      url: http://localhost:5173
+    # key
     jwt:
       secret: C66}0o92
   datasource:
