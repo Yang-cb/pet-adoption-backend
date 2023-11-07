@@ -1,4 +1,4 @@
-package com.ycb.entity;
+package com.ycb.entity.dto;
 
 import lombok.Data;
 

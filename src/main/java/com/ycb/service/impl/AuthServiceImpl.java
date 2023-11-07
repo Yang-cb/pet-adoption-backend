@@ -1,8 +1,9 @@
 package com.ycb.service.impl;
 
-import com.ycb.entity.Account;
-import com.ycb.entity.AccountDTO;
+import com.ycb.entity.dto.Account;
+import com.ycb.entity.vo.request.RegisterVO;
 import com.ycb.entity.Const;
+import com.ycb.entity.vo.request.ResetPwVO;
 import com.ycb.mapper.AccountMapper;
 import com.ycb.service.AuthService;
 import jakarta.annotation.Resource;
@@ -61,12 +62,16 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public String sendEmail(String email, String type, String ip) {
+        // 频繁请求
         if (frequent(ip)) {
             return "请求频繁";
         }
+        // 删除已经生成验证码
+        String key = Const.RECEIVE_MAIL + email;
+        this.removeRKey(key);
         // 生成验证码
         Random random = new Random();
-        int code = random.nextInt(89999) + 10000;
+        int code = random.nextInt(899999) + 100000;
         SimpleMailMessage mailMessage = switch (type) {
             case "register" ->
                     this.createMailMessage(code + "是你的注册验证码", "你好！在创建帐号之前，你需要一个简单的步骤，让我们确保这是正确的邮件地址————\n\n请输入此验证码以开始使用：" + code + "\n验证码有效时间3分钟。如非本人操作可忽略。", email);
@@ -81,36 +86,36 @@ public class AuthServiceImpl implements AuthService {
         }
         // 邮箱、验证码存入redis，有效时间3分钟
         stringRedisTemplate.opsForValue()
-                .set(Const.RECEIVE_MAIL + email, String.valueOf(code), 3, TimeUnit.MINUTES);
+                .set(key, String.valueOf(code), 3, TimeUnit.MINUTES);
         return null;
     }
 
     /**
      * 注册
      *
-     * @param accountDTO 前端请求信息：邮箱、验证码、用户名、密码
+     * @param registerVO 前端请求信息：邮箱、验证码、用户名、密码
      * @return 请求结果
      */
     @Override
-    public String register(AccountDTO accountDTO) {
-        String key = Const.RECEIVE_MAIL + accountDTO.getEmail();
+    public String register(RegisterVO registerVO) {
+        String key = Const.RECEIVE_MAIL + registerVO.getEmail();
         // 验证验证码
-        String message = this.codeVerify(key, accountDTO.getCode());
+        String message = this.codeVerify(key, registerVO.getCode());
         if (message != null) {
             return message;
         }
-        Account byUsername = accountMapper.getByUsername(accountDTO.getUsername());
+        Account byUsername = accountMapper.getByUsername(registerVO.getUsername());
         if (!Objects.isNull(byUsername)) {
             return "用户名已存在";
         }
-        Account byEmail = accountMapper.getByEmail(accountDTO.getEmail());
+        Account byEmail = accountMapper.getByEmail(registerVO.getEmail());
         if (!Objects.isNull(byEmail)) {
             return "该邮箱已注册";
         }
         Account account = new Account();
-        account.setUsername(accountDTO.getUsername());
-        account.setPassword(encoder.encode(accountDTO.getPassword()));
-        account.setEmail(accountDTO.getEmail());
+        account.setUsername(registerVO.getUsername());
+        account.setPassword(encoder.encode(registerVO.getPassword()));
+        account.setEmail(registerVO.getEmail());
         account.setCreateTime(new Date());
         account.setUpdateTime(new Date());
         account.setAuthority("user");
@@ -119,45 +124,41 @@ public class AuthServiceImpl implements AuthService {
             return "系统异常，请稍后重试";
         }
         // 删除redis中的验证码数据
-        if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(key))) {
-            stringRedisTemplate.delete(key);
-        }
+        this.removeRKey(key);
         return null;
     }
 
     /**
      * 重置密码
      *
-     * @param accountDTO 前端请求信息：邮箱、验证码、新密码
+     * @param resetPwVO 前端请求信息：邮箱、验证码、新密码
      * @return 请求结果
      */
     @Override
-    public String resetPw(AccountDTO accountDTO) {
+    public String resetPw(ResetPwVO resetPwVO) {
         // 验证验证码
-        String key = Const.RECEIVE_MAIL + accountDTO.getEmail();
-        String message = this.codeVerify(key, accountDTO.getCode());
+        String key = Const.RECEIVE_MAIL + resetPwVO.getEmail();
+        String message = this.codeVerify(key, resetPwVO.getCode());
         if (message != null) {
             return message;
         }
         // 还未注册
-        Account byEmail = accountMapper.getByEmail(accountDTO.getEmail());
+        Account byEmail = accountMapper.getByEmail(resetPwVO.getEmail());
         if (Objects.isNull(byEmail)) {
             return "请先注册";
         }
         // 新旧密码一样
-        if (encoder.matches(accountDTO.getPassword(), byEmail.getPassword())) {
+        if (encoder.matches(resetPwVO.getPassword(), byEmail.getPassword())) {
             return "新密码不能与旧密码一样";
         }
         // 更新密码
-        accountDTO.setPassword(encoder.encode(accountDTO.getPassword()));
-        int len = accountMapper.updatePwByEmail(accountDTO);
+        resetPwVO.setPassword(encoder.encode(resetPwVO.getPassword()));
+        int len = accountMapper.updatePwByEmail(resetPwVO);
         if (len < 1) {
             return "系统异常，请稍后重试";
         }
         // 删除redis中的验证码数据
-        if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(key))) {
-            stringRedisTemplate.delete(key);
-        }
+        this.removeRKey(key);
         return null;
     }
 
@@ -193,6 +194,18 @@ public class AuthServiceImpl implements AuthService {
         mailMessage.setTo(toEmail);
         mailMessage.setFrom(fromEmail);
         return mailMessage;
+    }
+
+
+    /**
+     * 如果redis中有key，就删除
+     *
+     * @param key key
+     */
+    private void removeRKey(String key) {
+        if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(key))) {
+            stringRedisTemplate.delete(key);
+        }
     }
 
     /**

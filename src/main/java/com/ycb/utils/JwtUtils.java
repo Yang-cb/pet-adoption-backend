@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -23,6 +24,9 @@ import java.util.concurrent.TimeUnit;
 public class JwtUtils {
     @Value("${spring.security.jwt.secret}")
     private String secret;
+    @Value("${spring.security.jwt.expireTime}")
+    private int expireTime;
+
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
@@ -40,12 +44,22 @@ public class JwtUtils {
                 .withClaim("username", user.getUsername())
                 // 权限
                 .withClaim("authorities", user.getAuthorities().toString())
-                // 过期时间 1天
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                // 过期时间
+                .withExpiresAt(this.getExpireTime())
                 // 密钥
                 .sign(Algorithm.HMAC256(secret));
     }
 
+    /**
+     * 根据配置计算过期时间
+     *
+     * @return 过期时间
+     */
+    public Date getExpireTime() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR, expireTime);
+        return calendar.getTime();
+    }
 
     /**
      * 解析jwt

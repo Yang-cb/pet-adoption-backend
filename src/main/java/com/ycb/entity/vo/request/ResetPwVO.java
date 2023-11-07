@@ -1,11 +1,13 @@
-package com.ycb.entity;
+package com.ycb.entity.vo.request;
 
 import lombok.Data;
 
+/**
+ * 重置密码封装对象
+ */
 @Data
-public class AccountDTO {
+public class ResetPwVO {
     private String email;
     private String code;
-    private String username;
     private String password;
 }

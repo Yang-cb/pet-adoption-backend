@@ -3,9 +3,11 @@ spring:
     # 前端地址
     frontend:
       url: http://localhost:5173
-    # key
     jwt:
+      # key
       secret: C66}0o92
+      # 过期时间（小时）
+      expireTime: 24
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://8.130.107.120:3306/security?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8

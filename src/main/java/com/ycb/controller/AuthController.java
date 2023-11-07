@@ -1,7 +1,8 @@
 package com.ycb.controller;
 
-import com.ycb.entity.AccountDTO;
+import com.ycb.entity.vo.request.RegisterVO;
 import com.ycb.entity.RestBean;
+import com.ycb.entity.vo.request.ResetPwVO;
 import com.ycb.service.AuthService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,24 +34,24 @@ public class AuthController {
     /**
      * 注册
      *
-     * @param accountDTO 前端请求信息：邮箱、验证码、用户名、密码
+     * @param registerVO 前端请求信息：邮箱、验证码、用户名、密码
      * @return 请求结果
      */
     @PostMapping("/register")
-    public RestBean<String> register(@RequestBody AccountDTO accountDTO) {
-        String message = authService.register(accountDTO);
+    public RestBean<String> register(@RequestBody RegisterVO registerVO) {
+        String message = authService.register(registerVO);
         return message == null ? RestBean.success("注册成功") : RestBean.failure(403, message);
     }
 
     /**
      * 重置密码
      *
-     * @param accountDTO 前端请求信息：邮箱、验证码、新密码
+     * @param resetPwVO 前端请求信息：邮箱、验证码、新密码
      * @return 请求结果
      */
     @PostMapping("/resetPw")
-    public RestBean<String> resetPw(@RequestBody AccountDTO accountDTO) {
-        String message = authService.resetPw(accountDTO);
+    public RestBean<String> resetPw(@RequestBody ResetPwVO resetPwVO) {
+        String message = authService.resetPw(resetPwVO);
         return message == null ? RestBean.success("重置密码成功") : RestBean.failure(403, message);
     }
 }

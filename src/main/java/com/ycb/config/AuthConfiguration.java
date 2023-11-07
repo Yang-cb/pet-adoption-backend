@@ -1,8 +1,9 @@
 package com.ycb.config;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.ycb.entity.Account;
+import com.ycb.entity.dto.Account;
 import com.ycb.entity.RestBean;
+import com.ycb.entity.vo.response.LoginVO;
 import com.ycb.mapper.AccountMapper;
 import com.ycb.utils.JwtUtils;
 import jakarta.annotation.Resource;
@@ -37,8 +38,13 @@ public class AuthConfiguration {
         Account account = accountMapper.getByUsername(userDetails.getUsername());
         // 生成jwt
         String jwt = jwtUtils.createJwt(account.getId(), userDetails);
+        LoginVO vo = new LoginVO();
+        vo.setUsername(account.getUsername());
+        vo.setAuthority(account.getAuthority());
+        vo.setToken(jwt);
+        vo.setExpireTime(jwtUtils.getExpireTime());
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(RestBean.success(jwt).jsonToString());
+        response.getWriter().write(RestBean.success(vo).jsonToString());
     }
 
     /**
@@ -48,7 +54,7 @@ public class AuthConfiguration {
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(RestBean.failure(401, "登陆失败").jsonToString());
+        response.getWriter().write(RestBean.failure(401, exception.getMessage()).jsonToString());
     }
 
     /**

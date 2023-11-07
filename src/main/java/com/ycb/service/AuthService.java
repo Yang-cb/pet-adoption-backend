@@ -1,6 +1,7 @@
 package com.ycb.service;
 
-import com.ycb.entity.AccountDTO;
+import com.ycb.entity.vo.request.RegisterVO;
+import com.ycb.entity.vo.request.ResetPwVO;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface AuthService extends UserDetailsService {
@@ -16,10 +17,10 @@ public interface AuthService extends UserDetailsService {
 
     /**
      * 注册
-     * @param accountDTO 前端请求信息：邮箱、验证码、用户名、密码
+     * @param registerVO 前端请求信息：邮箱、验证码、用户名、密码
      * @return 请求结果
      */
-    String register(AccountDTO accountDTO);
+    String register(RegisterVO registerVO);
 
-    String resetPw(AccountDTO accountDTO);
+    String resetPw(ResetPwVO resetPwVO);
 }
