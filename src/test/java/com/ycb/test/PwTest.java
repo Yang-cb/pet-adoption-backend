@@ -1,7 +1,5 @@
 package com.ycb.test;
 
-import cn.hutool.core.lang.UUID;
-import cn.hutool.core.util.IdUtil;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

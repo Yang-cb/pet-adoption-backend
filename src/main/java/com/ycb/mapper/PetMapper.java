@@ -2,9 +2,7 @@ package com.ycb.mapper;
 
 import com.ycb.entity.dto.Bulletin;
 import com.ycb.entity.dto.Pet;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 

@@ -1,7 +1,6 @@
 package com.ycb.mapper;
 
 import com.ycb.entity.dto.Account;
-import com.ycb.entity.vo.request.RegisterVO;
 import com.ycb.entity.vo.request.ResetPwVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
