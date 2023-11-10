@@ -2,6 +2,7 @@ package com.ycb.mapper;
 
 import com.ycb.entity.dto.Account;
 import com.ycb.entity.vo.request.ResetPwVO;
+import com.ycb.entity.vo.response.AccountVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -21,4 +22,7 @@ public interface AccountMapper {
 
     @Update("update `pet-adoption`.account set password = #{password} where email = #{email}")
     int updatePwByEmail(ResetPwVO resetPwVO);
+
+
+    AccountVO getAccountVOByUsername(String username);
 }

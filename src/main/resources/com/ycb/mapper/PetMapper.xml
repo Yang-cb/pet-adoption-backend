@@ -4,10 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ycb.mapper.PetMapper">
-    <select id="getAll" resultType="com.ycb.entity.dto.Pet">
+
+    <select id="getAll" resultType="com.ycb.entity.vo.response.PetAndBulVO">
         select *
-        from `pet-adoption`.pet
-        order by gmt_modified
+        from `pet-adoption`.pet p
+                 join `pet-adoption`.bulletin b on b.id = p.bulletin_id
+        order by b.gmt_modified
     </select>
 
     <select id="getAllByType" resultType="com.ycb.entity.dto.Pet">
@@ -18,17 +20,17 @@
     </select>
 
     <insert id="savePet" parameterType="com.ycb.entity.dto.Pet" useGeneratedKeys="true" keyProperty="id">
-        insert into `pet-adoption`.pet(pet_name, pet_type, sex, picture, location, gmt_create, gmt_modified,
+        insert into `pet-adoption`.pet(pet_name, pet_type, sex, picture_id, gmt_create, gmt_modified,
                                        bulletin_id)
-            value (#{petName}, #{petType}, #{sex}, #{picture}, #{location}, #{gmtCreate}, #{gmtModified},
+            value (#{petName}, #{petType}, #{sex}, #{pictureId}, #{gmtCreate}, #{gmtModified},
                    #{bulletinId})
     </insert>
 
     <insert id="saveBulletin" parameterType="com.ycb.entity.dto.Bulletin" useGeneratedKeys="true" keyProperty="id">
-        insert into `pet-adoption`.bulletin(type, contacts_name, contacts_phone, contacts_wechat, contacts_email, title,
-                                            text, gmt_create, gmt_modified, account_id)
-            value (#{type}, #{contactsName}, #{contactsPhone}, #{contactsWechat}, #{contactsEmail}, #{title}, #{text},
-                   #{gmtCreate}, #{gmtModified}, #{accountId})
+        insert into `pet-adoption`.bulletin(type, contacts_name, contacts_phone, contacts_wechat, contacts_email,
+                                            location, title, text, gmt_create, gmt_modified, account_id)
+            value (#{type}, #{contactsName}, #{contactsPhone}, #{contactsWechat}, #{contactsEmail}, #{location},
+                   #{title}, #{text}, #{gmtCreate}, #{gmtModified}, #{accountId})
     </insert>
 
 </mapper>

@@ -2,13 +2,14 @@ package com.ycb.mapper;
 
 import com.ycb.entity.dto.Bulletin;
 import com.ycb.entity.dto.Pet;
+import com.ycb.entity.vo.response.PetAndBulVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
 public interface PetMapper {
-    List<Pet> getAll();
+    List<PetAndBulVO> getAll();
 
     List<Pet> getAllByType(String type);
 

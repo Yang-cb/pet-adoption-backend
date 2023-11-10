@@ -2,6 +2,7 @@ package com.ycb.service;
 
 import com.ycb.entity.dto.Pet;
 import com.ycb.entity.vo.request.PublishBulletinVO;
+import com.ycb.entity.vo.response.PetAndBulVO;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface PetService {
      *
      * @return 宠物列表
      */
-    List<Pet> getAll();
+    List<PetAndBulVO> getAll();
 
     /**
      * 根据宠物类型获取所有宠物

@@ -29,8 +29,8 @@ public class SecurityConfiguration {
                         // 当前路径允许任何人请求
                         conf.requestMatchers("/api/auth/**").permitAll()
                                 // 除上述路径，任何人必须认证后请求
-                                // .anyRequest().authenticated()
-                                .anyRequest().permitAll()
+                                 .anyRequest().authenticated()
+//                                .anyRequest().permitAll()
                 )
                 .formLogin(conf ->
                         // 指定登录url

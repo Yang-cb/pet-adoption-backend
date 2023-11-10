@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ycb.mapper.FileMapper">
+    <resultMap type="com.ycb.entity.dto.Picture" id="file">
+        <id column="id" property="id"/>
+        <id column="picData" property="picData" typeHandler="org.apache.ibatis.type.BlobTypeHandler"/>
+    </resultMap>
+
+    <insert id="upload" useGeneratedKeys="true" keyProperty="id">
+        insert into `pet-adoption`.picture(name, pic_data)
+            value (#{name}, #{picData})
+    </insert>
+
+    <select id="download" resultMap="file">
+        select `pet-adoption`.picture.pic_data
+        from `pet-adoption`.picture
+        where id = #{picId}
+    </select>
+
+</mapper>

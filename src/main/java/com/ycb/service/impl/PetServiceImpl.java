@@ -3,6 +3,7 @@ package com.ycb.service.impl;
 import com.ycb.entity.dto.Bulletin;
 import com.ycb.entity.dto.Pet;
 import com.ycb.entity.vo.request.PublishBulletinVO;
+import com.ycb.entity.vo.response.PetAndBulVO;
 import com.ycb.mapper.PetMapper;
 import com.ycb.service.PetService;
 import jakarta.annotation.Resource;
@@ -19,7 +20,7 @@ public class PetServiceImpl implements PetService {
     private PetMapper petMapper;
 
     @Override
-    public List<Pet> getAll() {
+    public List<PetAndBulVO> getAll() {
         return petMapper.getAll();
     }
 

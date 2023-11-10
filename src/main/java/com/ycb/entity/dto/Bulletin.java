@@ -19,6 +19,10 @@ public class Bulletin {
     private String contactsWechat;
     private String contactsEmail;
     /**
+     * 领养人地址
+     */
+    private String location;
+    /**
      * 文章
      */
     private String title;

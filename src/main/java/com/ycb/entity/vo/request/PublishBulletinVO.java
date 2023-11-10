@@ -14,6 +14,10 @@ public class PublishBulletinVO {
     private String petName;
     private String petType;
     /**
+     * 宠物照片id
+     */
+    private String pictureId;
+    /**
      * 性别 1公0母
      */
     private Integer sex;
@@ -22,10 +26,10 @@ public class PublishBulletinVO {
      */
     private Integer isFree;
     private String birthdate;
-    private String location;
     /**
      * 发布人
      */
+    private String location;
     private String contactsName;
     private String contactsPhone;
     private String contactsWechat;

@@ -21,13 +21,9 @@ public class Pet {
      */
     private Integer isFree;
     /**
-     * 照片
+     * 照片ID
      */
-    private String picture;
-    /**
-     * 领养地址
-     */
-    private String location;
+    private String pictureId;
     /**
      * 是否已被领养 0是1否
      */

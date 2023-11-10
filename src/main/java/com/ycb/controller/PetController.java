@@ -3,8 +3,10 @@ package com.ycb.controller;
 import com.ycb.entity.RestBean;
 import com.ycb.entity.dto.Pet;
 import com.ycb.entity.vo.request.PublishBulletinVO;
+import com.ycb.entity.vo.response.PetAndBulVO;
 import com.ycb.service.PetService;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,9 +17,9 @@ public class PetController {
     @Resource
     private PetService petService;
 
-    @GetMapping("/getAll")
-    public RestBean<List<Pet>> getAll() {
-        List<Pet> pets = petService.getAll();
+    @GetMapping("/getAllPB")
+    public RestBean<List<PetAndBulVO>> getAll(HttpServletResponse response) {
+        List<PetAndBulVO> pets = petService.getAll();
         return RestBean.success(pets);
     }
 
@@ -39,7 +41,7 @@ public class PetController {
      * @return
      */
     @PostMapping("/publishBulletin")
-    public RestBean<String> publishAdopt(@RequestBody PublishBulletinVO vo) {
+    public RestBean<String> publishBulletin(@RequestBody PublishBulletinVO vo) {
         String message = petService.publishBulletin(vo);
         return message == null ? RestBean.success("发布成功") : RestBean.failure(400, message);
     }

@@ -1,4 +1,12 @@
 spring:
+  #配置文件传输
+  servlet:
+    multipart:
+      enabled: true
+      #单个文件的大小
+      max-file-size: 10MB
+      #总数据的大小
+      max-request-size: 10MB
   security:
     # 前端地址
     frontend:
@@ -24,3 +32,10 @@ spring:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true #开启驼峰命名转换
+
+# sql语句打印在控制台
+#logging:
+#  level:
+#    com:
+#      ycb:
+#        mapper: debug
