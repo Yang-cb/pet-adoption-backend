@@ -25,7 +25,7 @@ public class PetAndBulVO {
     /**
      * 宠物照片
      */
-    private String picture;
+    private byte[] picData;
     /**
      * 宠物生日
      */

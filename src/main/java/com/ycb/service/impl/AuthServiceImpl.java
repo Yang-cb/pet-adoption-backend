@@ -18,7 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -116,8 +116,10 @@ public class AuthServiceImpl implements AuthService {
         account.setUsername(registerVO.getUsername());
         account.setPassword(encoder.encode(registerVO.getPassword()));
         account.setEmail(registerVO.getEmail());
-        account.setCreateTime(new Date());
-        account.setUpdateTime(new Date());
+        account.setNikeName(registerVO.getUsername());
+        Date date = new Date(new java.util.Date().getTime());
+        account.setGmtCreate(date);
+        account.setGmtModified(date);
         account.setAuthority("user");
         int len = accountMapper.save(account);
         if (len < 1) {
@@ -152,6 +154,7 @@ public class AuthServiceImpl implements AuthService {
             return "新密码不能与旧密码一样";
         }
         // 更新密码
+        resetPwVO.setGmtModified(new Date(new java.util.Date().getTime()));
         resetPwVO.setPassword(encoder.encode(resetPwVO.getPassword()));
         int len = accountMapper.updatePwByEmail(resetPwVO);
         if (len < 1) {

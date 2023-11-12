@@ -1,5 +1,6 @@
 package com.ycb.service.impl;
 
+import com.ycb.entity.vo.request.UpdateAccountVO;
 import com.ycb.entity.vo.response.AccountVO;
 import com.ycb.mapper.AccountMapper;
 import com.ycb.service.AccountService;
@@ -10,8 +11,15 @@ import org.springframework.stereotype.Service;
 public class AccountServiceImpl implements AccountService {
     @Resource
     private AccountMapper accountMapper;
+
     @Override
     public AccountVO getAccountVOByUsername(String username) {
         return accountMapper.getAccountVOByUsername(username);
+    }
+
+    @Override
+    public String updateAccountByUsername(UpdateAccountVO vo) {
+        int line = accountMapper.updateAccountByUsername(vo);
+        return line > 0 ? null : "更新失败";
     }
 }

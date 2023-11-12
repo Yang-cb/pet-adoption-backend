@@ -32,10 +32,11 @@ spring:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true #开启驼峰命名转换
+    call-setters-on-nulls: true  #发现字段为null时，让其仍有该字段。
 
 # sql语句打印在控制台
-#logging:
-#  level:
-#    com:
-#      ycb:
-#        mapper: debug
+logging:
+  level:
+    com:
+      ycb:
+        mapper: debug

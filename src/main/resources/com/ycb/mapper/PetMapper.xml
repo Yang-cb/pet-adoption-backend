@@ -4,11 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ycb.mapper.PetMapper">
+    <resultMap type="com.ycb.entity.vo.response.PetAndBulVO" id="petAndBulVO">
+        <id column="pic_data" property="picData" javaType="byte[]" jdbcType="BLOB" typeHandler="org.apache.ibatis.type.BlobTypeHandler"/>
+    </resultMap>
 
-    <select id="getAll" resultType="com.ycb.entity.vo.response.PetAndBulVO">
+    <select id="getAll" resultMap="petAndBulVO">
         select *
-        from `pet-adoption`.pet p
-                 join `pet-adoption`.bulletin b on b.id = p.bulletin_id
+        from `pet-adoption`.pet pet
+                 join `pet-adoption`.bulletin b on b.id = pet.bulletin_id
+                 join `pet-adoption`.picture p on p.id = pet.picture_id
         order by b.gmt_modified
     </select>
 

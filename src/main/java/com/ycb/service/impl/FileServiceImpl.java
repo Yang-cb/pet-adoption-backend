@@ -4,15 +4,10 @@ import com.ycb.entity.dto.Picture;
 import com.ycb.mapper.FileMapper;
 import com.ycb.service.FileService;
 import jakarta.annotation.Resource;
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.UUID;
 
 @Service
@@ -50,35 +45,4 @@ public class FileServiceImpl implements FileService {
         //返回图片id
         return pictureId;
     }
-/*
-    public void download(HttpServletResponse response) {
-        byte[] file = fileMapper.download(1);
-        InputStream is = null;
-        ServletOutputStream os = null;
-        try {
-            is = blob.getBinaryStream();
-            response.setContentType("text/html");
-            os = response.getOutputStream();
-            int num;
-
-            byte[] buff = new byte[1024];
-            while ((num = is.read(buff)) != -1) {
-                os.write(buff, 0, num);
-            }
-
-            try {
-                is.close();
-                if (os != null) {
-                    os.close();
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (IOException |
-                 SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    */
-
 }

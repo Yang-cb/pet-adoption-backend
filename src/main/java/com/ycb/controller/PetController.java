@@ -18,7 +18,7 @@ public class PetController {
     private PetService petService;
 
     @GetMapping("/getAllPB")
-    public RestBean<List<PetAndBulVO>> getAll(HttpServletResponse response) {
+    public RestBean<List<PetAndBulVO>> getAll() {
         List<PetAndBulVO> pets = petService.getAll();
         return RestBean.success(pets);
     }
