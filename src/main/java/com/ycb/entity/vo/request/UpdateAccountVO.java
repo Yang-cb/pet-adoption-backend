@@ -9,7 +9,7 @@ import java.sql.Date;
  */
 @Data
 public class UpdateAccountVO {
-    private String username; // 用户名
+    private Integer id; // 用户名
     private String location; // 地址
     private String nikeName; // 昵称
     private Date birthday; // 出生日期

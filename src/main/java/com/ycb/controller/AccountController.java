@@ -14,14 +14,14 @@ public class AccountController {
     private AccountService accountService;
 
     /**
-     * 根据用户名获取账户信息
+     * 根据用户id获取账户信息
      *
-     * @param username 用户名
+     * @param id 用户id
      * @return 账户信息
      */
     @GetMapping()
-    public RestBean<AccountVO> getAccountByUsername(@RequestParam String username) {
-        AccountVO accountVO = accountService.getAccountVOByUsername(username);
+    public RestBean<AccountVO> getAccountById(@RequestParam Integer id) {
+        AccountVO accountVO = accountService.getAccountVOById(id);
         return RestBean.success(accountVO);
     }
 
@@ -31,9 +31,9 @@ public class AccountController {
      * @param vo 账户信息
      * @return 更新结果
      */
-    @PostMapping("/updateAccountByUsername")
-    public RestBean<String> updateAccountByUsername(@RequestBody UpdateAccountVO vo) {
-        String message = accountService.updateAccountByUsername(vo);
+    @PostMapping("/updateAccountById")
+    public RestBean<String> updateAccountById(@RequestBody UpdateAccountVO vo) {
+        String message = accountService.updateAccountById(vo);
         return message == null ? RestBean.success("更新成功") : RestBean.failure(401, message);
     }
 

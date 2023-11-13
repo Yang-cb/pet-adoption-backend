@@ -8,14 +8,14 @@
         <id column="pic_data" property="picData" javaType="byte[]" jdbcType="BLOB" typeHandler="org.apache.ibatis.type.BlobTypeHandler"/>
     </resultMap>
 
-    <select id="getAccountVOByUsername" resultMap="accountVO">
+    <select id="getAccountVOById" resultMap="accountVO">
         select *
         from `pet-adoption`.account a
                  join `pet-adoption`.picture p on p.id = a.picture_id
-        where username = #{username}
+        where a.id = #{id}
     </select>
 
-    <update id="updateAccountByUsername">
+    <update id="updateAccountById">
         update `pet-adoption`.account
         <set>
             <if test="location != null">
@@ -34,6 +34,6 @@
                 sex = #{sex},
             </if>
         </set>
-        where username = #{username}
+        where id = #{id}
     </update>
 </mapper>

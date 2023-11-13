@@ -25,7 +25,7 @@ public interface AccountMapper {
     int updatePwByEmail(ResetPwVO resetPwVO);
 
 
-    AccountVO getAccountVOByUsername(String username);
+    AccountVO getAccountVOById(Integer id);
 
-    int updateAccountByUsername(UpdateAccountVO vo);
+    int updateAccountById(UpdateAccountVO vo);
 }

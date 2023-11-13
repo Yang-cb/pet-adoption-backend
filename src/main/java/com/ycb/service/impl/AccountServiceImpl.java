@@ -13,13 +13,13 @@ public class AccountServiceImpl implements AccountService {
     private AccountMapper accountMapper;
 
     @Override
-    public AccountVO getAccountVOByUsername(String username) {
-        return accountMapper.getAccountVOByUsername(username);
+    public AccountVO getAccountVOById(Integer id) {
+        return accountMapper.getAccountVOById(id);
     }
 
     @Override
-    public String updateAccountByUsername(UpdateAccountVO vo) {
-        int line = accountMapper.updateAccountByUsername(vo);
+    public String updateAccountById(UpdateAccountVO vo) {
+        int line = accountMapper.updateAccountById(vo);
         return line > 0 ? null : "更新失败";
     }
 }
