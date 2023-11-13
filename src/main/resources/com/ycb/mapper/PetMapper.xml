@@ -4,16 +4,25 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ycb.mapper.PetMapper">
-    <resultMap type="com.ycb.entity.vo.response.PetAndBulVO" id="petAndBulVO">
-        <id column="pic_data" property="picData" javaType="byte[]" jdbcType="BLOB" typeHandler="org.apache.ibatis.type.BlobTypeHandler"/>
+    <resultMap type="com.ycb.entity.vo.response.OnePB2PicVO" id="onePB">
+        <id column="pic_data" property="picData" javaType="byte[]" jdbcType="BLOB"
+            typeHandler="org.apache.ibatis.type.BlobTypeHandler"/>
     </resultMap>
 
-    <select id="getAll" resultMap="petAndBulVO">
+    <select id="getAll" resultType="com.ycb.entity.vo.response.AllPetAndBulVO">
         select *
         from `pet-adoption`.pet pet
                  join `pet-adoption`.bulletin b on b.id = pet.bulletin_id
                  join `pet-adoption`.picture p on p.id = pet.picture_id
         order by b.gmt_modified
+    </select>
+
+    <select id="getByPetId" resultMap="onePB">
+        select *
+        from `pet-adoption`.pet
+                 join `pet-adoption`.bulletin b on b.id = pet.bulletin_id
+                 join `pet-adoption`.picture p on p.id = pet.picture_id
+        where pet.id = #{petId}
     </select>
 
     <select id="getAllByType" resultType="com.ycb.entity.dto.Pet">
@@ -22,6 +31,7 @@
         where pet_type = #{type}
         order by gmt_modified
     </select>
+
 
     <insert id="savePet" parameterType="com.ycb.entity.dto.Pet" useGeneratedKeys="true" keyProperty="id">
         insert into `pet-adoption`.pet(pet_name, pet_type, sex, picture_id, gmt_create, gmt_modified,

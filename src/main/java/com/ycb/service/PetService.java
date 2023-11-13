@@ -2,7 +2,8 @@ package com.ycb.service;
 
 import com.ycb.entity.dto.Pet;
 import com.ycb.entity.vo.request.PublishBulletinVO;
-import com.ycb.entity.vo.response.PetAndBulVO;
+import com.ycb.entity.vo.response.AllPetAndBulVO;
+import com.ycb.entity.vo.response.OnePB2PicVO;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface PetService {
      *
      * @return 宠物列表
      */
-    List<PetAndBulVO> getAll();
+    List<AllPetAndBulVO> getAll();
 
     /**
      * 根据宠物类型获取所有宠物
@@ -30,4 +31,11 @@ public interface PetService {
      * @return 错误信息
      */
     String publishBulletin(PublishBulletinVO vo);
+
+    /**
+     * 根据宠物id获取宠物信息
+     * @param petId 宠物id
+     * @return 宠物信息
+     */
+    OnePB2PicVO getPBByPetId(Integer petId);
 }

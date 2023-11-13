@@ -3,7 +3,8 @@ package com.ycb.service.impl;
 import com.ycb.entity.dto.Bulletin;
 import com.ycb.entity.dto.Pet;
 import com.ycb.entity.vo.request.PublishBulletinVO;
-import com.ycb.entity.vo.response.PetAndBulVO;
+import com.ycb.entity.vo.response.AllPetAndBulVO;
+import com.ycb.entity.vo.response.OnePB2PicVO;
 import com.ycb.mapper.PetMapper;
 import com.ycb.service.PetService;
 import jakarta.annotation.Resource;
@@ -20,7 +21,7 @@ public class PetServiceImpl implements PetService {
     private PetMapper petMapper;
 
     @Override
-    public List<PetAndBulVO> getAll() {
+    public List<AllPetAndBulVO> getAll() {
         return petMapper.getAll();
     }
 
@@ -48,5 +49,10 @@ public class PetServiceImpl implements PetService {
         pet.setBulletinId(bulletin.getId());
         petMapper.savePet(pet);
         return null;
+    }
+
+    @Override
+    public OnePB2PicVO getPBByPetId(Integer petId) {
+        return petMapper.getByPetId(petId);
     }
 }

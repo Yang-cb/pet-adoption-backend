@@ -39,6 +39,7 @@ public class AuthConfiguration {
         // 生成jwt
         String jwt = jwtUtils.createJwt(account.getId(), userDetails);
         LoginVO vo = new LoginVO();
+        vo.setId(account.getId());
         vo.setUsername(account.getUsername());
         vo.setAuthority(account.getAuthority());
         vo.setToken(jwt);

@@ -9,6 +9,7 @@ import java.util.Date;
  */
 @Data
 public class LoginVO {
+    private Integer id;
     private String username;
     private String authority;
     private String token;

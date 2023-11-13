@@ -3,10 +3,10 @@ package com.ycb.controller;
 import com.ycb.entity.RestBean;
 import com.ycb.entity.dto.Pet;
 import com.ycb.entity.vo.request.PublishBulletinVO;
-import com.ycb.entity.vo.response.PetAndBulVO;
+import com.ycb.entity.vo.response.AllPetAndBulVO;
+import com.ycb.entity.vo.response.OnePB2PicVO;
 import com.ycb.service.PetService;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,10 +17,24 @@ public class PetController {
     @Resource
     private PetService petService;
 
+    /**
+     * 获取全部宠物信息
+     * @return 宠物列表
+     */
     @GetMapping("/getAllPB")
-    public RestBean<List<PetAndBulVO>> getAll() {
-        List<PetAndBulVO> pets = petService.getAll();
+    public RestBean<List<AllPetAndBulVO>> getAll() {
+        List<AllPetAndBulVO> pets = petService.getAll();
         return RestBean.success(pets);
+    }
+
+    /**
+     * 根据宠物id获取宠物信息
+     * @param petId 宠物id
+     */
+    @GetMapping("/getPBByPetId")
+    public RestBean<OnePB2PicVO> getPBByPetId(@RequestParam Integer petId) {
+        OnePB2PicVO pet = petService.getPBByPetId(petId);
+        return RestBean.success(pet);
     }
 
     /**

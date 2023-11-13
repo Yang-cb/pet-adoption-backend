@@ -5,7 +5,11 @@ import lombok.Data;
 import java.sql.Date;
 
 @Data
-public class PetAndBulVO {
+public class AllPetAndBulVO {
+    /**
+     * 宠物id
+     */
+    private Integer id;
     /**
      * 宠物姓名
      */
@@ -27,13 +31,16 @@ public class PetAndBulVO {
      */
     private byte[] picData;
     /**
-     * 宠物生日
-     */
-    private String birthdate;
-    /**
      * 领养人地点
      */
     private String location;
+    /**
+     * 联系人
+     */
+    private String contactsName;
+    private String contactsPhone;
+    private String contactsWechat;
+    private String contactsEmail;
     /**
      * 文章
      */
