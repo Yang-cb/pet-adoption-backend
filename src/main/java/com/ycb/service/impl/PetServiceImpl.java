@@ -51,8 +51,14 @@ public class PetServiceImpl implements PetService {
         return null;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public OnePB2PicVO getPBByPetId(Integer petId) {
-        return petMapper.getByPetId(petId);
+        // 获取宠物信息
+        OnePB2PicVO pb2PicVO = petMapper.getByPetId(petId);
+        // 获取收藏该宠物的用户id
+        List<Integer> accIds = petMapper.getCollectAccIds(pb2PicVO.getId());
+        pb2PicVO.setCollectAccIds(accIds);
+        return pb2PicVO;
     }
 }

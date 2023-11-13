@@ -14,8 +14,8 @@ public interface AccountMapper {
     @Select("select * from `pet-adoption`.account where username = #{username}")
     Account getByUsername(String username);
 
-    @Insert("insert into `pet-adoption`.account(username, password, email, gmt_create, gmt_modified, authority, nikename)" +
-            " value (#{username},#{password},#{email},#{gmtCreate},#{gmtModified},#{authority},#{nikename})")
+    @Insert("insert into `pet-adoption`.account(username, password, email, gmt_create, gmt_modified, authority, nike_name)" +
+            " value (#{username},#{password},#{email},#{gmtCreate},#{gmtModified},#{authority},#{nikeName})")
     int save(Account account);
 
     @Select("select * from `pet-adoption`.account where email =#{email}")

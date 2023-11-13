@@ -1,6 +1,7 @@
 package com.ycb.controller;
 
 import com.ycb.entity.RestBean;
+import com.ycb.entity.dto.CollectAccPet;
 import com.ycb.entity.vo.request.UpdateAccountVO;
 import com.ycb.entity.vo.response.AccountVO;
 import com.ycb.service.AccountService;
@@ -37,9 +38,25 @@ public class AccountController {
         return message == null ? RestBean.success("更新成功") : RestBean.failure(401, message);
     }
 
-//    @GetMapping("/collectPB")
-//    public RestBean<String> collectPB(@RequestParam String username, @RequestParam Integer petId) {
-//        String message = accountService.collectPB(username, petId);
-//        return message == null ? RestBean.success("收藏成功") : RestBean.failure(402, message);
-//    }
+    /**
+     * 收藏宠物
+     * @param collectAccPet 用户id和宠物id
+     * @return 收藏结果
+     */
+    @PostMapping("/collectPB")
+    public RestBean<String> collectPB(@RequestBody CollectAccPet collectAccPet) {
+        String message = accountService.collectPB(collectAccPet);
+        return message == null ? RestBean.success("收藏成功") : RestBean.failure(402, message);
+    }
+
+    /**
+     * 取消收藏宠物
+     * @param collectAccPet 用户id和宠物id
+     * @return 取消收藏结果
+     */
+    @PostMapping("/cancelCollectPB")
+    public RestBean<String> cancelCollectPB(@RequestBody CollectAccPet collectAccPet) {
+        String message = accountService.cancelCollectPB(collectAccPet);
+        return message == null ? RestBean.success("取消收藏成功") : RestBean.failure(403, message);
+    }
 }

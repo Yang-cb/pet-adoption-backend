@@ -3,9 +3,14 @@ package com.ycb.entity.vo.response;
 import lombok.Data;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
 public class OnePB2PicVO {
+    /**
+     * 收藏该宠物的用户id
+     */
+    private List<Integer> collectAccIds;
     /**
      * 宠物照片
      */

@@ -32,6 +32,11 @@
         order by gmt_modified
     </select>
 
+    <select id="getCollectAccIds" resultType="java.lang.Integer">
+        select acc_id
+        from `pet-adoption`.collect_acc_pet
+        where pet_id = #{petId}
+    </select>
 
     <insert id="savePet" parameterType="com.ycb.entity.dto.Pet" useGeneratedKeys="true" keyProperty="id">
         insert into `pet-adoption`.pet(pet_name, pet_type, sex, picture_id, gmt_create, gmt_modified,

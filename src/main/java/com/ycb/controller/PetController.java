@@ -52,7 +52,7 @@ public class PetController {
     /**
      * 发布领养信息：想领养adopt，求抱走away
      *
-     * @return
+     * @return 发布结果
      */
     @PostMapping("/publishBulletin")
     public RestBean<String> publishBulletin(@RequestBody PublishBulletinVO vo) {
