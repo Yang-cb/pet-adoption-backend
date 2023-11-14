@@ -3,11 +3,15 @@ package com.ycb.service.impl;
 import com.ycb.entity.dto.CollectAccPet;
 import com.ycb.entity.vo.request.UpdateAccountVO;
 import com.ycb.entity.vo.response.AccountVO;
+import com.ycb.entity.vo.response.AllPetAndBulVO;
 import com.ycb.mapper.AccountMapper;
 import com.ycb.mapper.CollectAccPetMapper;
+import com.ycb.mapper.PetMapper;
 import com.ycb.service.AccountService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -15,6 +19,8 @@ public class AccountServiceImpl implements AccountService {
     private AccountMapper accountMapper;
     @Resource
     private CollectAccPetMapper collectAccPetMapper;
+    @Resource
+    private PetMapper petMapper;
 
     @Override
     public AccountVO getAccountVOById(Integer id) {
@@ -28,7 +34,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public String collectPB(CollectAccPet collectAccPet){
+    public String collectPB(CollectAccPet collectAccPet) {
+        CollectAccPet collect = collectAccPetMapper.getOne(collectAccPet);
+        if (collect != null) {
+            return "收藏失败";
+        }
         int line = collectAccPetMapper.save(collectAccPet);
         return line > 0 ? null : "收藏失败";
     }
@@ -37,5 +47,10 @@ public class AccountServiceImpl implements AccountService {
     public String cancelCollectPB(CollectAccPet collectAccPet) {
         int line = collectAccPetMapper.delete(collectAccPet);
         return line > 0 ? null : "取消收藏失败";
+    }
+
+    @Override
+    public List<AllPetAndBulVO> getPostPBById(Integer id) {
+        return petMapper.getPostPBById(id);
     }
 }

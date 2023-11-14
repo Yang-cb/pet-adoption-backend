@@ -4,6 +4,7 @@ import com.ycb.entity.dto.CollectAccPet;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface CollectAccPetMapper {
@@ -22,4 +23,13 @@ public interface CollectAccPetMapper {
      */
     @Delete("delete from `pet-adoption`.collect_acc_pet where acc_id = #{accId} and pet_id = #{petId}")
     int delete(CollectAccPet collectAccPet);
+
+    /**
+     * 根据用户id和宠物id获取收藏信息
+     *
+     * @param collectAccPet 用户id和宠物id
+     * @return 收藏信息
+     */
+    @Select("select * from `pet-adoption`.collect_acc_pet where acc_id = #{accId} and pet_id = #{petId}")
+    CollectAccPet getOne(CollectAccPet collectAccPet);
 }

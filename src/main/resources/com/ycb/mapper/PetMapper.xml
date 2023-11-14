@@ -52,4 +52,11 @@
                    #{title}, #{text}, #{gmtCreate}, #{gmtModified}, #{accountId})
     </insert>
 
+    <select id="getPostPBById" resultType="com.ycb.entity.vo.response.AllPetAndBulVO">
+        select *
+        from `pet-adoption`.bulletin b
+                 join `pet-adoption`.account a on a.id = b.account_id
+                 join `pet-adoption`.pet on b.id = pet.bulletin_id
+        where b.account_id = #{id}
+    </select>
 </mapper>

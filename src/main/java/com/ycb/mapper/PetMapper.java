@@ -50,4 +50,11 @@ public interface PetMapper {
      * @return 收藏该宠物的用户id
      */
     List<Integer> getCollectAccIds(Integer petId);
+
+    /**
+     * 根据用户id获取用户发布的宠物和布告
+     * @param id 用户id
+     * @return 用户发布的宠物和布告
+     */
+    List<AllPetAndBulVO> getPostPBById(Integer id);
 }

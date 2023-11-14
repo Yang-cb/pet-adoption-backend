@@ -4,9 +4,12 @@ import com.ycb.entity.RestBean;
 import com.ycb.entity.dto.CollectAccPet;
 import com.ycb.entity.vo.request.UpdateAccountVO;
 import com.ycb.entity.vo.response.AccountVO;
+import com.ycb.entity.vo.response.AllPetAndBulVO;
 import com.ycb.service.AccountService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/account")
@@ -58,5 +61,16 @@ public class AccountController {
     public RestBean<String> cancelCollectPB(@RequestBody CollectAccPet collectAccPet) {
         String message = accountService.cancelCollectPB(collectAccPet);
         return message == null ? RestBean.success("取消收藏成功") : RestBean.failure(403, message);
+    }
+
+    /**
+     * 获取用户发布的宠物和布告
+     * @param id 用户id
+     * @return 用户发布的宠物和布告
+     */
+    @GetMapping("/getPostPB")
+    public RestBean<List<AllPetAndBulVO>> getPostPB(@RequestParam Integer id) {
+        List<AllPetAndBulVO> allPetAndBulVOS = accountService.getPostPBById(id);
+        return RestBean.success(allPetAndBulVOS);
     }
 }
