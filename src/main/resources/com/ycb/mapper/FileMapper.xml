@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ycb.mapper.FileMapper">
-    <insert id="upload" useGeneratedKeys="true" keyProperty="id">
-        insert into `pet-adoption`.picture(name, pic_data)
-            value (#{name}, #{picData})
+    <insert id="upload">
+        insert into `pet-adoption`.picture(pic_name)
+            value (#{fileName})
     </insert>
 </mapper>

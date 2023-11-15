@@ -4,13 +4,11 @@ import com.ycb.entity.dto.Account;
 import com.ycb.entity.vo.request.ResetPwVO;
 import com.ycb.entity.vo.request.UpdateAccountVO;
 import com.ycb.entity.vo.response.AccountVO;
-import com.ycb.entity.vo.response.AllPetAndBulVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import java.util.List;
 
 @Mapper
 public interface AccountMapper {

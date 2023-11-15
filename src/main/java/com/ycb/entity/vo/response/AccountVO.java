@@ -13,5 +13,5 @@ public class AccountVO {
     private Date birthday; // 出生日期
     private Integer sex; // 性别
     private String signature; // 签名
-    private byte[] picData; // 头像
+    private String picName; // 头像
 }

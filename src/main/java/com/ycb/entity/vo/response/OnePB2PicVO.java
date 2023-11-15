@@ -12,9 +12,9 @@ public class OnePB2PicVO {
      */
     private List<Integer> collectAccIds;
     /**
-     * 宠物照片
+     * 宠物照片名字
      */
-    private byte[] picData;
+    private String picName;
     /**
      * 宠物id
      */

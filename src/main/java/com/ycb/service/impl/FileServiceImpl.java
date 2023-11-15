@@ -40,7 +40,7 @@ public class FileServiceImpl implements FileService {
         picture.setName(filename);
         picture.setPicData(fileBytes);
         // 上传数据库
-        fileMapper.upload(picture);
+//        fileMapper.upload(picture);
         pictureId = picture.getId();
         //返回图片id
         return pictureId;

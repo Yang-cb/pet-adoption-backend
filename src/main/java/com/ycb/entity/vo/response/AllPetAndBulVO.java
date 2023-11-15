@@ -27,9 +27,9 @@ public class AllPetAndBulVO {
      */
     private Integer isFree;
     /**
-     * 宠物照片
+     * 宠物照片名字
      */
-    private byte[] picData;
+    private String picName;
     /**
      * 领养人地点
      */

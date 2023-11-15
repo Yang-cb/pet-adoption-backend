@@ -1,30 +1,49 @@
 package com.ycb.controller;
 
 import com.ycb.entity.RestBean;
-import com.ycb.service.FileService;
+import com.ycb.mapper.FileMapper;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.io.File;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/file")
 public class FileController {
     @Resource
-    private FileService fileService;
+    private FileMapper fileMapper;
+
+    // 后台保存位置
+    String path = "O:\\workspace\\pet-adoption\\pet-adoption-frontend\\src\\assets\\images\\";
 
     @PostMapping("/upload")
-    public RestBean<String> upload(@RequestParam MultipartFile file) {
-        Integer res;
+    public RestBean<String> uploadFile(@RequestParam(value = "file", required = false) MultipartFile file) {
+        // 判断文件是否为空
+        if (file.isEmpty()) {
+            return RestBean.failure(401, "文件为空");
+        }
+        // 获取传过来的文件名字
+        String OriginalFilename = file.getOriginalFilename();
+        // 生成新的文件名字
+        String fileName = null;
+        if (OriginalFilename != null) {
+            fileName = UUID.randomUUID() + "." + OriginalFilename.substring(OriginalFilename.lastIndexOf(".") + 1);
+        }
+        File dest = new File(path + fileName);
+        // 判断文件是否存在
+        if (!dest.getParentFile().exists()) {
+            // 不存在就创建一个
+            boolean mkdirs = dest.getParentFile().mkdirs();
+        }
         try {
-            res = fileService.upload(file);
-        } catch (IOException e) {
+            // 后台上传
+            file.transferTo(dest);
+            fileMapper.upload(fileName);
+        } catch (Exception e) {
             return RestBean.failure(401, e.getMessage());
         }
-        return RestBean.success(String.valueOf(res));
+        return RestBean.success(fileName);
     }
 }
