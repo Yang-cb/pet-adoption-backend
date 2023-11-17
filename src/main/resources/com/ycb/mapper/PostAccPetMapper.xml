@@ -22,12 +22,13 @@
                  join `pet-adoption`.account a on a.id = b.account_id
                  join `pet-adoption`.pet on b.id = pet.bulletin_id
         where b.account_id = #{id}
+        and b.is_delete = 0
     </select>
 
-    <select id="getPostBByPId" resultType="java.lang.Integer">
-        select bulletin_id
+    <select id="getPIdByBId" resultType="java.lang.Integer">
+        select pet.id
         from `pet-adoption`.pet
-        where id = #{petId}
+        where bulletin_id = #{bulletinId}
     </select>
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.ycb.controller;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.ycb.entity.RestBean;
 import com.ycb.entity.dto.CollectAccPet;
 import com.ycb.entity.vo.response.AllPetAndBulVO;
@@ -53,12 +54,11 @@ public class Acc2PicController {
 
     /**
      * 根据宠物id逻辑删除用户发布的宠物和布告
-     * @param petId 宠物id
      * @return 删除结果
      */
     @PostMapping("/deletePostPB")
-    public RestBean<String> updatePostPBIsDeleteByPetId(@RequestBody CollectAccPet collectAccPet){
-        String message = acc2PicService.updatePostPBIsDeleteByPetId(collectAccPet.getPetId());
+    public RestBean<String> updatePostPBIsDeleteByBulId(@RequestBody JSONObject object) {
+        String message = acc2PicService.updatePostPBIsDeleteByBulId(Integer.valueOf(object.getString("bulletinId")));
         return message == null ? RestBean.success("删除成功") : RestBean.failure(401, message);
     }
 }

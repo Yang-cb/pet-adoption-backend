@@ -37,5 +37,5 @@ public interface Acc2PicService {
      * @param petId 宠物id
      * @return 删除结果
      */
-    String updatePostPBIsDeleteByPetId(Integer petId);
+    String updatePostPBIsDeleteByBulId(Integer petId);
 }

@@ -41,10 +41,13 @@ public class Acc2PicServiceImpl implements Acc2PicService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public String updatePostPBIsDeleteByPetId(Integer petId) {
-        int bId = postAccPetMapper.getPostBByPId(petId);
+    public String updatePostPBIsDeleteByBulId(Integer bulletinId) {
+        int petId = postAccPetMapper.getPIdByBId(bulletinId);
+        if ("null".equals(String.valueOf(petId))) {
+            return "删除失败";
+        }
         int line = postAccPetMapper.updatePostPIsDeleteByPetId(petId);
-        line += postAccPetMapper.updatePostBIsDeleteByBulId(bId);
+        line += postAccPetMapper.updatePostBIsDeleteByBulId(bulletinId);
         return line >= 2 ? null : "删除失败";
     }
 }

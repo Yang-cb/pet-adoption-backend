@@ -10,6 +10,8 @@
         from `pet-adoption`.pet pet
                  join `pet-adoption`.bulletin b on b.id = pet.bulletin_id
                  join `pet-adoption`.picture p on p.id = pet.picture_id
+        where pet.is_delete = 0
+        and b.is_delete = 0
         order by b.gmt_modified
     </select>
 
@@ -24,8 +26,12 @@
     <select id="getAllByType" resultType="com.ycb.entity.dto.Pet">
         select *
         from `pet-adoption`.pet
+                 join `pet-adoption`.bulletin b on b.id = pet.bulletin_id
+                 join `pet-adoption`.picture p on p.id = pet.picture_id
         where pet_type = #{type}
-        order by gmt_modified
+          and pet.is_delete = 0
+          and b.is_delete = 0
+        order by b.gmt_modified
     </select>
 
     <select id="getCollectAccIds" resultType="java.lang.Integer">
