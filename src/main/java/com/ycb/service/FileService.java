@@ -1,9 +1,8 @@
 package com.ycb.service;
 
+import com.ycb.entity.dto.Picture;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 public interface FileService {
-    Integer upload(MultipartFile file) throws IOException;
+    Picture upload(MultipartFile file, String type);
 }

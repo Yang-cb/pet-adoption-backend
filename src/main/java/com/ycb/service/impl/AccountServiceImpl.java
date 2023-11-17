@@ -1,26 +1,24 @@
 package com.ycb.service.impl;
 
-import com.ycb.entity.dto.CollectAccPet;
+import com.ycb.entity.RestBean;
+import com.ycb.entity.dto.Picture;
+import com.ycb.entity.vo.request.UpdateAccPicVO;
 import com.ycb.entity.vo.request.UpdateAccountVO;
 import com.ycb.entity.vo.response.AccountVO;
-import com.ycb.entity.vo.response.AllPetAndBulVO;
 import com.ycb.mapper.AccountMapper;
-import com.ycb.mapper.CollectAccPetMapper;
-import com.ycb.mapper.PetMapper;
 import com.ycb.service.AccountService;
+import com.ycb.service.FileService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
     @Resource
     private AccountMapper accountMapper;
+
     @Resource
-    private CollectAccPetMapper collectAccPetMapper;
-    @Resource
-    private PetMapper petMapper;
+    private FileService fileService;
 
     @Override
     public AccountVO getAccountVOById(Integer id) {
@@ -33,24 +31,14 @@ public class AccountServiceImpl implements AccountService {
         return line > 0 ? null : "更新失败";
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public String collectPB(CollectAccPet collectAccPet) {
-        CollectAccPet collect = collectAccPetMapper.getOne(collectAccPet);
-        if (collect != null) {
-            return "收藏失败";
+    public String updateAccPic(UpdateAccPicVO vo) {
+        Picture picture = fileService.upload(vo.getFile(), vo.getType());
+        if (picture == null) {
+            return RestBean.failure(401, "上传失败").jsonToString();
         }
-        int line = collectAccPetMapper.save(collectAccPet);
-        return line > 0 ? null : "收藏失败";
-    }
-
-    @Override
-    public String cancelCollectPB(CollectAccPet collectAccPet) {
-        int line = collectAccPetMapper.delete(collectAccPet);
-        return line > 0 ? null : "取消收藏失败";
-    }
-
-    @Override
-    public List<AllPetAndBulVO> getPostPBById(Integer id) {
-        return petMapper.getPostPBById(id);
+        accountMapper.updateAccPic(vo.getId(), picture.getId());
+        return RestBean.success(picture).jsonToString();
     }
 }

@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+/**
+ * 用户收藏宠物相关操作
+ */
 @Mapper
 public interface CollectAccPetMapper {
     /**

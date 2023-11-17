@@ -16,7 +16,7 @@ public class PublishBulletinVO {
     /**
      * 宠物照片id
      */
-    private String pictureId;
+    private String picName;
     /**
      * 性别 1公0母
      */

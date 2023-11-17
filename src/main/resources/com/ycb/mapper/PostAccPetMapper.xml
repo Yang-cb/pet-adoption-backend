@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ycb.mapper.PostAccPetMapper">
+    <update id="updatePostPIsDeleteByPetId">
+        update `pet-adoption`.pet
+        set is_delete = 1
+        where id = #{petId}
+    </update>
+
+    <update id="updatePostBIsDeleteByBulId">
+        update `pet-adoption`.bulletin
+        set is_delete = 1
+        where id = #{bId}
+    </update>
+
+    <select id="getPostPBById" resultType="com.ycb.entity.vo.response.AllPetAndBulVO">
+        select *
+        from `pet-adoption`.bulletin b
+                 join `pet-adoption`.account a on a.id = b.account_id
+                 join `pet-adoption`.pet on b.id = pet.bulletin_id
+        where b.account_id = #{id}
+    </select>
+
+    <select id="getPostBByPId" resultType="java.lang.Integer">
+        select bulletin_id
+        from `pet-adoption`.pet
+        where id = #{petId}
+    </select>
+
+</mapper>

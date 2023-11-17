@@ -33,4 +33,10 @@
         </set>
         where id = #{id}
     </update>
+
+    <update id="updateAccPic">
+        update `pet-adoption`.account
+        set picture_id = #{pictureId}
+        where id = #{accId}
+    </update>
 </mapper>

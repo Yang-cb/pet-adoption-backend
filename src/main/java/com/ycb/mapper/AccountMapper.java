@@ -60,4 +60,5 @@ public interface AccountMapper {
     int updateAccountById(UpdateAccountVO vo);
 
 
+    void updateAccPic(Integer accId, Integer pictureId);
 }
