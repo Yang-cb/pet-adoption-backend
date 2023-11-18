@@ -5,6 +5,9 @@ import com.ycb.entity.vo.response.AllPetAndBulVO;
 
 import java.util.List;
 
+/**
+ * 用户收藏宠物相关操作
+ */
 public interface Acc2PicService {
 
     /**
@@ -37,5 +40,12 @@ public interface Acc2PicService {
      * @param petId 宠物id
      * @return 删除结果
      */
-    String updatePostPBIsDeleteByBulId(Integer petId);
+    String updatePostPBIsDeleteByPetId(Integer petId);
+
+    /**
+     * 获取用户收藏的宠物和布告
+     * @param id 用户id
+     * @return 用户收藏的宠物和布告
+     */
+    List<AllPetAndBulVO> getCollectPBById(Integer id);
 }

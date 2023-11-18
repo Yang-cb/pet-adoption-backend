@@ -6,7 +6,11 @@ import java.sql.Date;
 
 @Data
 public class Account {
-    private Integer id;
+    private Integer accountId;
+    /**
+     * 头像ID
+     */
+    private String pictureId;
     private String username;
     private String password;
     private String email;

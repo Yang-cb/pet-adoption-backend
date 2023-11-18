@@ -17,6 +17,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * jwt验证过滤器
+ */
 @Component
 public class JwtVerifyFilter extends OncePerRequestFilter {
     @Resource

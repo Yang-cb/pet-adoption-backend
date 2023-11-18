@@ -9,29 +9,56 @@ import java.sql.Date;
  */
 @Data
 public class Bulletin {
-    private Integer id;
+    /**
+     * 自增id
+     */
+    private Integer bulletinId;
+    /**
+     * 发这个布告的用户id
+     */
+    private Integer accountId;
+    /**
+     * 布告类型：领养/寻宠
+     */
     private String type;
     /**
      * 联系人
      */
     private String contactsName;
+    /**
+     * 联系人手机号
+     */
     private String contactsPhone;
+    /**
+     * 联系人微信
+     */
     private String contactsWechat;
+    /**
+     * 联系人邮箱
+     */
     private String contactsEmail;
     /**
      * 领养人地址
      */
     private String location;
     /**
-     * 文章
+     * 文章标题
      */
     private String title;
-    private String text;
-    private Date gmtCreate;
-    private Date gmtModified;
-    private Integer isDelete;
     /**
-     * 用户id
+     * 文章内容
      */
-    private Integer accountId;
+    private String text;
+    /**
+     * 创建时间
+     */
+    private Date gmtCreate;
+    /**
+     * 修改时间
+     */
+    private Date gmtModified;
+    /**
+     * 是否删除 1是0否
+     */
+    private Integer isDelete;
 }

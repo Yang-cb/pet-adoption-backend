@@ -9,8 +9,21 @@ import java.sql.Date;
  */
 @Data
 public class Pet {
-    private Integer id;
+    /**
+     * 自增id
+     */
+    private Integer petId;
+    /**
+     * 布告id
+     */
+    private Integer bulletinId;
+    /**
+     * 宠物姓名
+     */
     private String petName;
+    /**
+     * 宠物类型：cat猫、dog狗、other其他
+     */
     private String petType;
     /**
      * 性别 1公0母
@@ -25,7 +38,7 @@ public class Pet {
      */
     private String pictureId;
     /**
-     * 是否已被领养 0是1否
+     * 是否已被领养 1是0否
      */
     private Integer isAdopt;
     /**
@@ -40,8 +53,4 @@ public class Pet {
      * 是否删除 1是0否
      */
     private Integer isDelete;
-    /**
-     * 布告id
-     */
-    private Integer bulletinId;
 }

@@ -40,13 +40,12 @@ public class PetServiceImpl implements PetService {
         BeanUtils.copyProperties(vo, bulletin);
         bulletin.setGmtCreate(date);
         bulletin.setGmtModified(date);
-        // TODO 获取登录者id
-        bulletin.setAccountId(1);
+        bulletin.setAccountId(vo.getAccountId());
         BeanUtils.copyProperties(vo, pet);
         pet.setGmtCreate(date);
         pet.setGmtModified(date);
         petMapper.saveBulletin(bulletin);
-        pet.setBulletinId(bulletin.getId());
+        pet.setBulletinId(bulletin.getBulletinId());
         petMapper.savePet(pet);
         return null;
     }

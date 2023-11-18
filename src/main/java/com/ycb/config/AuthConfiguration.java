@@ -18,6 +18,9 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * 认证配置
+ */
 @Component
 public class AuthConfiguration {
 
@@ -37,9 +40,9 @@ public class AuthConfiguration {
         // 获取数据库中的用户信息
         Account account = accountMapper.getByUsername(userDetails.getUsername());
         // 生成jwt
-        String jwt = jwtUtils.createJwt(account.getId(), userDetails);
+        String jwt = jwtUtils.createJwt(account.getAccountId(), userDetails);
         LoginVO vo = new LoginVO();
-        vo.setId(account.getId());
+        vo.setId(account.getAccountId());
         vo.setUsername(account.getUsername());
         vo.setAuthority(account.getAuthority());
         vo.setToken(jwt);

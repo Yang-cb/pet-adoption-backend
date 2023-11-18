@@ -57,8 +57,21 @@ public class Acc2PicController {
      * @return 删除结果
      */
     @PostMapping("/deletePostPB")
-    public RestBean<String> updatePostPBIsDeleteByBulId(@RequestBody JSONObject object) {
-        String message = acc2PicService.updatePostPBIsDeleteByBulId(Integer.valueOf(object.getString("bulletinId")));
+    public RestBean<String> updatePostPBIsDeleteByPetId(@RequestBody JSONObject object) {
+        String message = acc2PicService.updatePostPBIsDeleteByPetId(Integer.valueOf(object.getString("petId")));
         return message == null ? RestBean.success("删除成功") : RestBean.failure(401, message);
     }
+
+    /**
+     * 获取用户收藏的宠物和布告
+     * @param id 用户id
+     * @return 用户收藏的宠物和布告
+     */
+    @GetMapping("/getCollectPB")
+    public RestBean<List<AllPetAndBulVO>> getCollectPB(@RequestParam Integer id) {
+        List<AllPetAndBulVO> allPetAndBulVOS = acc2PicService.getCollectPBById(id);
+        return RestBean.success(allPetAndBulVOS);
+    }
+
+
 }

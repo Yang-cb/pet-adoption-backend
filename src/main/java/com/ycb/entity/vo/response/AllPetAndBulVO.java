@@ -4,12 +4,15 @@ import lombok.Data;
 
 import java.sql.Date;
 
+/**
+ * 宠物信息及布告信息
+ */
 @Data
 public class AllPetAndBulVO {
     /**
      * 宠物id
      */
-    private Integer id;
+    private Integer petId;
     /**
      * 宠物姓名
      */
@@ -38,16 +41,28 @@ public class AllPetAndBulVO {
      * 联系人
      */
     private String contactsName;
+    /**
+     * 手机号
+     */
     private String contactsPhone;
+    /**
+     * 微信
+     */
     private String contactsWechat;
+    /**
+     * 邮箱
+     */
     private String contactsEmail;
     /**
-     * 文章
+     * 文章标题
      */
     private String title;
+    /**
+     * 文章内容
+     */
     private String text;
     /**
-     * 发布布告的最后时间
+     * 发布布告的时间
      */
-    private Date gmtModified;
+    private Date gmtCreate;
 }

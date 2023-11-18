@@ -2,9 +2,15 @@ package com.ycb.entity.dto;
 
 import lombok.Data;
 
+/**
+ * 图片
+ */
 @Data
 public class Picture {
-    private Integer id;
+    /**
+     * 图片自增id
+     */
+    private Integer picId;
     /**
      * 图片名
      */

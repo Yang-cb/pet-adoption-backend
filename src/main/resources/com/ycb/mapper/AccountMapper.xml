@@ -8,8 +8,8 @@
     <select id="getAccountVOById" resultType="com.ycb.entity.vo.response.AccountVO">
         select *
         from `pet-adoption`.account a
-                 join `pet-adoption`.picture p on p.id = a.picture_id
-        where a.id = #{id}
+                 join `pet-adoption`.picture p on p.pic_id = a.picture_id
+        where a.account_id = #{id}
     </select>
 
     <update id="updateAccountById">
@@ -31,12 +31,12 @@
                 sex = #{sex},
             </if>
         </set>
-        where id = #{id}
+        where account_id = #{id}
     </update>
 
     <update id="updateAccPic">
         update `pet-adoption`.account
         set picture_id = #{pictureId}
-        where id = #{accId}
+        where account_id = #{accId}
     </update>
 </mapper>

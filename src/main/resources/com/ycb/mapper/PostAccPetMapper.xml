@@ -7,28 +7,29 @@
     <update id="updatePostPIsDeleteByPetId">
         update `pet-adoption`.pet
         set is_delete = 1
-        where id = #{petId}
+        where pet_id = #{petId}
     </update>
 
     <update id="updatePostBIsDeleteByBulId">
         update `pet-adoption`.bulletin
         set is_delete = 1
-        where id = #{bId}
+        where bulletin_id = #{bId}
     </update>
 
     <select id="getPostPBById" resultType="com.ycb.entity.vo.response.AllPetAndBulVO">
         select *
         from `pet-adoption`.bulletin b
-                 join `pet-adoption`.account a on a.id = b.account_id
-                 join `pet-adoption`.pet on b.id = pet.bulletin_id
+                 join `pet-adoption`.account a on a.account_id = b.account_id
+                 join `pet-adoption`.pet on b.bulletin_id = pet.bulletin_id
         where b.account_id = #{id}
-        and b.is_delete = 0
+          and b.is_delete = 0
+          and pet.is_delete = 0
     </select>
 
-    <select id="getPIdByBId" resultType="java.lang.Integer">
-        select pet.id
+    <select id="getBulIdByPetId" resultType="java.lang.Integer">
+        select pet.bulletin_id
         from `pet-adoption`.pet
-        where bulletin_id = #{bulletinId}
+        where pet_id = #{pet_id}
     </select>
 
 </mapper>

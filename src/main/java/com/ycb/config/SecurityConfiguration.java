@@ -11,6 +11,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
+/**
+ * 安全配置
+ */
 @Configuration
 public class SecurityConfiguration {
     @Resource
@@ -26,10 +29,10 @@ public class SecurityConfiguration {
                 // 不需要csrf
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(conf ->
-                        // 当前路径允许任何人请求
-                        conf.requestMatchers("/api/auth/**").permitAll()
-                                // 除上述路径，任何人必须认证后请求
-                                 .anyRequest().authenticated()
+                                // 当前路径允许任何人请求
+                                conf.requestMatchers("/api/auth/**").permitAll()
+                                        // 除上述路径，任何人必须认证后请求
+                                        .anyRequest().authenticated()
 //                                .anyRequest().permitAll()
                 )
                 .formLogin(conf ->

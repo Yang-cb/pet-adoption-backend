@@ -38,7 +38,7 @@ public class AccountServiceImpl implements AccountService {
         if (picture == null) {
             return RestBean.failure(401, "上传失败").jsonToString();
         }
-        accountMapper.updateAccPic(vo.getId(), picture.getId());
+        accountMapper.updateAccPic(vo.getId(), picture.getPicId());
         return RestBean.success(picture).jsonToString();
     }
 }

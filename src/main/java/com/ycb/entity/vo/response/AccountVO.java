@@ -4,14 +4,41 @@ import lombok.Data;
 
 import java.sql.Date;
 
+/**
+ * 用户信息（含头像）
+ */
 @Data
 public class AccountVO {
-    private String username; // 用户名
-    private String email; // 邮箱
-    private String location; // 地址
-    private String nikeName; // 昵称
-    private Date birthday; // 出生日期
-    private Integer sex; // 性别
-    private String signature; // 签名
-    private String picName; // 头像
+    /**
+     * 用户名
+     */
+    private String username;
+    /**
+     * 邮箱
+     */
+    private String email;
+    /**
+     * 地址
+     */
+    private String location;
+    /**
+     * 昵称
+     */
+    private String nikeName;
+    /**
+     * 出生日期
+     */
+    private Date birthday;
+    /**
+     * 性别
+     */
+    private Integer sex;
+    /**
+     * 签名
+     */
+    private String signature;
+    /**
+     * 头像
+     */
+    private String picName;
 }

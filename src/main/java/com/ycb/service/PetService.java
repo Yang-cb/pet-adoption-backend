@@ -7,6 +7,9 @@ import com.ycb.entity.vo.response.OnePB2PicVO;
 
 import java.util.List;
 
+/**
+ * 宠物相关操作
+ */
 public interface PetService {
     /**
      * 获取所有宠物

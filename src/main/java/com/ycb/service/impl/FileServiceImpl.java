@@ -36,7 +36,9 @@ public class FileServiceImpl implements FileService {
         // 判断文件是否存在
         if (!dest.getParentFile().exists()) {
             // 不存在就创建一个
-            boolean mkdirs = dest.getParentFile().mkdirs();
+            if (!dest.getParentFile().mkdirs()) {
+                return null;
+            }
         }
         Picture picture = new Picture();
         try {

@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+/**
+ * 跨域过滤器
+ */
 @Component
 @Order(-102)
 public class CorsFilter extends HttpFilter {

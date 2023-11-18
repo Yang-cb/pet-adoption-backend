@@ -4,6 +4,9 @@ import com.ycb.entity.vo.request.UpdateAccPicVO;
 import com.ycb.entity.vo.request.UpdateAccountVO;
 import com.ycb.entity.vo.response.AccountVO;
 
+/**
+ * 账户service
+ */
 public interface AccountService {
     /**
      * 根据用户id获取账户信息

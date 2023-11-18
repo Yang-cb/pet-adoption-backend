@@ -32,7 +32,7 @@ public interface PostAccPetMapper {
      * @param bulletinId 布告id
      * @return 宠物id
      */
-    int getPIdByBId(Integer bulletinId);
+    int getBulIdByPetId(Integer bulletinId);
 
     /**
      * 根据布告id删除用户发布的布告

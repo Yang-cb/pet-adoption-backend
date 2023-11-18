@@ -9,8 +9,20 @@ import java.sql.Date;
  */
 @Data
 public class ResetPwVO {
+    /**
+     * 邮箱
+     */
     private String email;
+    /**
+     * 验证码
+     */
     private String code;
+    /**
+     * 密码
+     */
     private String password;
+    /**
+     * 重置时间
+     */
     private Date gmtModified;
 }

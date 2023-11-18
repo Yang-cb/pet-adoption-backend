@@ -20,6 +20,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * jwt工具类
+ */
 @Component
 public class JwtUtils {
     @Value("${spring.security.jwt.secret}")

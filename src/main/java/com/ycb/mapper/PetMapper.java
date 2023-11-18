@@ -40,7 +40,7 @@ public interface PetMapper {
      * 保存布告
      *
      * @param bulletin 布告
-     * @return 保存结果
+     * @return 保存结果、布告id
      */
     int saveBulletin(Bulletin bulletin);
 
@@ -48,9 +48,8 @@ public interface PetMapper {
      * 保存宠物
      *
      * @param pet 宠物
-     * @return 保存结果
      */
-    int savePet(Pet pet);
+    void savePet(Pet pet);
 
     /**
      * 获取收藏该宠物的用户id

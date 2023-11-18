@@ -15,7 +15,7 @@ public class PwTest {
 
     @Test
     void testEncoder() {
-        System.out.println(bCryptPasswordEncoder.encode("1111"));
+        System.out.println(bCryptPasswordEncoder.encode("aaaaaa"));
     }
 
     @Test
