@@ -3,6 +3,7 @@ package com.ycb.controller;
 import com.ycb.entity.RestBean;
 import com.ycb.entity.dto.Pet;
 import com.ycb.entity.vo.request.PublishBulletinVO;
+import com.ycb.entity.vo.request.UpdateBulletinVO;
 import com.ycb.entity.vo.response.AllPetAndBulVO;
 import com.ycb.entity.vo.response.OnePB2PicVO;
 import com.ycb.service.PetService;
@@ -19,6 +20,7 @@ public class PetController {
 
     /**
      * 获取全部宠物信息
+     *
      * @return 宠物列表
      */
     @GetMapping("/getAllPB")
@@ -29,6 +31,7 @@ public class PetController {
 
     /**
      * 根据宠物id获取宠物信息
+     *
      * @param petId 宠物id
      */
     @GetMapping("/getPBByPetId")
@@ -58,5 +61,16 @@ public class PetController {
     public RestBean<String> publishBulletin(@RequestBody PublishBulletinVO vo) {
         String message = petService.publishBulletin(vo);
         return message == null ? RestBean.success("发布成功") : RestBean.failure(400, message);
+    }
+
+    /**
+     * 根据宠物id修改宠物信息
+     *
+     * @param vo 宠物信息
+     */
+    @PutMapping("/updatePetByPetId")
+    public RestBean<String> updatePetByPetId(@RequestBody UpdateBulletinVO vo) {
+        String message = petService.updatePetByPetId(vo);
+        return message == null ? RestBean.success("修改成功") : RestBean.failure(400, message);
     }
 }

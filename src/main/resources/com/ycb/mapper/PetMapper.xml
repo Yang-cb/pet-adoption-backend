@@ -5,6 +5,28 @@
 
 <mapper namespace="com.ycb.mapper.PetMapper">
 
+    <update id="updateBulletinByBulId">
+        update `pet-adoption`.bulletin
+        set contacts_name   = #{contactsName},
+            contacts_phone  = #{contactsPhone},
+            contacts_wechat = #{contactsWechat},
+            contacts_email  = #{contactsEmail},
+            location        = #{location},
+            title           = #{title},
+            text            = #{text},
+            gmt_modified    = #{gmtModified}
+        where bulletin_id = #{bulletinId}
+    </update>
+    <update id="updatePetByPetId">
+        update `pet-adoption`.pet
+        set pet_name     = #{petName},
+            pet_type     = #{petType},
+            sex          = #{sex},
+            is_free      = #{isFree},
+            gmt_modified = #{gmtModified}
+        where pet_id = #{petId}
+    </update>
+
     <select id="getAll" resultType="com.ycb.entity.vo.response.AllPetAndBulVO">
         select *
         from `pet-adoption`.pet pet
@@ -40,6 +62,12 @@
         where pet_id = #{petId}
     </select>
 
+    <select id="getBIdByPid" resultType="java.lang.Integer">
+        select bulletin_id
+        from `pet-adoption`.pet
+        where pet_id = #{petId}
+    </select>
+
     <insert id="savePet">
         insert into `pet-adoption`.pet(pet_name, pet_type, sex, picture_id, gmt_create, gmt_modified,
                                        bulletin_id)
@@ -47,7 +75,8 @@
                    #{bulletinId})
     </insert>
 
-    <insert id="saveBulletin" parameterType="com.ycb.entity.dto.Bulletin" useGeneratedKeys="true" keyProperty="bulletinId">
+    <insert id="saveBulletin" parameterType="com.ycb.entity.dto.Bulletin" useGeneratedKeys="true"
+            keyProperty="bulletinId">
         insert into `pet-adoption`.bulletin(type, contacts_name, contacts_phone, contacts_wechat, contacts_email,
                                             location, title, text, gmt_create, gmt_modified, account_id)
             value (#{type}, #{contactsName}, #{contactsPhone}, #{contactsWechat}, #{contactsEmail}, #{location},

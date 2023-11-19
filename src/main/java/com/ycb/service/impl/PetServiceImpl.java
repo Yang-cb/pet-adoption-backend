@@ -3,6 +3,7 @@ package com.ycb.service.impl;
 import com.ycb.entity.dto.Bulletin;
 import com.ycb.entity.dto.Pet;
 import com.ycb.entity.vo.request.PublishBulletinVO;
+import com.ycb.entity.vo.request.UpdateBulletinVO;
 import com.ycb.entity.vo.response.AllPetAndBulVO;
 import com.ycb.entity.vo.response.OnePB2PicVO;
 import com.ycb.mapper.PetMapper;
@@ -59,5 +60,23 @@ public class PetServiceImpl implements PetService {
         List<Integer> accIds = petMapper.getCollectAccIds(pb2PicVO.getId());
         pb2PicVO.setCollectAccIds(accIds);
         return pb2PicVO;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public String updatePetByPetId(UpdateBulletinVO vo) {
+        // 对象赋值
+        Date date = new Date(new java.util.Date().getTime());
+        Bulletin bulletin = new Bulletin();
+        Pet pet = new Pet();
+        BeanUtils.copyProperties(vo, bulletin);
+        bulletin.setGmtModified(date);
+        BeanUtils.copyProperties(vo, pet);
+        pet.setGmtModified(date);
+        int bId = petMapper.getBIdByPid(vo.getPetId());
+        bulletin.setBulletinId(bId);
+        int line = petMapper.updateBulletinByBulId(bulletin);
+        line += petMapper.updatePetByPetId(pet);
+        return line == 2 ? null : "修改失败";
     }
 }

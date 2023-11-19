@@ -2,6 +2,7 @@ package com.ycb.service;
 
 import com.ycb.entity.dto.Pet;
 import com.ycb.entity.vo.request.PublishBulletinVO;
+import com.ycb.entity.vo.request.UpdateBulletinVO;
 import com.ycb.entity.vo.response.AllPetAndBulVO;
 import com.ycb.entity.vo.response.OnePB2PicVO;
 
@@ -41,4 +42,10 @@ public interface PetService {
      * @return 宠物信息
      */
     OnePB2PicVO getPBByPetId(Integer petId);
+
+    /**
+     * 根据宠物id修改宠物信息
+     * @param vo 宠物信息
+     */
+    String updatePetByPetId(UpdateBulletinVO vo);
 }

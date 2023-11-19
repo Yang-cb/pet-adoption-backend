@@ -58,4 +58,10 @@ public interface PetMapper {
      * @return 收藏该宠物的用户id
      */
     List<Integer> getCollectAccIds(Integer petId);
+
+    int getBIdByPid(Integer petId);
+
+    int updateBulletinByBulId(Bulletin bulletin);
+
+    int updatePetByPetId(Pet pet);
 }

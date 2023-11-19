@@ -10,6 +10,10 @@ import java.sql.Date;
 @Data
 public class AccountVO {
     /**
+     * 用户id
+     */
+    private Integer accountId;
+    /**
      * 用户名
      */
     private String username;

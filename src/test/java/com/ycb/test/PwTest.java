@@ -10,8 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class PwTest {
     @Resource
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Resource
-    FileMapper fileMapper;
 
     @Test
     void testEncoder() {
