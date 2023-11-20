@@ -6,7 +6,9 @@ import com.ycb.entity.vo.request.ResetPwVO;
 import com.ycb.service.AuthService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,7 +26,9 @@ public class AuthController {
      * @return 请求结果
      */
     @GetMapping("/sendEmail")
-    public RestBean<String> sendEmail(@RequestParam @Email String email, @RequestParam String type, HttpServletRequest request) {
+    public RestBean<String> sendEmail(@RequestParam @Email @NotNull String email,
+                                      @RequestParam @NotNull String type,
+                                      HttpServletRequest request) {
         String ip = request.getRemoteAddr();
         String message = authService.sendEmail(email, type, ip);
         return message == null ? RestBean.success("发送成功") : RestBean.failure(403, message);
@@ -38,7 +42,7 @@ public class AuthController {
      * @return 请求结果
      */
     @PostMapping("/register")
-    public RestBean<String> register(@RequestBody RegisterVO registerVO) {
+    public RestBean<String> register(@Valid @RequestBody RegisterVO registerVO) {
         String message = authService.register(registerVO);
         return message == null ? RestBean.success("注册成功") : RestBean.failure(403, message);
     }
@@ -50,7 +54,7 @@ public class AuthController {
      * @return 请求结果
      */
     @PostMapping("/resetPw")
-    public RestBean<String> resetPw(@RequestBody ResetPwVO resetPwVO) {
+    public RestBean<String> resetPw(@Valid @RequestBody ResetPwVO resetPwVO) {
         String message = authService.resetPw(resetPwVO);
         return message == null ? RestBean.success("重置密码成功") : RestBean.failure(403, message);
     }

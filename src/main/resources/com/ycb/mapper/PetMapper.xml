@@ -21,7 +21,7 @@
         update `pet-adoption`.pet
         set pet_name     = #{petName},
             pet_type     = #{petType},
-            sex          = #{sex},
+            pet_sex      = #{petSex},
             is_free      = #{isFree},
             gmt_modified = #{gmtModified}
         where pet_id = #{petId}
@@ -69,9 +69,9 @@
     </select>
 
     <insert id="savePet">
-        insert into `pet-adoption`.pet(pet_name, pet_type, sex, picture_id, gmt_create, gmt_modified,
+        insert into `pet-adoption`.pet(pet_name, pet_type, pet_sex, picture_id, gmt_create, gmt_modified,
                                        bulletin_id)
-            value (#{petName}, #{petType}, #{sex}, #{pictureId}, #{gmtCreate}, #{gmtModified},
+            value (#{petName}, #{petType}, #{petSex}, #{pictureId}, #{gmtCreate}, #{gmtModified},
                    #{bulletinId})
     </insert>
 

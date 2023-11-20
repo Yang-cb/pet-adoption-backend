@@ -1,6 +1,6 @@
 package com.ycb.service.impl;
 
-import com.ycb.entity.dto.CollectAccPet;
+import com.ycb.entity.vo.request.AccIdPetIdVO;
 import com.ycb.entity.vo.response.AllPetAndBulVO;
 import com.ycb.mapper.CollectAccPetMapper;
 import com.ycb.mapper.PostAccPetMapper;
@@ -19,18 +19,18 @@ public class Acc2PicServiceImpl implements Acc2PicService {
     private PostAccPetMapper postAccPetMapper;
 
     @Override
-    public String collectPB(CollectAccPet collectAccPet) {
-        CollectAccPet collect = collectAccPetMapper.getOne(collectAccPet);
+    public String collectPB(AccIdPetIdVO vo) {
+        AccIdPetIdVO collect = collectAccPetMapper.getOne(vo);
         if (collect != null) {
             return "收藏失败";
         }
-        int line = collectAccPetMapper.save(collectAccPet);
+        int line = collectAccPetMapper.save(vo);
         return line > 0 ? null : "收藏失败";
     }
 
     @Override
-    public String cancelCollectPB(CollectAccPet collectAccPet) {
-        int line = collectAccPetMapper.delete(collectAccPet);
+    public String cancelCollectPB(AccIdPetIdVO vo) {
+        int line = collectAccPetMapper.delete(vo);
         return line > 0 ? null : "取消收藏失败";
     }
 
@@ -41,12 +41,17 @@ public class Acc2PicServiceImpl implements Acc2PicService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public String updatePostPBIsDeleteByPetId(Integer petId) {
-        int bulletinId = postAccPetMapper.getBulIdByPetId(petId);
+    public String updatePostPBIsDelete(AccIdPetIdVO vo) {
+        int bulletinId = postAccPetMapper.getBulIdByPetId(vo.getPetId());
         if ("null".equals(String.valueOf(bulletinId))) {
             return "删除失败";
         }
-        int line = postAccPetMapper.updatePostPIsDeleteByPetId(petId);
+        // 判断用户是否发布了该宠物
+        int bul = postAccPetMapper.getBulByBulIdAndAccId(bulletinId, vo.getAccId());
+        if (bul < 0) {
+            return "删除失败";
+        }
+        int line = postAccPetMapper.updatePostPIsDeleteByPetId(vo.getPetId());
         line += postAccPetMapper.updatePostBIsDeleteByBulId(bulletinId);
         return line >= 2 ? null : "删除失败";
     }

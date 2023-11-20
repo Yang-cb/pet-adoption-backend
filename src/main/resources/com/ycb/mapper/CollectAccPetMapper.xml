@@ -6,11 +6,11 @@
 <mapper namespace="com.ycb.mapper.CollectAccPetMapper">
 
     <select id="getCollectPBById" resultType="com.ycb.entity.vo.response.AllPetAndBulVO">
-        select *
+        select distinct *
         from `pet-adoption`.account a
                  join `pet-adoption`.collect_acc_pet cap on a.account_id = cap.acc_id
                  join `pet-adoption`.pet p on cap.pet_id = p.pet_id
-                 join `pet-adoption`.bulletin b on a.account_id = b.account_id
+                 join `pet-adoption`.bulletin b on p.bulletin_id = b.bulletin_id
         where cap.acc_id = #{accId}
           and b.is_delete = 0
           and p.is_delete = 0

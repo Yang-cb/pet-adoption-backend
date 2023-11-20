@@ -62,5 +62,10 @@ public interface AccountMapper {
     int updateAccountById(UpdateAccountVO vo);
 
 
+    /**
+     * 根据用户id更新头像
+     * @param accId 用户id
+     * @param pictureId 头像id
+     */
     void updateAccPic(Integer accId, Integer pictureId);
 }

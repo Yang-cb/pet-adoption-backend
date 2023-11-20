@@ -31,5 +31,11 @@
         from `pet-adoption`.pet
         where pet_id = #{pet_id}
     </select>
+    <select id="getBulByBulIdAndAccId" resultType="java.lang.Integer">
+        select *
+        from `pet-adoption`.bulletin
+        where bulletin_id = #{bulletinId}
+          and account_id = #{accId}
+    </select>
 
 </mapper>

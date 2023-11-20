@@ -1,5 +1,6 @@
 package com.ycb.mapper;
 
+import com.ycb.entity.vo.request.AccIdPetIdVO;
 import com.ycb.entity.vo.response.AllPetAndBulVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -40,4 +41,13 @@ public interface PostAccPetMapper {
      * @param bId 布告id
      */
     int updatePostBIsDeleteByBulId(Integer bId);
+
+    /**
+     * 根据宠物id和用户id获取宠物
+     *
+     * @param bulletinId 布告id
+     * @param accId      用户id
+     * @return 宠物
+     */
+    int getBulByBulIdAndAccId(Integer bulletinId, Integer accId);
 }

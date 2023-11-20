@@ -8,12 +8,18 @@ import com.ycb.entity.vo.response.AllPetAndBulVO;
 import com.ycb.entity.vo.response.OnePB2PicVO;
 import com.ycb.service.PetService;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/pet")
+@Validated
 public class PetController {
     @Resource
     private PetService petService;
@@ -35,8 +41,9 @@ public class PetController {
      * @param petId 宠物id
      */
     @GetMapping("/getPBByPetId")
-    public RestBean<OnePB2PicVO> getPBByPetId(@RequestParam Integer petId) {
-        OnePB2PicVO pet = petService.getPBByPetId(petId);
+    public RestBean<OnePB2PicVO> getPBByPetId(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "用户id格式有误")
+                                                  @RequestParam String petId) {
+        OnePB2PicVO pet = petService.getPBByPetId(Integer.valueOf(petId));
         return RestBean.success(pet);
     }
 
@@ -47,7 +54,8 @@ public class PetController {
      * @return 宠物列表
      */
     @GetMapping("/getAllByType")
-    public RestBean<List<Pet>> getAllByType(@RequestParam String type) {
+    public RestBean<List<Pet>> getAllByType(@NotBlank @Pattern(regexp = "^(cat|dog|other)$", message = "宠物类型格式有误")
+                                            @RequestParam String type) {
         List<Pet> pets = petService.getAllByType(type);
         return RestBean.success(pets);
     }
@@ -58,7 +66,7 @@ public class PetController {
      * @return 发布结果
      */
     @PostMapping("/publishBulletin")
-    public RestBean<String> publishBulletin(@RequestBody PublishBulletinVO vo) {
+    public RestBean<String> publishBulletin(@Valid @RequestBody PublishBulletinVO vo) {
         String message = petService.publishBulletin(vo);
         return message == null ? RestBean.success("发布成功") : RestBean.failure(400, message);
     }
@@ -69,7 +77,7 @@ public class PetController {
      * @param vo 宠物信息
      */
     @PutMapping("/updatePetByPetId")
-    public RestBean<String> updatePetByPetId(@RequestBody UpdateBulletinVO vo) {
+    public RestBean<String> updatePetByPetId(@Valid @RequestBody UpdateBulletinVO vo) {
         String message = petService.updatePetByPetId(vo);
         return message == null ? RestBean.success("修改成功") : RestBean.failure(400, message);
     }

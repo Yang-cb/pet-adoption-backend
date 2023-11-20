@@ -31,9 +31,9 @@ public class OnePB2PicVO {
      */
     private String petType;
     /**
-     * 性别 1公0母
+     * 宠物性别 1公0母
      */
-    private Integer sex;
+    private Integer petSex;
     /**
      * 是否免费 1是0否
      */
