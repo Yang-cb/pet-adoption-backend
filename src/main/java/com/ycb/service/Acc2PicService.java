@@ -48,4 +48,11 @@ public interface Acc2PicService {
      * @return 用户收藏的宠物和布告
      */
     List<AllPetAndBulVO> getCollectPBById(Integer id);
+
+    /**
+     * 根据宠物id、宠物id判断用户是否收藏该宠物
+     * @param vo 用户id、宠物id
+     * @return 是否收藏
+     */
+    Boolean isCollect(AccIdPetIdVO vo);
 }

@@ -59,7 +59,7 @@ public class UpdateBulletinVO {
     /**
      * 微信：由6至20个字符组成，可以包含字母、数字、下划线和减号，但必须以字母开头。微信号不区分大小写。
      */
-    @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9_-]{5,19}$", message = "微信号格式不正确")
+    @Pattern(regexp = "(^$)|^[a-zA-Z][a-zA-Z0-9_-]{5,19}$", message = "微信号格式不正确")
     private String contactsWechat;
     /**
      * 邮箱

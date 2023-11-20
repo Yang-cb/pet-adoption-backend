@@ -37,7 +37,12 @@ public interface CollectAccPetMapper {
      * @return 收藏信息
      */
     @Select("select * from `pet-adoption`.collect_acc_pet where acc_id = #{accId} and pet_id = #{petId}")
-    AccIdPetIdVO getOne(AccIdPetIdVO vo);
+    AccIdPetIdVO getOneByAccIdAndPetId(AccIdPetIdVO vo);
 
+    /**
+     * 根据用户id获取用户收藏的宠物和布告
+     * @param id 用户id
+     * @return 用户收藏的宠物和布告
+     */
     List<AllPetAndBulVO> getCollectPBById(Integer id);
 }

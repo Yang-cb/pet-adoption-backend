@@ -20,7 +20,7 @@ public class Acc2PicServiceImpl implements Acc2PicService {
 
     @Override
     public String collectPB(AccIdPetIdVO vo) {
-        AccIdPetIdVO collect = collectAccPetMapper.getOne(vo);
+        AccIdPetIdVO collect = collectAccPetMapper.getOneByAccIdAndPetId(vo);
         if (collect != null) {
             return "收藏失败";
         }
@@ -59,5 +59,10 @@ public class Acc2PicServiceImpl implements Acc2PicService {
     @Override
     public List<AllPetAndBulVO> getCollectPBById(Integer id) {
         return collectAccPetMapper.getCollectPBById(id);
+    }
+
+    @Override
+    public Boolean isCollect(AccIdPetIdVO vo) {
+        return collectAccPetMapper.getOneByAccIdAndPetId(vo) != null;
     }
 }

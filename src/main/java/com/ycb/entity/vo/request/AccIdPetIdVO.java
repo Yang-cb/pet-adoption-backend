@@ -1,12 +1,16 @@
 package com.ycb.entity.vo.request;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 收藏账号宠物请求封装
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AccIdPetIdVO {
     /**
      * 用户id

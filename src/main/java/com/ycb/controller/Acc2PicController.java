@@ -80,4 +80,17 @@ public class Acc2PicController {
         List<AllPetAndBulVO> allPetAndBulVOS = acc2PicService.getCollectPBById(Integer.valueOf(id));
         return RestBean.success(allPetAndBulVOS);
     }
+
+    /**
+     * 根据宠物id、宠物id判断用户是否收藏该宠物
+     *
+     * @param accId 用户id
+     * @param petId 宠物id
+     * @return 是否收藏
+     */
+    @GetMapping("/isCollect")
+    public RestBean<Boolean> isCollect(@RequestParam Integer accId, @RequestParam Integer petId) {
+        Boolean isCollect = acc2PicService.isCollect(new AccIdPetIdVO(accId, petId));
+        return RestBean.success(isCollect);
+    }
 }
