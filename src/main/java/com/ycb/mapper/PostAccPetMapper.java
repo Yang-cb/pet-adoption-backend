@@ -1,6 +1,5 @@
 package com.ycb.mapper;
 
-import com.ycb.entity.vo.request.AccIdPetIdVO;
 import com.ycb.entity.vo.response.AllPetAndBulVO;
 import org.apache.ibatis.annotations.Mapper;
 

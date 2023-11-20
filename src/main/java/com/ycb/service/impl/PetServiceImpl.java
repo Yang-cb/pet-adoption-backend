@@ -2,11 +2,13 @@ package com.ycb.service.impl;
 
 import com.ycb.entity.dto.Bulletin;
 import com.ycb.entity.dto.Pet;
+import com.ycb.entity.dto.Picture;
 import com.ycb.entity.vo.request.PublishBulletinVO;
 import com.ycb.entity.vo.request.UpdateBulletinVO;
 import com.ycb.entity.vo.response.AllPetAndBulVO;
 import com.ycb.entity.vo.response.OnePB2PicVO;
 import com.ycb.mapper.PetMapper;
+import com.ycb.service.FileService;
 import com.ycb.service.PetService;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +22,8 @@ import java.util.List;
 public class PetServiceImpl implements PetService {
     @Resource
     private PetMapper petMapper;
+    @Resource
+    private FileService fileService;
 
     @Override
     public List<AllPetAndBulVO> getAll() {
@@ -34,6 +38,11 @@ public class PetServiceImpl implements PetService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public String publishBulletin(PublishBulletinVO vo) {
+        // 上传图片
+        Picture picture = fileService.upload(vo.getFile(), vo.getPicType());
+        if (picture == null) {
+            return "图片上传失败";
+        }
         // 对象赋值
         Date date = new Date(new java.util.Date().getTime());
         Bulletin bulletin = new Bulletin();
@@ -47,6 +56,7 @@ public class PetServiceImpl implements PetService {
         pet.setGmtModified(date);
         petMapper.saveBulletin(bulletin);
         pet.setBulletinId(bulletin.getBulletinId());
+        pet.setPictureId(picture.getPicId());
         petMapper.savePet(pet);
         return null;
     }

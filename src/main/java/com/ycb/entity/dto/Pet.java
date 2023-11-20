@@ -36,7 +36,7 @@ public class Pet {
     /**
      * 照片ID
      */
-    private String pictureId;
+    private Integer pictureId;
     /**
      * 是否已被领养 1是0否
      */
