@@ -20,18 +20,20 @@ public class Acc2PicServiceImpl implements Acc2PicService {
 
     @Override
     public String collectPB(AccIdPetIdVO vo) {
+        // 该用户是否已经收藏该宠物
         AccIdPetIdVO collect = collectAccPetMapper.getOneByAccIdAndPetId(vo);
+        int line = 0;
         if (collect != null) {
-            return "收藏失败";
+            // 已收藏
+            line += collectAccPetMapper.delete(vo);
+        } else {
+            // 未收藏
+            line += collectAccPetMapper.save(vo);
         }
-        int line = collectAccPetMapper.save(vo);
-        return line > 0 ? null : "收藏失败";
-    }
-
-    @Override
-    public String cancelCollectPB(AccIdPetIdVO vo) {
-        int line = collectAccPetMapper.delete(vo);
-        return line > 0 ? null : "取消收藏失败";
+        if (line > 1) {
+            return "系统异常";
+        }
+        return line > 0 ? null : "操作失败";
     }
 
     @Override

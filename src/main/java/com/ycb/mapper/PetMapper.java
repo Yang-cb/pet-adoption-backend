@@ -51,14 +51,6 @@ public interface PetMapper {
      */
     void savePet(Pet pet);
 
-    /**
-     * 获取收藏该宠物的用户id
-     *
-     * @param petId 宠物id
-     * @return 收藏该宠物的用户id
-     */
-    List<Integer> getCollectAccIds(Integer petId);
-
     int getBIdByPid(Integer petId);
 
     int updateBulletinByBulId(Bulletin bulletin);

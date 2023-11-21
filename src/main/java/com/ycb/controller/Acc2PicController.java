@@ -21,7 +21,7 @@ public class Acc2PicController {
     private Acc2PicService acc2PicService;
 
     /**
-     * 收藏宠物
+     * 收藏/取消收藏宠物
      *
      * @param vo 用户id和宠物id
      * @return 收藏结果
@@ -29,19 +29,7 @@ public class Acc2PicController {
     @PostMapping("/collectPB")
     public RestBean<String> collectPB(@Valid @RequestBody AccIdPetIdVO vo) {
         String message = acc2PicService.collectPB(vo);
-        return message == null ? RestBean.success("收藏成功") : RestBean.failure(402, message);
-    }
-
-    /**
-     * 取消收藏宠物
-     *
-     * @param vo 用户id和宠物id
-     * @return 取消收藏结果
-     */
-    @PostMapping("/cancelCollectPB")
-    public RestBean<String> cancelCollectPB(@Valid @RequestBody AccIdPetIdVO vo) {
-        String message = acc2PicService.cancelCollectPB(vo);
-        return message == null ? RestBean.success("取消收藏成功") : RestBean.failure(403, message);
+        return message == null ? RestBean.success("操作成功") : RestBean.failure(402, message);
     }
 
     /**

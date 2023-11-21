@@ -18,14 +18,6 @@ public interface Acc2PicService {
      */
     String collectPB(AccIdPetIdVO vo);
 
-    /**
-     * 取消收藏宠物
-     *
-     * @param vo 用户id和宠物id
-     * @return 取消收藏结果
-     */
-
-    String cancelCollectPB(AccIdPetIdVO vo);
 
     /**
      * 根据用户id获取用户发布的宠物和布告

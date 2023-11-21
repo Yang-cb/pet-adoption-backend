@@ -11,10 +11,6 @@ import java.util.List;
 @Data
 public class OnePB2PicVO {
     /**
-     * 收藏该宠物的用户id
-     */
-    private List<Integer> collectAccIds;
-    /**
      * 宠物照片名字
      */
     private String picName;
