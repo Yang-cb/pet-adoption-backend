@@ -3,7 +3,6 @@ package com.ycb.entity.vo.response;
 import lombok.Data;
 
 import java.sql.Date;
-import java.util.List;
 
 /**
  * 宠物信息（含图片）
@@ -17,7 +16,7 @@ public class OnePB2PicVO {
     /**
      * 宠物id
      */
-    private Integer id;
+    private Integer petId;
     /**
      * 宠物姓名
      */
