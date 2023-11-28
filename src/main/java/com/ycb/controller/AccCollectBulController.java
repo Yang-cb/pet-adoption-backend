@@ -3,7 +3,7 @@ package com.ycb.controller;
 import com.ycb.entity.RestBean;
 import com.ycb.entity.vo.request.AccIdPetIdVO;
 import com.ycb.entity.vo.response.AllPetAndBulVO;
-import com.ycb.service.Acc2PicService;
+import com.ycb.service.AccCollectBulService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -13,12 +13,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 用户收藏宠物和布告的控制器
+ */
 @RestController
-@RequestMapping("/api/acc2pic")
+@RequestMapping("/api/collectBul")
 @Validated
-public class Acc2PicController {
+public class AccCollectBulController {
     @Resource
-    private Acc2PicService acc2PicService;
+    private AccCollectBulService accCollectBulService;
 
     /**
      * 收藏/取消收藏宠物
@@ -28,32 +31,8 @@ public class Acc2PicController {
      */
     @PostMapping("/collectPB")
     public RestBean<String> collectPB(@Valid @RequestBody AccIdPetIdVO vo) {
-        String message = acc2PicService.collectPB(vo);
+        String message = accCollectBulService.collectPB(vo);
         return message == null ? RestBean.success("操作成功") : RestBean.failure(402, message);
-    }
-
-    /**
-     * 获取用户发布的宠物和布告
-     *
-     * @param id 用户id
-     * @return 用户发布的宠物和布告
-     */
-    @GetMapping("/getPostPB")
-    public RestBean<List<AllPetAndBulVO>> getPostPB(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "id格式有误")
-                                                    @RequestParam String id) {
-        List<AllPetAndBulVO> allPetAndBulVOS = acc2PicService.getPostPBById(Integer.valueOf(id));
-        return RestBean.success(allPetAndBulVOS);
-    }
-
-    /**
-     * 根据宠物id逻辑删除用户发布的宠物和布告
-     *
-     * @return 删除结果
-     */
-    @PostMapping("/deletePostPB")
-    public RestBean<String> updatePostPBIsDeleteByPetId(@Valid @RequestBody AccIdPetIdVO vo) {
-        String message = acc2PicService.updatePostPBIsDelete(vo);
-        return message == null ? RestBean.success("删除成功") : RestBean.failure(401, message);
     }
 
     /**
@@ -65,7 +44,7 @@ public class Acc2PicController {
     @GetMapping("/getCollectPB")
     public RestBean<List<AllPetAndBulVO>> getCollectPB(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "id格式有误")
                                                        @RequestParam String id) {
-        List<AllPetAndBulVO> allPetAndBulVOS = acc2PicService.getCollectPBById(Integer.valueOf(id));
+        List<AllPetAndBulVO> allPetAndBulVOS = accCollectBulService.getCollectPBById(Integer.valueOf(id));
         return RestBean.success(allPetAndBulVOS);
     }
 
@@ -78,7 +57,7 @@ public class Acc2PicController {
      */
     @GetMapping("/isCollect")
     public RestBean<Boolean> isCollect(@RequestParam Integer accId, @RequestParam Integer petId) {
-        Boolean isCollect = acc2PicService.isCollect(new AccIdPetIdVO(accId, petId));
+        Boolean isCollect = accCollectBulService.isCollect(new AccIdPetIdVO(accId, petId));
         return RestBean.success(isCollect);
     }
 }

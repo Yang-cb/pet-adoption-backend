@@ -12,7 +12,9 @@ import jakarta.validation.constraints.Pattern;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
+/**
+ * 账户控制器
+ */
 @RestController
 @RequestMapping("/api/account")
 @Validated

@@ -1,15 +1,13 @@
 package com.ycb.service;
 
 import com.ycb.entity.dto.Pet;
-import com.ycb.entity.vo.request.PublishBulletinVO;
-import com.ycb.entity.vo.request.UpdateBulletinVO;
 import com.ycb.entity.vo.response.AllPetAndBulVO;
 import com.ycb.entity.vo.response.OnePB2PicVO;
 
 import java.util.List;
 
 /**
- * 宠物相关操作
+ * 获取宠物布告相关操作的服务接口
  */
 public interface PetService {
     /**
@@ -27,25 +25,10 @@ public interface PetService {
      */
     List<Pet> getAllByType(String type);
 
-
-    /**
-     * 发布宠物领养信息
-     *
-     * @param vo 领养信息
-     * @return 错误信息
-     */
-    String publishBulletin(PublishBulletinVO vo);
-
     /**
      * 根据宠物id获取宠物信息
      * @param petId 宠物id
      * @return 宠物信息
      */
     OnePB2PicVO getPBByPetId(Integer petId);
-
-    /**
-     * 根据宠物id修改宠物信息
-     * @param vo 宠物信息
-     */
-    String updatePetByPetId(UpdateBulletinVO vo);
 }

@@ -23,6 +23,9 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 账户认证的服务实现类
+ */
 @Service
 public class AuthServiceImpl implements AuthService {
     // 发件人

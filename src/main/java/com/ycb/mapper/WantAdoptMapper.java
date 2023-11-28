@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+/**
+ * 用户想领mapper
+ */
 @Mapper
 public interface WantAdoptMapper {
     /**

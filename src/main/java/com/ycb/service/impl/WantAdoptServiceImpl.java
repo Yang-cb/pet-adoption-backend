@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.util.List;
 
+/**
+ * 想领的服务实现类
+ */
 @Service
 public class WantAdoptServiceImpl implements WantAdoptService {
     @Resource

@@ -11,6 +11,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 认证控制器
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

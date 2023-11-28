@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ycb.mapper.PetMapper">
+<mapper namespace="com.ycb.mapper.PetBulletinMapper">
 
     <update id="updateBulletinByBulId">
         update `pet-adoption`.bulletin
@@ -17,6 +17,7 @@
             gmt_modified    = #{gmtModified}
         where bulletin_id = #{bulletinId}
     </update>
+
     <update id="updatePetByPetId">
         update `pet-adoption`.pet
         set pet_name     = #{petName},
@@ -69,6 +70,17 @@
                    #{bulletinId})
     </insert>
 
+    <select id="getPostPBById" resultType="com.ycb.entity.vo.response.AllPetAndBulVO">
+        select *
+        from `pet-adoption`.bulletin b
+                 join `pet-adoption`.account a on a.account_id = b.account_id
+                 join `pet-adoption`.pet on b.bulletin_id = pet.bulletin_id
+                 join `pet-adoption`.picture p on pet.picture_id = p.pic_id
+        where b.account_id = #{id}
+          and b.is_delete = 0
+          and pet.is_delete = 0
+    </select>
+
     <insert id="saveBulletin" parameterType="com.ycb.entity.dto.Bulletin" useGeneratedKeys="true"
             keyProperty="bulletinId">
         insert into `pet-adoption`.bulletin(type, contacts_name, contacts_phone, contacts_wechat, contacts_email,
@@ -76,4 +88,29 @@
             value (#{type}, #{contactsName}, #{contactsPhone}, #{contactsWechat}, #{contactsEmail}, #{location},
                    #{title}, #{text}, #{gmtCreate}, #{gmtModified}, #{accountId})
     </insert>
+
+    <update id="updatePostPIsDeleteByPetId">
+        update `pet-adoption`.pet
+        set is_delete = 1
+        where pet_id = #{petId}
+    </update>
+
+    <update id="updatePostBIsDeleteByBulId">
+        update `pet-adoption`.bulletin
+        set is_delete = 1
+        where bulletin_id = #{bId}
+    </update>
+
+    <select id="getBulIdByPetId" resultType="java.lang.Integer">
+        select pet.bulletin_id
+        from `pet-adoption`.pet
+        where pet_id = #{pet_id}
+    </select>
+
+    <select id="getBulByBulIdAndAccId" resultType="java.lang.Integer">
+        select *
+        from `pet-adoption`.bulletin
+        where bulletin_id = #{bulletinId}
+          and account_id = #{accId}
+    </select>
 </mapper>

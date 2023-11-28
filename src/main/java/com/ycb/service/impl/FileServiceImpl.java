@@ -11,6 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.UUID;
 
+/**
+ * 文件的服务实现类
+ */
 @Service
 public class FileServiceImpl implements FileService {
     @Resource

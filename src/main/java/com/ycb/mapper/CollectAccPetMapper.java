@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 /**
- * 用户收藏宠物相关操作
+ * 用户收藏宠物mapper
  */
 @Mapper
 public interface CollectAccPetMapper {

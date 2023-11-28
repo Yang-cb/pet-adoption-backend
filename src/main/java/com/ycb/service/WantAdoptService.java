@@ -6,6 +6,9 @@ import com.ycb.entity.vo.response.AllWantAdoptVO;
 
 import java.util.List;
 
+/**
+ * 用户想领服务接口
+ */
 public interface WantAdoptService {
     /**
      * 添加想领

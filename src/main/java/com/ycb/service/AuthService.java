@@ -5,7 +5,7 @@ import com.ycb.entity.vo.request.ResetPwVO;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
- * 认证service
+ * 认证的服务接口
  */
 public interface AuthService extends UserDetailsService {
     /**

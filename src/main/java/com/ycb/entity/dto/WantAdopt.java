@@ -1,6 +1,5 @@
 package com.ycb.entity.dto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.sql.Date;

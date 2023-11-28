@@ -2,13 +2,10 @@ package com.ycb.controller;
 
 import com.ycb.entity.RestBean;
 import com.ycb.entity.dto.Pet;
-import com.ycb.entity.vo.request.PublishBulletinVO;
-import com.ycb.entity.vo.request.UpdateBulletinVO;
 import com.ycb.entity.vo.response.AllPetAndBulVO;
 import com.ycb.entity.vo.response.OnePB2PicVO;
 import com.ycb.service.PetService;
 import jakarta.annotation.Resource;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 获取宠物宠物布告控制器
+ */
 @RestController
 @RequestMapping("/api/pet")
 @Validated
@@ -57,27 +57,5 @@ public class PetController {
                                             @RequestParam String type) {
         List<Pet> pets = petService.getAllByType(type);
         return RestBean.success(pets);
-    }
-
-    /**
-     * 发布领养信息：想领养adopt，求抱走away
-     *
-     * @return 发布结果
-     */
-    @PostMapping("/publishBulletin")
-    public RestBean<String> publishBulletin(@Valid PublishBulletinVO vo) {
-        String message = petService.publishBulletin(vo);
-        return message == null ? RestBean.success("发布成功") : RestBean.failure(400, message);
-    }
-
-    /**
-     * 根据宠物id修改宠物信息
-     *
-     * @param vo 宠物信息
-     */
-    @PutMapping("/updatePetByPetId")
-    public RestBean<String> updatePetByPetId(@Valid @RequestBody UpdateBulletinVO vo) {
-        String message = petService.updatePetByPetId(vo);
-        return message == null ? RestBean.success("修改成功") : RestBean.failure(400, message);
     }
 }
