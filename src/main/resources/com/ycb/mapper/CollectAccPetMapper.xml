@@ -11,6 +11,7 @@
                  join `pet-adoption`.collect_acc_pet cap on a.account_id = cap.acc_id
                  join `pet-adoption`.pet p on cap.pet_id = p.pet_id
                  join `pet-adoption`.bulletin b on p.bulletin_id = b.bulletin_id
+                 join `pet-adoption`.picture pic on pic.pic_id = p.picture_id
         where cap.acc_id = #{accId}
           and b.is_delete = 0
           and p.is_delete = 0

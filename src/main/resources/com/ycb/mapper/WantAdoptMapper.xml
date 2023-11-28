@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ycb.mapper.WantAdoptMapper">
+
+    <insert id="addWantAdopt">
+        insert into `pet-adoption`.want_adopt
+        (account_id, pet_id, want_contacts_name, want_contacts_location,
+         want_contacts_phone, want_contacts_email, want_contacts_wechat,
+         want_text, want_status, gmt_create, gmt_modified)
+        values (#{accountId}, #{petId}, #{wantContactsName}, #{wantContactsLocation},
+                #{wantContactsPhone}, #{wantContactsEmail}, #{wantContactsWechat},
+                #{wantText}, #{wantStatus}, #{gmtCreate}, #{gmtModified})
+    </insert>
+
+    <select id="getWantAdoptByAccId" resultType="com.ycb.entity.vo.response.AllWantAdoptVO">
+        select *
+        from `pet-adoption`.want_adopt
+                 join `pet-adoption`.pet p on want_adopt.pet_id = p.pet_id
+                 join `pet-adoption`.picture pic on p.picture_id = pic.pic_id
+        where account_id = #{accountId}
+          and want_adopt.is_delete = 0
+          and p.is_delete = 0
+    </select>
+
+    <select id="getReceiveWantAdoptByAccId" resultType="com.ycb.entity.vo.response.AllWantAdoptVO">
+        select *
+        from `pet-adoption`.pet
+                 join `pet-adoption`.bulletin b on pet.bulletin_id = b.bulletin_id
+                 join `pet-adoption`.want_adopt wa on pet.pet_id = wa.pet_id
+                 join `pet-adoption`.picture p on p.pic_id = pet.picture_id
+        where b.account_id = #{accountId}
+          and pet.is_delete = 0
+    </select>
+
+    <select id="existByAccIdAndWantId" resultType="java.lang.Integer">
+        select count(1)
+        from `pet-adoption`.pet
+                 join `pet-adoption`.bulletin b on pet.bulletin_id = b.bulletin_id
+                 join `pet-adoption`.want_adopt wa on pet.pet_id = wa.pet_id
+        where b.account_id = #{accountId}
+          and want_id = #{wantId}
+          and want_status = 1
+          and wa.is_delete = 0
+    </select>
+
+    <update id="updateWantAdoptStatus">
+        update `pet-adoption`.want_adopt
+        set want_status = #{wantStatus}
+        where want_id = #{wantId}
+    </update>
+</mapper>

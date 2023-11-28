@@ -1,15 +1,9 @@
-package com.ycb.entity.dto;
+package com.ycb.entity.vo.response;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.sql.Date;
-
-/**
- * 想要领养信息表
- */
 @Data
-public class WantAdopt {
+public class AllWantAdoptVO {
     /**
      * 自增id
      */
@@ -51,15 +45,35 @@ public class WantAdopt {
      */
     private String wantText;
     /**
-     * 创建时间
+     * 宠物姓名
      */
-    private Date gmtCreate;
+    private String petName;
     /**
-     * 修改时间
+     * 宠物类型：cat猫、dog狗、other其他
      */
-    private Date gmtModified;
+    private String petType;
     /**
-     * 是否删除 1是0否
+     * 性别 1公0母
      */
-    private Integer isDelete;
+    private Integer petSex;
+    /**
+     * 是否免费
+     */
+    private Integer isFree;
+    /**
+     * 照片名
+     */
+    private String picName;
+    /**
+     * 文章内容
+     */
+    private String text;
+    /**
+     * 文章标题
+     */
+    private String title;
+    /**
+     * 是否已被领养 1是0否
+     */
+    private Integer isAdopt;
 }

@@ -21,6 +21,7 @@
         from `pet-adoption`.bulletin b
                  join `pet-adoption`.account a on a.account_id = b.account_id
                  join `pet-adoption`.pet on b.bulletin_id = pet.bulletin_id
+                 join `pet-adoption`.picture p on pet.picture_id = p.pic_id
         where b.account_id = #{id}
           and b.is_delete = 0
           and pet.is_delete = 0
