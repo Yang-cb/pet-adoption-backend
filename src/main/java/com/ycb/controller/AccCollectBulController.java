@@ -31,8 +31,8 @@ public class AccCollectBulController {
      */
     @PostMapping("/collectPB")
     public RestBean<String> collectPB(@Valid @RequestBody AccIdPetIdVO vo) {
-        String message = accCollectBulService.collectPB(vo);
-        return message == null ? RestBean.success("操作成功") : RestBean.failure(402, message);
+        accCollectBulService.collectPB(vo);
+        return RestBean.success();
     }
 
     /**

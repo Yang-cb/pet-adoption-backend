@@ -1,14 +1,19 @@
 package com.ycb.service.impl;
 
+import com.ycb.constant.DefaultConstant;
+import com.ycb.constant.MessageConstant;
+import com.ycb.constant.TypeConstant;
 import com.ycb.entity.dto.Account;
 import com.ycb.entity.vo.request.RegisterVO;
-import com.ycb.entity.Const;
+import com.ycb.constant.RedisConstant;
 import com.ycb.entity.vo.request.ResetPwVO;
+import com.ycb.exception.*;
 import com.ycb.mapper.AccountMapper;
 import com.ycb.service.AuthService;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -64,56 +69,53 @@ public class AuthServiceImpl implements AuthService {
      * 发送邮件
      */
     @Override
-    public String sendEmail(String email, String type, String ip) {
+    public void sendEmail(String email, String type, String ip) {
         // 频繁请求
         if (frequent(ip)) {
-            return "请求频繁";
+            throw new RequestFrequentException(HttpStatus.TOO_MANY_REQUESTS.value(), MessageConstant.REQUEST_FREQUENT);
         }
         // 删除已经生成验证码
-        String key = Const.RECEIVE_MAIL + email;
+        String key = RedisConstant.RECEIVE_MAIL + email;
         this.removeRKey(key);
         // 生成验证码
         Random random = new Random();
         int code = random.nextInt(899999) + 100000;
         SimpleMailMessage mailMessage = switch (type) {
-            case "register" ->
+            case TypeConstant.SEND_MAIL_REGISTER ->
                     this.createMailMessage(code + "是你的注册验证码", "你好！在创建帐号之前，你需要一个简单的步骤，让我们确保这是正确的邮件地址————\n\n请输入此验证码以开始使用：" + code + "\n验证码有效时间3分钟。如非本人操作可忽略。", email);
-            case "resetPw" ->
+            case TypeConstant.SEND_MAIL_RESET_PASSWORD ->
                     this.createMailMessage(code + "是你的重置密码验证码", "亲爱的用户：\n注意！你正在进行重置密码操作！\n请输入此验证码以重置密码：" + code + "，验证码有效时间3分钟。\n\n提供给他人会导致账户被盗和资产损失，如非本人操作，请尽快修改密码。\n如果是您本人操作，请忽略本次提醒。", email);
             default -> throw new IllegalStateException("Unexpected value: " + type);
         };
         try {
             javaMailSender.send(mailMessage);
         } catch (MailException e) {
-            return e.getMessage();
+            throw new BaseException(HttpStatus.INTERNAL_SERVER_ERROR.value(), MessageConstant.EMAIL_SEND_FAILED);
         }
         // 邮箱、验证码存入redis，有效时间3分钟
         stringRedisTemplate.opsForValue()
-                .set(key, String.valueOf(code), 3, TimeUnit.MINUTES);
-        return null;
+                .set(key, String.valueOf(code), RedisConstant.VERIFICATION_CODE_EXPIRE_TIME, TimeUnit.MINUTES);
     }
 
     /**
      * 注册
      *
      * @param registerVO 前端请求信息：邮箱、验证码、用户名、密码
-     * @return 请求结果
      */
     @Override
-    public String register(RegisterVO registerVO) {
-        String key = Const.RECEIVE_MAIL + registerVO.getEmail();
+    public void register(RegisterVO registerVO) {
+        String key = RedisConstant.RECEIVE_MAIL + registerVO.getEmail();
         // 验证验证码
-        String message = this.codeVerify(key, registerVO.getCode());
-        if (message != null) {
-            return message;
-        }
+        this.codeVerify(key, registerVO.getCode());
+        // 用户名已存在
         Account byUsername = accountMapper.getByUsername(registerVO.getUsername());
         if (!Objects.isNull(byUsername)) {
-            return "用户名已存在";
+            throw new RegisterException(HttpStatus.BAD_REQUEST.value(), MessageConstant.USERNAME_ALREADY_EXISTS);
         }
+        // 邮箱已存在
         Account byEmail = accountMapper.getByEmail(registerVO.getEmail());
         if (!Objects.isNull(byEmail)) {
-            return "该邮箱已注册";
+            throw new RegisterException(HttpStatus.BAD_REQUEST.value(), MessageConstant.EMAIL_ALREADY_EXISTS);
         }
         Account account = new Account();
         account.setUsername(registerVO.getUsername());
@@ -123,66 +125,61 @@ public class AuthServiceImpl implements AuthService {
         Date date = new Date(new java.util.Date().getTime());
         account.setGmtCreate(date);
         account.setGmtModified(date);
-        account.setAuthority("user");
+        account.setAuthority(DefaultConstant.DEFAULT_AUTHORITY);
         int len = accountMapper.save(account);
         if (len < 1) {
-            return "系统异常，请稍后重试";
+            throw new SystemException();
         }
         // 删除redis中的验证码数据
         this.removeRKey(key);
-        return null;
     }
 
     /**
      * 重置密码
      *
      * @param resetPwVO 前端请求信息：邮箱、验证码、新密码
-     * @return 请求结果
      */
     @Override
-    public String resetPw(ResetPwVO resetPwVO) {
+    public void resetPw(ResetPwVO resetPwVO) {
         // 验证验证码
-        String key = Const.RECEIVE_MAIL + resetPwVO.getEmail();
-        String message = this.codeVerify(key, resetPwVO.getCode());
-        if (message != null) {
-            return message;
-        }
+        String key = RedisConstant.RECEIVE_MAIL + resetPwVO.getEmail();
+        this.codeVerify(key, resetPwVO.getCode());
         // 还未注册
         Account byEmail = accountMapper.getByEmail(resetPwVO.getEmail());
         if (Objects.isNull(byEmail)) {
-            return "请先注册";
+            throw new ResetPasswordException(HttpStatus.BAD_REQUEST.value(), MessageConstant.ACCOUNT_NOT_FOUND);
         }
         // 新旧密码一样
         if (encoder.matches(resetPwVO.getPassword(), byEmail.getPassword())) {
-            return "新密码不能与旧密码一样";
+            throw new ResetPasswordException(HttpStatus.BAD_REQUEST.value(), MessageConstant.NEW_PASSWORD_SAME_AS_OLD_PASSWORD);
         }
         // 更新密码
         resetPwVO.setGmtModified(new Date(new java.util.Date().getTime()));
         resetPwVO.setPassword(encoder.encode(resetPwVO.getPassword()));
         int len = accountMapper.updatePwByEmail(resetPwVO);
         if (len < 1) {
-            return "系统异常，请稍后重试";
+            throw new SystemException();
         }
         // 删除redis中的验证码数据
         this.removeRKey(key);
-        return null;
     }
 
     /**
      * 验证验证码
      */
-    private String codeVerify(String codeKey, String code) {
+    private void codeVerify(String codeKey, String code) {
+        // 未获取验证码
         if (Boolean.FALSE.equals(stringRedisTemplate.hasKey(codeKey))) {
-            return "请先获取验证码";
+            throw new EmailException(HttpStatus.BAD_REQUEST.value(), MessageConstant.GET_VERIFICATION_CODE_FIRST);
         }
         String rightCode = stringRedisTemplate.opsForValue().get(codeKey);
         if (rightCode == null) {
-            return "请先获取验证码";
+            throw new EmailException(HttpStatus.BAD_REQUEST.value(), MessageConstant.GET_VERIFICATION_CODE_FIRST);
         }
+        // 验证码错误
         if (!rightCode.equals(code)) {
-            return "验证码错误";
+            throw new VerificationCodeException(HttpStatus.BAD_REQUEST.value(), MessageConstant.VERIFICATION_CODE_ERROR);
         }
-        return null;
     }
 
     /**
@@ -218,11 +215,11 @@ public class AuthServiceImpl implements AuthService {
      * 是否频繁请求
      */
     private boolean frequent(String ip) {
-        String key = Const.SEND_MAIL_FREQUENT + ip;
+        String key = RedisConstant.SEND_MAIL_FREQUENT + ip;
         if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(key))) {
             return true;
         } else {
-            stringRedisTemplate.opsForValue().set(key, "", 1, TimeUnit.MINUTES);
+            stringRedisTemplate.opsForValue().set(key, "", RedisConstant.FREQUENT_REQUEST_EXPIRE_TIME, TimeUnit.MINUTES);
         }
         return false;
     }

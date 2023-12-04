@@ -2,7 +2,6 @@ package com.ycb.entity.vo.request;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
 
 import java.sql.Date;
 
@@ -20,8 +19,6 @@ public class ResetPwVO {
     /**
      * 验证码
      */
-    @NotNull(message = "验证码不能为空")
-    @Length(min = 6, max = 6, message = "验证码格式不正确")
     private String code;
     /**
      * 密码

@@ -1,14 +1,18 @@
 package com.ycb.service.impl;
 
+import com.ycb.constant.MessageConstant;
 import com.ycb.entity.RestBean;
 import com.ycb.entity.dto.Picture;
 import com.ycb.entity.vo.request.UpdateAccPicVO;
 import com.ycb.entity.vo.request.UpdateAccountVO;
 import com.ycb.entity.vo.response.AccountVO;
+import com.ycb.exception.FileException;
+import com.ycb.exception.SystemException;
 import com.ycb.mapper.AccountMapper;
 import com.ycb.service.AccountService;
 import com.ycb.service.FileService;
 import jakarta.annotation.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,18 +33,17 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public String updateAccountById(UpdateAccountVO vo) {
+    public void updateAccountById(UpdateAccountVO vo) {
         int line = accountMapper.updateAccountById(vo);
-        return line > 0 ? null : "更新失败";
+        if (line != 1) throw new SystemException();
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public String updateAccPic(UpdateAccPicVO vo) {
         Picture picture = fileService.upload(vo.getFile(), vo.getType());
-        if (picture == null) {
-            return RestBean.failure(401, "上传失败").jsonToString();
-        }
+        if (picture == null)
+            throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR.value(), MessageConstant.FILE_UPLOAD_FAILED);
         accountMapper.updateAccPic(vo.getId(), picture.getPicId());
         return RestBean.success(picture).jsonToString();
     }

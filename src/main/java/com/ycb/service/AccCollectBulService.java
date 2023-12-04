@@ -14,9 +14,8 @@ public interface AccCollectBulService {
      * 收藏/取消收藏宠物
      *
      * @param vo 用户id和宠物id
-     * @return 收藏结果
      */
-    String collectPB(AccIdPetIdVO vo);
+    void collectPB(AccIdPetIdVO vo);
 
     /**
      * 获取用户收藏的宠物和布告

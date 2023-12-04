@@ -30,8 +30,8 @@ public class AccPostBulController {
      */
     @PostMapping("/publishBulletin")
     public RestBean<String> publishBulletin(@Valid PublishBulletinVO vo) {
-        String message = accPostBulService.publishBulletin(vo);
-        return message == null ? RestBean.success("发布成功") : RestBean.failure(400, message);
+        accPostBulService.publishBulletin(vo);
+        return RestBean.success();
     }
 
     /**
@@ -55,8 +55,8 @@ public class AccPostBulController {
      */
     @PostMapping("/deletePostPB")
     public RestBean<String> updatePostPBIsDeleteByPetId(@Valid @RequestBody AccIdPetIdVO vo) {
-        String message = accPostBulService.updatePostPBIsDelete(vo);
-        return message == null ? RestBean.success("删除成功") : RestBean.failure(401, message);
+        accPostBulService.updatePostPBIsDelete(vo);
+        return RestBean.success();
     }
 
     /**
@@ -66,7 +66,7 @@ public class AccPostBulController {
      */
     @PutMapping("/updatePetByPetId")
     public RestBean<String> updatePetByPetId(@Valid @RequestBody UpdateBulletinVO vo) {
-        String message = accPostBulService.updatePetByPetId(vo);
-        return message == null ? RestBean.success("修改成功") : RestBean.failure(400, message);
+        accPostBulService.updatePetByPetId(vo);
+        return RestBean.success();
     }
 }

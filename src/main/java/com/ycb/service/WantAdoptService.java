@@ -14,9 +14,8 @@ public interface WantAdoptService {
      * 添加想领
      *
      * @param wantAdopt 想领信息
-     * @return 错误信息
      */
-    String addWantAdopt(WantAdopt wantAdopt);
+    void addWantAdopt(WantAdopt wantAdopt);
 
     /**
      * 根据用户id获取用户发布的想领信息
@@ -38,7 +37,6 @@ public interface WantAdoptService {
      * 更新想领状态
      *
      * @param vo 想领信息
-     * @return 错误信息
      */
-    String updateWantAdoptStatus(UpdateWantAdoptVO vo);
+    void updateWantAdoptStatus(UpdateWantAdoptVO vo);
 }

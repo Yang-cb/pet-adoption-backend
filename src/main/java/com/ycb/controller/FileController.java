@@ -2,6 +2,7 @@ package com.ycb.controller;
 
 import com.ycb.entity.RestBean;
 import com.ycb.entity.dto.Picture;
+import com.ycb.exception.FileException;
 import com.ycb.service.FileService;
 import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotNull;
@@ -24,12 +25,12 @@ public class FileController {
      * @return 上传结果
      */
     @PostMapping("/upload")
-    public String uploadFile(@NotNull @RequestParam MultipartFile file,
-                             @NotNull @RequestParam String type) {
+    public RestBean<Picture> uploadFile(@NotNull @RequestParam MultipartFile file,
+                                        @NotNull @RequestParam String type) {
         Picture picture = fileService.upload(file, type);
         if (picture == null) {
-            return RestBean.failure(401, "上传失败").jsonToString();
+            throw new FileException();
         }
-        return RestBean.success(picture).jsonToString();
+        return RestBean.success(picture);
     }
 }

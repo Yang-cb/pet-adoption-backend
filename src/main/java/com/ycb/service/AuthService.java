@@ -14,16 +14,18 @@ public interface AuthService extends UserDetailsService {
      * @param email 邮箱
      * @param ip    ip地址
      * @param type  邮件类型
-     * @return 邮件发送结果
      */
-    String sendEmail(String email, String type, String ip);
+    void sendEmail(String email, String type, String ip);
 
     /**
      * 注册
      * @param registerVO 前端请求信息：邮箱、验证码、用户名、密码
-     * @return 请求结果
      */
-    String register(RegisterVO registerVO);
+    void register(RegisterVO registerVO);
 
-    String resetPw(ResetPwVO resetPwVO);
+    /**
+     * 重置密码
+     * @param resetPwVO 前端请求信息：邮箱、验证码、新密码
+     */
+    void resetPw(ResetPwVO resetPwVO);
 }

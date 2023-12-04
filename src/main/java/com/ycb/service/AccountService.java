@@ -20,15 +20,14 @@ public interface AccountService {
      * 更新账户信息
      *
      * @param vo 账户信息
-     * @return 更新结果
      */
-    String updateAccountById(UpdateAccountVO vo);
+    void updateAccountById(UpdateAccountVO vo);
 
 
     /**
      * 更新头像
      * @param vo 用户id和头像
-     * @return 更新结果
+     * @return 更新后的头像数据
      */
     String updateAccPic(UpdateAccPicVO vo);
 }

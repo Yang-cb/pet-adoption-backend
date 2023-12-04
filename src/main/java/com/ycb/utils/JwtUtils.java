@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.ycb.entity.Const;
+import com.ycb.constant.RedisConstant;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -79,7 +79,7 @@ public class JwtUtils {
         try {
             DecodedJWT jwt = verifier.verify(token);
             // 在黑名单
-            if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(Const.LOGOUT_JWT_BLACK_LIST + jwt.getId()))) {
+            if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(RedisConstant.LOGOUT_JWT_BLACK_LIST + jwt.getId()))) {
                 return null;
             }
             // 已过期
@@ -118,7 +118,7 @@ public class JwtUtils {
         if (jwt == null) {
             return "系统异常，请稍后重试";
         }
-        String key = Const.LOGOUT_JWT_BLACK_LIST + jwt.getId();
+        String key = RedisConstant.LOGOUT_JWT_BLACK_LIST + jwt.getId();
         // 已经在黑名单
         if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(key))) {
             return "操作频繁，请稍后重试";

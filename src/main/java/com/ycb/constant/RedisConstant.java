@@ -1,9 +1,17 @@
-package com.ycb.entity;
+package com.ycb.constant;
 
 /**
- * 常量类
+ * Redis键常量类
  */
-public class Const {
+public class RedisConstant {
+    /**
+     * 验证码存入redis时间
+     */
+    public static final int VERIFICATION_CODE_EXPIRE_TIME = 3;
+    /**
+     * 频繁请求时间
+     */
+    public static final int FREQUENT_REQUEST_EXPIRE_TIME = 1;
     /**
      * 退出登录jwt黑名单
      */

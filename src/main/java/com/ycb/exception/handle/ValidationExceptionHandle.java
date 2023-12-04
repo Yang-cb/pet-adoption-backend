@@ -1,4 +1,4 @@
-package com.ycb.exception;
+package com.ycb.exception.handle;
 
 import com.ycb.entity.RestBean;
 import jakarta.validation.ConstraintViolationException;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 用于定义统一的Validated校验异常处理类，而不是在每个Controller中逐个定义
+ * 用于定义统一的Validated参数校验异常处理类，而不是在每个Controller中逐个定义
  */
 @RestControllerAdvice
 public class ValidationExceptionHandle {

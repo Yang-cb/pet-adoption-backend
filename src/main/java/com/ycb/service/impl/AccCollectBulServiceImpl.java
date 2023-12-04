@@ -2,6 +2,7 @@ package com.ycb.service.impl;
 
 import com.ycb.entity.vo.request.AccIdPetIdVO;
 import com.ycb.entity.vo.response.AllPetAndBulVO;
+import com.ycb.exception.SystemException;
 import com.ycb.mapper.CollectAccPetMapper;
 import com.ycb.service.AccCollectBulService;
 import jakarta.annotation.Resource;
@@ -18,7 +19,7 @@ public class AccCollectBulServiceImpl implements AccCollectBulService {
     private CollectAccPetMapper collectAccPetMapper;
 
     @Override
-    public String collectPB(AccIdPetIdVO vo) {
+    public void collectPB(AccIdPetIdVO vo) {
         // 该用户是否已经收藏该宠物
         AccIdPetIdVO collect = collectAccPetMapper.getOneByAccIdAndPetId(vo);
         int line = 0;
@@ -29,10 +30,9 @@ public class AccCollectBulServiceImpl implements AccCollectBulService {
             // 未收藏
             line += collectAccPetMapper.save(vo);
         }
-        if (line > 1) {
-            return "系统异常";
+        if (line != 1) {
+            throw new SystemException();
         }
-        return line > 0 ? null : "操作失败";
     }
 
     @Override

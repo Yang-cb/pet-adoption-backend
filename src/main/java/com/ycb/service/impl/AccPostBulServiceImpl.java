@@ -7,6 +7,8 @@ import com.ycb.entity.vo.request.AccIdPetIdVO;
 import com.ycb.entity.vo.request.PublishBulletinVO;
 import com.ycb.entity.vo.request.UpdateBulletinVO;
 import com.ycb.entity.vo.response.AllPetAndBulVO;
+import com.ycb.exception.FileException;
+import com.ycb.exception.OperationException;
 import com.ycb.mapper.PetBulletinMapper;
 import com.ycb.service.FileService;
 import com.ycb.service.AccPostBulService;
@@ -30,12 +32,11 @@ public class AccPostBulServiceImpl implements AccPostBulService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public String publishBulletin(PublishBulletinVO vo) {
+    public void publishBulletin(PublishBulletinVO vo) {
         // 上传图片
         Picture picture = fileService.upload(vo.getFile(), vo.getPicType());
-        if (picture == null) {
-            return "图片上传失败";
-        }
+        if (picture == null)
+            throw new FileException();
         // 对象赋值
         Date date = new Date(new java.util.Date().getTime());
         Bulletin bulletin = new Bulletin();
@@ -51,7 +52,6 @@ public class AccPostBulServiceImpl implements AccPostBulService {
         pet.setBulletinId(bulletin.getBulletinId());
         pet.setPictureId(picture.getPicId());
         petBulletinMapper.savePet(pet);
-        return null;
     }
 
     @Override
@@ -61,24 +61,26 @@ public class AccPostBulServiceImpl implements AccPostBulService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public String updatePostPBIsDelete(AccIdPetIdVO vo) {
+    public void updatePostPBIsDelete(AccIdPetIdVO vo) {
         int bulletinId = petBulletinMapper.getBulIdByPetId(vo.getPetId());
         if ("null".equals(String.valueOf(bulletinId))) {
-            return "删除失败";
+            throw new OperationException();
         }
         // 判断用户是否发布了该宠物
         int bul = petBulletinMapper.getBulByBulIdAndAccId(bulletinId, vo.getAccId());
         if (bul < 0) {
-            return "删除失败";
+            throw new OperationException();
         }
         int line = petBulletinMapper.updatePostPIsDeleteByPetId(vo.getPetId());
         line += petBulletinMapper.updatePostBIsDeleteByBulId(bulletinId);
-        return line >= 2 ? null : "删除失败";
+        if (line != 2) {
+            throw new OperationException();
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public String updatePetByPetId(UpdateBulletinVO vo) {
+    public void updatePetByPetId(UpdateBulletinVO vo) {
         // 对象赋值
         Date date = new Date(new java.util.Date().getTime());
         Bulletin bulletin = new Bulletin();
@@ -91,6 +93,8 @@ public class AccPostBulServiceImpl implements AccPostBulService {
         bulletin.setBulletinId(bId);
         int line = petBulletinMapper.updateBulletinByBulId(bulletin);
         line += petBulletinMapper.updatePetByPetId(pet);
-        return line == 2 ? null : "修改失败";
+        if (line != 2) {
+            throw new OperationException();
+        }
     }
 }

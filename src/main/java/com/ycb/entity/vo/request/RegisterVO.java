@@ -18,8 +18,6 @@ public class RegisterVO {
     /**
      * 验证码
      */
-    @NotNull(message = "验证码不能为空")
-    @Length(min = 6, max = 6, message = "验证码有误")
     private String code;
     /**
      * 用户名

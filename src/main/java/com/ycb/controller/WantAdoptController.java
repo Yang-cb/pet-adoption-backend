@@ -32,8 +32,8 @@ public class WantAdoptController {
      */
     @PostMapping("/addWantAdopt")
     public RestBean<String> addWantAdopt(@Valid @RequestBody WantAdopt wantAdopt) {
-        String msg = wantAdoptService.addWantAdopt(wantAdopt);
-        return msg == null ? RestBean.success(null) : RestBean.failure(400, msg);
+        wantAdoptService.addWantAdopt(wantAdopt);
+        return RestBean.success();
     }
 
     /**
@@ -46,7 +46,7 @@ public class WantAdoptController {
     public RestBean<List<AllWantAdoptVO>> getWantAdoptByAccId(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "id格式有误")
                                                               @RequestParam("accountId") String accountId) {
         List<AllWantAdoptVO> wantAdopts = wantAdoptService.getWantAdoptByAccId(Integer.valueOf(accountId));
-        return wantAdopts == null ? RestBean.failure(400, "获取失败") : RestBean.success(wantAdopts);
+        return RestBean.success(wantAdopts);
     }
 
     /**
@@ -59,7 +59,7 @@ public class WantAdoptController {
     public RestBean<List<AllWantAdoptVO>> getReceiveWantAdopt(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "id格式有误")
                                                               @RequestParam("accountId") String accountId) {
         List<AllWantAdoptVO> wantAdopts = wantAdoptService.getReceiveWantAdopt(Integer.valueOf(accountId));
-        return wantAdopts == null ? RestBean.failure(400, "获取失败") : RestBean.success(wantAdopts);
+        return RestBean.success(wantAdopts);
     }
 
     /**
@@ -70,7 +70,7 @@ public class WantAdoptController {
      */
     @PutMapping("/updateWantAdoptStatus")
     public RestBean<String> updateWantAdoptStatus(@Valid @RequestBody UpdateWantAdoptVO vo) {
-        String msg = wantAdoptService.updateWantAdoptStatus(vo);
-        return msg == null ? RestBean.success(null) : RestBean.failure(400, msg);
+        wantAdoptService.updateWantAdoptStatus(vo);
+        return RestBean.success();
     }
 }

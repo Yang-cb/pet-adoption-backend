@@ -43,18 +43,18 @@ public class AccountController {
      */
     @PostMapping("/updateAccountById")
     public RestBean<String> updateAccountById(@Valid @RequestBody UpdateAccountVO vo) {
-        String message = accountService.updateAccountById(vo);
-        return message == null ? RestBean.success("更新成功") : RestBean.failure(401, message);
+        accountService.updateAccountById(vo);
+        return RestBean.success();
     }
 
     /**
      * 更新头像
      *
      * @param vo 用户id和头像
-     * @return 更新结果
+     * @return 更新后的头像数据
      */
     @PostMapping("/updateAccPic")
-    public String updateAccPic(@Valid @RequestBody UpdateAccPicVO vo) {
+    public String updateAccPic(@Valid UpdateAccPicVO vo) {
         return accountService.updateAccPic(vo);
     }
 }

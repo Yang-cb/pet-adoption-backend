@@ -15,9 +15,8 @@ public interface AccPostBulService {
      * 发布宠物布告领养信息
      *
      * @param vo 领养信息
-     * @return 错误信息
      */
-    String publishBulletin(PublishBulletinVO vo);
+    void publishBulletin(PublishBulletinVO vo);
 
     /**
      * 根据用户id获取用户发布的宠物和布告
@@ -30,13 +29,12 @@ public interface AccPostBulService {
     /**
      * 根据宠物id删除用户发布的宠物和布告
      * @param vo 用户id s宠物id
-     * @return 删除结果
      */
-    String updatePostPBIsDelete(AccIdPetIdVO vo);
+    void updatePostPBIsDelete(AccIdPetIdVO vo);
 
     /**
      * 根据宠物id修改宠物信息
      * @param vo 宠物信息
      */
-    String updatePetByPetId(UpdateBulletinVO vo);
+    void updatePetByPetId(UpdateBulletinVO vo);
 }

@@ -33,8 +33,8 @@ public class AuthController {
                                       @RequestParam @NotNull String type,
                                       HttpServletRequest request) {
         String ip = request.getRemoteAddr();
-        String message = authService.sendEmail(email, type, ip);
-        return message == null ? RestBean.success("发送成功") : RestBean.failure(403, message);
+        authService.sendEmail(email, type, ip);
+        return RestBean.success();
     }
 
 
@@ -46,8 +46,8 @@ public class AuthController {
      */
     @PostMapping("/register")
     public RestBean<String> register(@Valid @RequestBody RegisterVO registerVO) {
-        String message = authService.register(registerVO);
-        return message == null ? RestBean.success("注册成功") : RestBean.failure(403, message);
+        authService.register(registerVO);
+        return RestBean.success();
     }
 
     /**
@@ -58,7 +58,7 @@ public class AuthController {
      */
     @PostMapping("/resetPw")
     public RestBean<String> resetPw(@Valid @RequestBody ResetPwVO resetPwVO) {
-        String message = authService.resetPw(resetPwVO);
-        return message == null ? RestBean.success("重置密码成功") : RestBean.failure(403, message);
+        authService.resetPw(resetPwVO);
+        return RestBean.success();
     }
 }
