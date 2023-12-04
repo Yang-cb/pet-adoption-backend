@@ -113,4 +113,11 @@ public interface PetBulletinMapper {
      * @return 宠物
      */
     int getBulByBulIdAndAccId(Integer bulletinId, Integer accId);
+
+    /**
+     * 根据宠物id修改宠物图片
+     * @param petId 宠物id
+     * @param picId 图片id
+     */
+    void updatePictureByPetId(Integer petId, Integer picId);
 }

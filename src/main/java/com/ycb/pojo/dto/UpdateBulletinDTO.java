@@ -3,6 +3,7 @@ package com.ycb.pojo.dto;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 更新布告请求封装对象
@@ -38,6 +39,15 @@ public class UpdateBulletinDTO {
     @Min(value = 0, message = "是否免费格式有误")
     @Max(value = 1, message = "是否免费格式有误")
     private Integer isFree;
+    /**
+     * 宠物照片
+     */
+    private MultipartFile file;
+    /**
+     * 照片类型
+     */
+    @NotNull(message = "照片类型不能为空")
+    private String picType;
     /**
      * 领养地址
      */

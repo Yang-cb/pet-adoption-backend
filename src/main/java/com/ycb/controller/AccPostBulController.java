@@ -60,12 +60,12 @@ public class AccPostBulController {
     }
 
     /**
-     * 根据宠物id修改用户发布的宠物布告信息
+     * 根据宠物id修改用户发布的宠物布告信息：可选择是否上传图片，如不上传，将使用原图片
      *
      * @param vo 宠物信息
      */
     @PutMapping("/updatePetByPetId")
-    public RestBean<String> updatePetByPetId(@Valid @RequestBody UpdateBulletinDTO vo) {
+    public RestBean<String> updatePetByPetId(@Valid UpdateBulletinDTO vo) {
         accPostBulService.updatePetByPetId(vo);
         return RestBean.success();
     }

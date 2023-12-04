@@ -32,7 +32,7 @@ public class PublishBulletinDTO {
     @Pattern(regexp = "^(cat|dog|other)$", message = "宠物类型有误")
     private String petType;
     /**
-     * 宠物照片id
+     * 宠物照片
      */
     @NotNull(message = "请上传宠物照片")
     private MultipartFile file;

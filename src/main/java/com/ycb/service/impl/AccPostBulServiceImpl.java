@@ -1,5 +1,6 @@
 package com.ycb.service.impl;
 
+import com.ycb.common.constant.MessageConstant;
 import com.ycb.pojo.entity.Bulletin;
 import com.ycb.pojo.entity.Pet;
 import com.ycb.pojo.entity.Picture;
@@ -14,6 +15,7 @@ import com.ycb.service.FileService;
 import com.ycb.service.AccPostBulService;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,6 +83,15 @@ public class AccPostBulServiceImpl implements AccPostBulService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updatePetByPetId(UpdateBulletinDTO vo) {
+        // 如果上传了图片
+        if (vo.getFile() != null) {
+            // 上传图片
+            Picture picture = fileService.upload(vo.getFile(), vo.getPicType());
+            if (picture == null)
+                throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR.value(), MessageConstant.FILE_UPLOAD_FAILED);
+            // 修改宠物与图片的关联
+            petBulletinMapper.updatePictureByPetId(vo.getPetId(), picture.getPicId());
+        }
         // 对象赋值
         Date date = new Date(new java.util.Date().getTime());
         Bulletin bulletin = new Bulletin();

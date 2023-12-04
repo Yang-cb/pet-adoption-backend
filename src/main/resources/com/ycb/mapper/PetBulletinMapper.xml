@@ -113,4 +113,10 @@
         where bulletin_id = #{bulletinId}
           and account_id = #{accId}
     </select>
+
+    <update id="updatePictureByPetId">
+        update `pet-adoption`.pet
+        set picture_id = #{picId}
+        where pet_id = #{petId}
+    </update>
 </mapper>
