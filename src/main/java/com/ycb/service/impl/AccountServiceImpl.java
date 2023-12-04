@@ -1,11 +1,11 @@
 package com.ycb.service.impl;
 
-import com.ycb.constant.MessageConstant;
-import com.ycb.entity.RestBean;
-import com.ycb.entity.dto.Picture;
-import com.ycb.entity.vo.request.UpdateAccPicVO;
-import com.ycb.entity.vo.request.UpdateAccountVO;
-import com.ycb.entity.vo.response.AccountVO;
+import com.ycb.common.constant.MessageConstant;
+import com.ycb.common.result.RestBean;
+import com.ycb.pojo.entity.Picture;
+import com.ycb.pojo.dto.UpdateAccPicDTO;
+import com.ycb.pojo.dto.UpdateAccountDTO;
+import com.ycb.pojo.vo.AccountVO;
 import com.ycb.exception.FileException;
 import com.ycb.exception.SystemException;
 import com.ycb.mapper.AccountMapper;
@@ -33,14 +33,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void updateAccountById(UpdateAccountVO vo) {
+    public void updateAccountById(UpdateAccountDTO vo) {
         int line = accountMapper.updateAccountById(vo);
         if (line != 1) throw new SystemException();
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public String updateAccPic(UpdateAccPicVO vo) {
+    public String updateAccPic(UpdateAccPicDTO vo) {
         Picture picture = fileService.upload(vo.getFile(), vo.getType());
         if (picture == null)
             throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR.value(), MessageConstant.FILE_UPLOAD_FAILED);

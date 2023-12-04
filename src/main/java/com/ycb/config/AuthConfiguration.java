@@ -1,11 +1,11 @@
 package com.ycb.config;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.ycb.entity.dto.Account;
-import com.ycb.entity.RestBean;
-import com.ycb.entity.vo.response.LoginVO;
+import com.ycb.pojo.entity.Account;
+import com.ycb.common.result.RestBean;
+import com.ycb.pojo.vo.LoginVO;
 import com.ycb.mapper.AccountMapper;
-import com.ycb.utils.JwtUtils;
+import com.ycb.common.utils.JwtUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

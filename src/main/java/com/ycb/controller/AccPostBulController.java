@@ -1,10 +1,10 @@
 package com.ycb.controller;
 
-import com.ycb.entity.RestBean;
-import com.ycb.entity.vo.request.AccIdPetIdVO;
-import com.ycb.entity.vo.request.PublishBulletinVO;
-import com.ycb.entity.vo.request.UpdateBulletinVO;
-import com.ycb.entity.vo.response.AllPetAndBulVO;
+import com.ycb.common.result.RestBean;
+import com.ycb.pojo.dto.AccIdPetIdDTO;
+import com.ycb.pojo.dto.PublishBulletinDTO;
+import com.ycb.pojo.dto.UpdateBulletinDTO;
+import com.ycb.pojo.vo.AllPetAndBulVO;
 import com.ycb.service.AccPostBulService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -29,7 +29,7 @@ public class AccPostBulController {
      * @return 发布结果
      */
     @PostMapping("/publishBulletin")
-    public RestBean<String> publishBulletin(@Valid PublishBulletinVO vo) {
+    public RestBean<String> publishBulletin(@Valid PublishBulletinDTO vo) {
         accPostBulService.publishBulletin(vo);
         return RestBean.success();
     }
@@ -54,7 +54,7 @@ public class AccPostBulController {
      * @return 删除结果
      */
     @PostMapping("/deletePostPB")
-    public RestBean<String> updatePostPBIsDeleteByPetId(@Valid @RequestBody AccIdPetIdVO vo) {
+    public RestBean<String> updatePostPBIsDeleteByPetId(@Valid @RequestBody AccIdPetIdDTO vo) {
         accPostBulService.updatePostPBIsDelete(vo);
         return RestBean.success();
     }
@@ -65,7 +65,7 @@ public class AccPostBulController {
      * @param vo 宠物信息
      */
     @PutMapping("/updatePetByPetId")
-    public RestBean<String> updatePetByPetId(@Valid @RequestBody UpdateBulletinVO vo) {
+    public RestBean<String> updatePetByPetId(@Valid @RequestBody UpdateBulletinDTO vo) {
         accPostBulService.updatePetByPetId(vo);
         return RestBean.success();
     }

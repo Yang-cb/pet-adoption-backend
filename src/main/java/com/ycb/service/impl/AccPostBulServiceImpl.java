@@ -1,12 +1,12 @@
 package com.ycb.service.impl;
 
-import com.ycb.entity.dto.Bulletin;
-import com.ycb.entity.dto.Pet;
-import com.ycb.entity.dto.Picture;
-import com.ycb.entity.vo.request.AccIdPetIdVO;
-import com.ycb.entity.vo.request.PublishBulletinVO;
-import com.ycb.entity.vo.request.UpdateBulletinVO;
-import com.ycb.entity.vo.response.AllPetAndBulVO;
+import com.ycb.pojo.entity.Bulletin;
+import com.ycb.pojo.entity.Pet;
+import com.ycb.pojo.entity.Picture;
+import com.ycb.pojo.dto.AccIdPetIdDTO;
+import com.ycb.pojo.dto.PublishBulletinDTO;
+import com.ycb.pojo.dto.UpdateBulletinDTO;
+import com.ycb.pojo.vo.AllPetAndBulVO;
 import com.ycb.exception.FileException;
 import com.ycb.exception.OperationException;
 import com.ycb.mapper.PetBulletinMapper;
@@ -32,7 +32,7 @@ public class AccPostBulServiceImpl implements AccPostBulService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void publishBulletin(PublishBulletinVO vo) {
+    public void publishBulletin(PublishBulletinDTO vo) {
         // 上传图片
         Picture picture = fileService.upload(vo.getFile(), vo.getPicType());
         if (picture == null)
@@ -61,7 +61,7 @@ public class AccPostBulServiceImpl implements AccPostBulService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updatePostPBIsDelete(AccIdPetIdVO vo) {
+    public void updatePostPBIsDelete(AccIdPetIdDTO vo) {
         int bulletinId = petBulletinMapper.getBulIdByPetId(vo.getPetId());
         if ("null".equals(String.valueOf(bulletinId))) {
             throw new OperationException();
@@ -80,7 +80,7 @@ public class AccPostBulServiceImpl implements AccPostBulService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updatePetByPetId(UpdateBulletinVO vo) {
+    public void updatePetByPetId(UpdateBulletinDTO vo) {
         // 对象赋值
         Date date = new Date(new java.util.Date().getTime());
         Bulletin bulletin = new Bulletin();

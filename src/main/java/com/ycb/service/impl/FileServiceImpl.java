@@ -1,7 +1,7 @@
 package com.ycb.service.impl;
 
-import com.ycb.constant.MessageConstant;
-import com.ycb.entity.dto.Picture;
+import com.ycb.common.constant.MessageConstant;
+import com.ycb.pojo.entity.Picture;
 import com.ycb.exception.FileException;
 import com.ycb.exception.OperationException;
 import com.ycb.mapper.FileMapper;

@@ -1,9 +1,9 @@
 package com.ycb.controller;
 
-import com.ycb.entity.RestBean;
-import com.ycb.entity.dto.Pet;
-import com.ycb.entity.vo.response.AllPetAndBulVO;
-import com.ycb.entity.vo.response.OnePB2PicVO;
+import com.ycb.common.result.RestBean;
+import com.ycb.pojo.entity.Pet;
+import com.ycb.pojo.vo.AllPetAndBulVO;
+import com.ycb.pojo.vo.OnePB2PicVO;
 import com.ycb.service.PetService;
 import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotBlank;

@@ -1,7 +1,7 @@
 package com.ycb.filter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.ycb.utils.JwtUtils;
+import com.ycb.common.utils.JwtUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,6 +1,6 @@
 package com.ycb.exception.handle;
 
-import com.ycb.entity.RestBean;
+import com.ycb.common.result.RestBean;
 import com.ycb.exception.BaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;

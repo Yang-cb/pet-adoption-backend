@@ -1,8 +1,8 @@
 package com.ycb.service;
 
-import com.ycb.entity.vo.request.UpdateAccPicVO;
-import com.ycb.entity.vo.request.UpdateAccountVO;
-import com.ycb.entity.vo.response.AccountVO;
+import com.ycb.pojo.dto.UpdateAccPicDTO;
+import com.ycb.pojo.dto.UpdateAccountDTO;
+import com.ycb.pojo.vo.AccountVO;
 
 /**
  * 账户service
@@ -21,7 +21,7 @@ public interface AccountService {
      *
      * @param vo 账户信息
      */
-    void updateAccountById(UpdateAccountVO vo);
+    void updateAccountById(UpdateAccountDTO vo);
 
 
     /**
@@ -29,5 +29,5 @@ public interface AccountService {
      * @param vo 用户id和头像
      * @return 更新后的头像数据
      */
-    String updateAccPic(UpdateAccPicVO vo);
+    String updateAccPic(UpdateAccPicDTO vo);
 }

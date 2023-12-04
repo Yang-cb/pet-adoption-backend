@@ -1,9 +1,9 @@
 package com.ycb.mapper;
 
-import com.ycb.entity.dto.Account;
-import com.ycb.entity.vo.request.ResetPwVO;
-import com.ycb.entity.vo.request.UpdateAccountVO;
-import com.ycb.entity.vo.response.AccountVO;
+import com.ycb.pojo.entity.Account;
+import com.ycb.pojo.dto.ResetPwDTO;
+import com.ycb.pojo.dto.UpdateAccountDTO;
+import com.ycb.pojo.vo.AccountVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -41,11 +41,11 @@ public interface AccountMapper {
 
     /**
      * 重置密码
-     * @param resetPwVO 重置密码信息
+     * @param resetPwDTO 重置密码信息
      * @return 重置结果
      */
     @Update("update `pet-adoption`.account set password = #{password} where email = #{email}")
-    int updatePwByEmail(ResetPwVO resetPwVO);
+    int updatePwByEmail(ResetPwDTO resetPwDTO);
 
     /**
      * 根据用户id获取账户信息
@@ -59,7 +59,7 @@ public interface AccountMapper {
      * @param vo 账户信息
      * @return 更新结果
      */
-    int updateAccountById(UpdateAccountVO vo);
+    int updateAccountById(UpdateAccountDTO vo);
 
 
     /**

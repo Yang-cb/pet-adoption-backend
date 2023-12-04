@@ -1,8 +1,8 @@
 package com.ycb.service.impl;
 
-import com.ycb.entity.dto.Pet;
-import com.ycb.entity.vo.response.AllPetAndBulVO;
-import com.ycb.entity.vo.response.OnePB2PicVO;
+import com.ycb.pojo.entity.Pet;
+import com.ycb.pojo.vo.AllPetAndBulVO;
+import com.ycb.pojo.vo.OnePB2PicVO;
 import com.ycb.mapper.PetBulletinMapper;
 import com.ycb.service.PetService;
 import jakarta.annotation.Resource;

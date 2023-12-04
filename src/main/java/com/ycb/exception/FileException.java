@@ -1,6 +1,6 @@
 package com.ycb.exception;
 
-import com.ycb.constant.MessageConstant;
+import com.ycb.common.constant.MessageConstant;
 import org.springframework.http.HttpStatus;
 
 /**

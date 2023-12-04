@@ -1,7 +1,7 @@
 package com.ycb.mapper;
 
-import com.ycb.entity.dto.WantAdopt;
-import com.ycb.entity.vo.response.AllWantAdoptVO;
+import com.ycb.pojo.entity.WantAdopt;
+import com.ycb.pojo.vo.AllWantAdoptVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.ycb.exception.handle;
 
-import com.ycb.entity.RestBean;
+import com.ycb.common.result.RestBean;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;

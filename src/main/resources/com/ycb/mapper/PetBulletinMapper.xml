@@ -28,7 +28,7 @@
         where pet_id = #{petId}
     </update>
 
-    <select id="getAll" resultType="com.ycb.entity.vo.response.AllPetAndBulVO">
+    <select id="getAll" resultType="com.ycb.pojo.vo.AllPetAndBulVO">
         select *
         from `pet-adoption`.pet pet
                  join `pet-adoption`.bulletin b on b.bulletin_id = pet.bulletin_id
@@ -38,7 +38,7 @@
         order by b.gmt_create
     </select>
 
-    <select id="getByPetId" resultType="com.ycb.entity.vo.response.OnePB2PicVO">
+    <select id="getByPetId" resultType="com.ycb.pojo.vo.OnePB2PicVO">
         select *
         from `pet-adoption`.pet
                  join `pet-adoption`.bulletin b on b.bulletin_id = pet.bulletin_id
@@ -46,7 +46,7 @@
         where pet.pet_id = #{petId}
     </select>
 
-    <select id="getAllByType" resultType="com.ycb.entity.dto.Pet">
+    <select id="getAllByType" resultType="com.ycb.pojo.entity.Pet">
         select *
         from `pet-adoption`.pet
                  join `pet-adoption`.bulletin b on b.bulletin_id = pet.bulletin_id
@@ -70,7 +70,7 @@
                    #{bulletinId})
     </insert>
 
-    <select id="getPostPBById" resultType="com.ycb.entity.vo.response.AllPetAndBulVO">
+    <select id="getPostPBById" resultType="com.ycb.pojo.vo.AllPetAndBulVO">
         select *
         from `pet-adoption`.bulletin b
                  join `pet-adoption`.account a on a.account_id = b.account_id
@@ -81,7 +81,7 @@
           and pet.is_delete = 0
     </select>
 
-    <insert id="saveBulletin" parameterType="com.ycb.entity.dto.Bulletin" useGeneratedKeys="true"
+    <insert id="saveBulletin" parameterType="com.ycb.pojo.entity.Bulletin" useGeneratedKeys="true"
             keyProperty="bulletinId">
         insert into `pet-adoption`.bulletin(type, contacts_name, contacts_phone, contacts_wechat, contacts_email,
                                             location, title, text, gmt_create, gmt_modified, account_id)

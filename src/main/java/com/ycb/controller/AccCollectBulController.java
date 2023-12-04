@@ -1,8 +1,8 @@
 package com.ycb.controller;
 
-import com.ycb.entity.RestBean;
-import com.ycb.entity.vo.request.AccIdPetIdVO;
-import com.ycb.entity.vo.response.AllPetAndBulVO;
+import com.ycb.common.result.RestBean;
+import com.ycb.pojo.dto.AccIdPetIdDTO;
+import com.ycb.pojo.vo.AllPetAndBulVO;
 import com.ycb.service.AccCollectBulService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -30,7 +30,7 @@ public class AccCollectBulController {
      * @return 收藏结果
      */
     @PostMapping("/collectPB")
-    public RestBean<String> collectPB(@Valid @RequestBody AccIdPetIdVO vo) {
+    public RestBean<String> collectPB(@Valid @RequestBody AccIdPetIdDTO vo) {
         accCollectBulService.collectPB(vo);
         return RestBean.success();
     }
@@ -57,7 +57,7 @@ public class AccCollectBulController {
      */
     @GetMapping("/isCollect")
     public RestBean<Boolean> isCollect(@RequestParam Integer accId, @RequestParam Integer petId) {
-        Boolean isCollect = accCollectBulService.isCollect(new AccIdPetIdVO(accId, petId));
+        Boolean isCollect = accCollectBulService.isCollect(new AccIdPetIdDTO(accId, petId));
         return RestBean.success(isCollect);
     }
 }

@@ -1,7 +1,7 @@
 package com.ycb.service.impl;
 
-import com.ycb.entity.vo.request.AccIdPetIdVO;
-import com.ycb.entity.vo.response.AllPetAndBulVO;
+import com.ycb.pojo.dto.AccIdPetIdDTO;
+import com.ycb.pojo.vo.AllPetAndBulVO;
 import com.ycb.exception.SystemException;
 import com.ycb.mapper.CollectAccPetMapper;
 import com.ycb.service.AccCollectBulService;
@@ -19,9 +19,9 @@ public class AccCollectBulServiceImpl implements AccCollectBulService {
     private CollectAccPetMapper collectAccPetMapper;
 
     @Override
-    public void collectPB(AccIdPetIdVO vo) {
+    public void collectPB(AccIdPetIdDTO vo) {
         // 该用户是否已经收藏该宠物
-        AccIdPetIdVO collect = collectAccPetMapper.getOneByAccIdAndPetId(vo);
+        AccIdPetIdDTO collect = collectAccPetMapper.getOneByAccIdAndPetId(vo);
         int line = 0;
         if (collect != null) {
             // 已收藏
@@ -41,7 +41,7 @@ public class AccCollectBulServiceImpl implements AccCollectBulService {
     }
 
     @Override
-    public Boolean isCollect(AccIdPetIdVO vo) {
+    public Boolean isCollect(AccIdPetIdDTO vo) {
         return collectAccPetMapper.getOneByAccIdAndPetId(vo) != null;
     }
 }

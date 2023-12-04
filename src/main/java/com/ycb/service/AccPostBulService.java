@@ -1,9 +1,9 @@
 package com.ycb.service;
 
-import com.ycb.entity.vo.request.AccIdPetIdVO;
-import com.ycb.entity.vo.request.PublishBulletinVO;
-import com.ycb.entity.vo.request.UpdateBulletinVO;
-import com.ycb.entity.vo.response.AllPetAndBulVO;
+import com.ycb.pojo.dto.AccIdPetIdDTO;
+import com.ycb.pojo.dto.PublishBulletinDTO;
+import com.ycb.pojo.dto.UpdateBulletinDTO;
+import com.ycb.pojo.vo.AllPetAndBulVO;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface AccPostBulService {
      *
      * @param vo 领养信息
      */
-    void publishBulletin(PublishBulletinVO vo);
+    void publishBulletin(PublishBulletinDTO vo);
 
     /**
      * 根据用户id获取用户发布的宠物和布告
@@ -30,11 +30,11 @@ public interface AccPostBulService {
      * 根据宠物id删除用户发布的宠物和布告
      * @param vo 用户id s宠物id
      */
-    void updatePostPBIsDelete(AccIdPetIdVO vo);
+    void updatePostPBIsDelete(AccIdPetIdDTO vo);
 
     /**
      * 根据宠物id修改宠物信息
      * @param vo 宠物信息
      */
-    void updatePetByPetId(UpdateBulletinVO vo);
+    void updatePetByPetId(UpdateBulletinDTO vo);
 }

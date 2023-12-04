@@ -1,6 +1,6 @@
 package com.ycb.mapper;
 
-import com.ycb.entity.dto.Picture;
+import com.ycb.pojo.entity.Picture;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

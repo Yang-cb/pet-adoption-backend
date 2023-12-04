@@ -15,7 +15,7 @@
                 #{wantText}, #{wantStatus}, #{gmtCreate}, #{gmtModified})
     </insert>
 
-    <select id="getWantAdoptByAccId" resultType="com.ycb.entity.vo.response.AllWantAdoptVO">
+    <select id="getWantAdoptByAccId" resultType="com.ycb.pojo.vo.AllWantAdoptVO">
         select *
         from `pet-adoption`.want_adopt
                  join `pet-adoption`.pet p on want_adopt.pet_id = p.pet_id
@@ -25,7 +25,7 @@
           and p.is_delete = 0
     </select>
 
-    <select id="getReceiveWantAdoptByAccId" resultType="com.ycb.entity.vo.response.AllWantAdoptVO">
+    <select id="getReceiveWantAdoptByAccId" resultType="com.ycb.pojo.vo.AllWantAdoptVO">
         select *
         from `pet-adoption`.pet
                  join `pet-adoption`.bulletin b on pet.bulletin_id = b.bulletin_id

@@ -1,7 +1,7 @@
 package com.ycb.controller;
 
-import com.ycb.entity.RestBean;
-import com.ycb.entity.dto.Picture;
+import com.ycb.common.result.RestBean;
+import com.ycb.pojo.entity.Picture;
 import com.ycb.exception.FileException;
 import com.ycb.service.FileService;
 import jakarta.annotation.Resource;

@@ -1,9 +1,9 @@
 package com.ycb.mapper;
 
-import com.ycb.entity.dto.Bulletin;
-import com.ycb.entity.dto.Pet;
-import com.ycb.entity.vo.response.AllPetAndBulVO;
-import com.ycb.entity.vo.response.OnePB2PicVO;
+import com.ycb.pojo.entity.Bulletin;
+import com.ycb.pojo.entity.Pet;
+import com.ycb.pojo.vo.AllPetAndBulVO;
+import com.ycb.pojo.vo.OnePB2PicVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -1,12 +1,12 @@
 package com.ycb.service.impl;
 
-import com.ycb.constant.DefaultConstant;
-import com.ycb.constant.MessageConstant;
-import com.ycb.constant.TypeConstant;
-import com.ycb.entity.dto.Account;
-import com.ycb.entity.vo.request.RegisterVO;
-import com.ycb.constant.RedisConstant;
-import com.ycb.entity.vo.request.ResetPwVO;
+import com.ycb.common.constant.DefaultConstant;
+import com.ycb.common.constant.MessageConstant;
+import com.ycb.common.constant.TypeConstant;
+import com.ycb.pojo.entity.Account;
+import com.ycb.pojo.dto.RegisterDTO;
+import com.ycb.common.constant.RedisConstant;
+import com.ycb.pojo.dto.ResetPwDTO;
 import com.ycb.exception.*;
 import com.ycb.mapper.AccountMapper;
 import com.ycb.service.AuthService;
@@ -100,28 +100,28 @@ public class AuthServiceImpl implements AuthService {
     /**
      * 注册
      *
-     * @param registerVO 前端请求信息：邮箱、验证码、用户名、密码
+     * @param registerDTO 前端请求信息：邮箱、验证码、用户名、密码
      */
     @Override
-    public void register(RegisterVO registerVO) {
-        String key = RedisConstant.RECEIVE_MAIL + registerVO.getEmail();
+    public void register(RegisterDTO registerDTO) {
+        String key = RedisConstant.RECEIVE_MAIL + registerDTO.getEmail();
         // 验证验证码
-        this.codeVerify(key, registerVO.getCode());
+        this.codeVerify(key, registerDTO.getCode());
         // 用户名已存在
-        Account byUsername = accountMapper.getByUsername(registerVO.getUsername());
+        Account byUsername = accountMapper.getByUsername(registerDTO.getUsername());
         if (!Objects.isNull(byUsername)) {
             throw new RegisterException(HttpStatus.BAD_REQUEST.value(), MessageConstant.USERNAME_ALREADY_EXISTS);
         }
         // 邮箱已存在
-        Account byEmail = accountMapper.getByEmail(registerVO.getEmail());
+        Account byEmail = accountMapper.getByEmail(registerDTO.getEmail());
         if (!Objects.isNull(byEmail)) {
             throw new RegisterException(HttpStatus.BAD_REQUEST.value(), MessageConstant.EMAIL_ALREADY_EXISTS);
         }
         Account account = new Account();
-        account.setUsername(registerVO.getUsername());
-        account.setPassword(encoder.encode(registerVO.getPassword()));
-        account.setEmail(registerVO.getEmail());
-        account.setNikeName(registerVO.getUsername());
+        account.setUsername(registerDTO.getUsername());
+        account.setPassword(encoder.encode(registerDTO.getPassword()));
+        account.setEmail(registerDTO.getEmail());
+        account.setNikeName(registerDTO.getUsername());
         Date date = new Date(new java.util.Date().getTime());
         account.setGmtCreate(date);
         account.setGmtModified(date);
@@ -137,26 +137,26 @@ public class AuthServiceImpl implements AuthService {
     /**
      * 重置密码
      *
-     * @param resetPwVO 前端请求信息：邮箱、验证码、新密码
+     * @param resetPwDTO 前端请求信息：邮箱、验证码、新密码
      */
     @Override
-    public void resetPw(ResetPwVO resetPwVO) {
+    public void resetPw(ResetPwDTO resetPwDTO) {
         // 验证验证码
-        String key = RedisConstant.RECEIVE_MAIL + resetPwVO.getEmail();
-        this.codeVerify(key, resetPwVO.getCode());
+        String key = RedisConstant.RECEIVE_MAIL + resetPwDTO.getEmail();
+        this.codeVerify(key, resetPwDTO.getCode());
         // 还未注册
-        Account byEmail = accountMapper.getByEmail(resetPwVO.getEmail());
+        Account byEmail = accountMapper.getByEmail(resetPwDTO.getEmail());
         if (Objects.isNull(byEmail)) {
             throw new ResetPasswordException(HttpStatus.BAD_REQUEST.value(), MessageConstant.ACCOUNT_NOT_FOUND);
         }
         // 新旧密码一样
-        if (encoder.matches(resetPwVO.getPassword(), byEmail.getPassword())) {
+        if (encoder.matches(resetPwDTO.getPassword(), byEmail.getPassword())) {
             throw new ResetPasswordException(HttpStatus.BAD_REQUEST.value(), MessageConstant.NEW_PASSWORD_SAME_AS_OLD_PASSWORD);
         }
         // 更新密码
-        resetPwVO.setGmtModified(new Date(new java.util.Date().getTime()));
-        resetPwVO.setPassword(encoder.encode(resetPwVO.getPassword()));
-        int len = accountMapper.updatePwByEmail(resetPwVO);
+        resetPwDTO.setGmtModified(new Date(new java.util.Date().getTime()));
+        resetPwDTO.setPassword(encoder.encode(resetPwDTO.getPassword()));
+        int len = accountMapper.updatePwByEmail(resetPwDTO);
         if (len < 1) {
             throw new SystemException();
         }

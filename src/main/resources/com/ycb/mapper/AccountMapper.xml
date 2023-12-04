@@ -5,7 +5,7 @@
 
 <mapper namespace="com.ycb.mapper.AccountMapper">
 
-    <select id="getAccountVOById" resultType="com.ycb.entity.vo.response.AccountVO">
+    <select id="getAccountVOById" resultType="com.ycb.pojo.vo.AccountVO">
         select *
         from `pet-adoption`.account a
                  join `pet-adoption`.picture p on p.pic_id = a.picture_id

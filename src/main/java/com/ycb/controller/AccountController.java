@@ -1,9 +1,9 @@
 package com.ycb.controller;
 
-import com.ycb.entity.RestBean;
-import com.ycb.entity.vo.request.UpdateAccPicVO;
-import com.ycb.entity.vo.request.UpdateAccountVO;
-import com.ycb.entity.vo.response.AccountVO;
+import com.ycb.common.result.RestBean;
+import com.ycb.pojo.dto.UpdateAccPicDTO;
+import com.ycb.pojo.dto.UpdateAccountDTO;
+import com.ycb.pojo.vo.AccountVO;
 import com.ycb.service.AccountService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -42,7 +42,7 @@ public class AccountController {
      * @return 更新结果
      */
     @PostMapping("/updateAccountById")
-    public RestBean<String> updateAccountById(@Valid @RequestBody UpdateAccountVO vo) {
+    public RestBean<String> updateAccountById(@Valid @RequestBody UpdateAccountDTO vo) {
         accountService.updateAccountById(vo);
         return RestBean.success();
     }
@@ -54,7 +54,7 @@ public class AccountController {
      * @return 更新后的头像数据
      */
     @PostMapping("/updateAccPic")
-    public String updateAccPic(@Valid UpdateAccPicVO vo) {
+    public String updateAccPic(@Valid UpdateAccPicDTO vo) {
         return accountService.updateAccPic(vo);
     }
 }

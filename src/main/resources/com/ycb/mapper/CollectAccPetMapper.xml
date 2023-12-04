@@ -5,7 +5,7 @@
 
 <mapper namespace="com.ycb.mapper.CollectAccPetMapper">
 
-    <select id="getCollectPBById" resultType="com.ycb.entity.vo.response.AllPetAndBulVO">
+    <select id="getCollectPBById" resultType="com.ycb.pojo.vo.AllPetAndBulVO">
         select distinct *
         from `pet-adoption`.account a
                  join `pet-adoption`.collect_acc_pet cap on a.account_id = cap.acc_id

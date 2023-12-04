@@ -1,8 +1,8 @@
 package com.ycb.service;
 
-import com.ycb.entity.dto.Pet;
-import com.ycb.entity.vo.response.AllPetAndBulVO;
-import com.ycb.entity.vo.response.OnePB2PicVO;
+import com.ycb.pojo.entity.Pet;
+import com.ycb.pojo.vo.AllPetAndBulVO;
+import com.ycb.pojo.vo.OnePB2PicVO;
 
 import java.util.List;
 

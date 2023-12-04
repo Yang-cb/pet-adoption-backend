@@ -1,9 +1,9 @@
 package com.ycb.controller;
 
-import com.ycb.entity.RestBean;
-import com.ycb.entity.dto.WantAdopt;
-import com.ycb.entity.vo.request.UpdateWantAdoptVO;
-import com.ycb.entity.vo.response.AllWantAdoptVO;
+import com.ycb.common.result.RestBean;
+import com.ycb.pojo.entity.WantAdopt;
+import com.ycb.pojo.dto.UpdateWantAdoptDTO;
+import com.ycb.pojo.vo.AllWantAdoptVO;
 import com.ycb.service.WantAdoptService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -69,7 +69,7 @@ public class WantAdoptController {
      * @return 错误信息
      */
     @PutMapping("/updateWantAdoptStatus")
-    public RestBean<String> updateWantAdoptStatus(@Valid @RequestBody UpdateWantAdoptVO vo) {
+    public RestBean<String> updateWantAdoptStatus(@Valid @RequestBody UpdateWantAdoptDTO vo) {
         wantAdoptService.updateWantAdoptStatus(vo);
         return RestBean.success();
     }
