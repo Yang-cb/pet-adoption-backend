@@ -16,4 +16,6 @@ public class MessageConstant {
     public static final String FILE_UPLOAD_FAILED = "文件上传失败";
     public static final String FILE_IS_NULL = "文件为空";
     public static final String OPERATION_FAILED = "操作失败";
+    public static final String PENDING_REVIEW = "未审核";
+    public static final String DATABASE_ERROR = "数据库异常";
 }

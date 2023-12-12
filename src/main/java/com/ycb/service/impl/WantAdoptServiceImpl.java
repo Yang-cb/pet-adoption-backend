@@ -1,7 +1,7 @@
 package com.ycb.service.impl;
 
+import com.ycb.pojo.dto.UpdateWantStatusDTO;
 import com.ycb.pojo.entity.WantAdopt;
-import com.ycb.pojo.dto.UpdateWantAdoptDTO;
 import com.ycb.pojo.vo.AllWantAdoptVO;
 import com.ycb.exception.OperationException;
 import com.ycb.exception.SystemException;
@@ -44,16 +44,13 @@ public class WantAdoptServiceImpl implements WantAdoptService {
     }
 
     @Override
-    public void updateWantAdoptStatus(UpdateWantAdoptDTO vo) {
-        // 根据发布宠物布告的用户id和想领id查看审核通过的（status = 1）想领信息是否存在
-        int len = wantAdoptMapper.existByAccIdAndWantId(vo.getAccountId(), vo.getWantId());
+    public void updateWantAdoptStatus(UpdateWantStatusDTO vo) {
+        // 根据发布宠物布告的用户id和想领id查看审核通过的（status = ?）想领信息是否存在
+        int len = wantAdoptMapper.existByAccIdAndWantId(vo);
         if (len != 1) {
             throw new OperationException();
         }
         // 更新想领状态
-        len += wantAdoptMapper.updateWantAdoptStatus(vo.getWantId(), vo.getWantStatus());
-        if (len != 2) {
-            throw new OperationException();
-        }
+        wantAdoptMapper.updateWantAdoptStatus(vo);
     }
 }

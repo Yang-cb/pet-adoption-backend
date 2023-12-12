@@ -26,24 +26,28 @@
     </select>
 
     <select id="getReceiveWantAdoptByAccId" resultType="com.ycb.pojo.vo.AllWantAdoptVO">
-        select *
+        select pet_name, pet_type, pet_sex, is_free, is_adopt,
+               title, text, location,
+               pic_name,
+               wa.*
         from `pet-adoption`.pet
                  join `pet-adoption`.bulletin b on pet.bulletin_id = b.bulletin_id
                  join `pet-adoption`.want_adopt wa on pet.pet_id = wa.pet_id
                  join `pet-adoption`.picture p on p.pic_id = pet.picture_id
         where b.account_id = #{accountId}
-          and pet.is_delete = 0
+            and want_status = 1
+           or want_status = 3
+           or want_status = 4
+            and pet.is_delete = 0
     </select>
 
     <select id="existByAccIdAndWantId" resultType="java.lang.Integer">
         select count(1)
-        from `pet-adoption`.pet
-                 join `pet-adoption`.bulletin b on pet.bulletin_id = b.bulletin_id
-                 join `pet-adoption`.want_adopt wa on pet.pet_id = wa.pet_id
-        where b.account_id = #{accountId}
+        from `pet-adoption`.want_adopt
+        where account_id = #{accountId}
           and want_id = #{wantId}
-          and want_status = 1
-          and wa.is_delete = 0
+          and want_status = #{initStatus}
+          and is_delete = 0
     </select>
 
     <update id="updateWantAdoptStatus">

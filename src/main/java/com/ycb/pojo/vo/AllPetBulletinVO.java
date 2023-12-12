@@ -8,7 +8,7 @@ import java.sql.Date;
  * 宠物信息及布告信息
  */
 @Data
-public class AllPetAndBulVO {
+public class AllPetBulletinVO {
     /**
      * 宠物id
      */
@@ -38,6 +38,10 @@ public class AllPetAndBulVO {
      */
     private String location;
     /**
+     * 是否已被领养
+     */
+    private Integer isAdopt;
+    /**
      * 联系人
      */
     private String contactsName;
@@ -65,4 +69,16 @@ public class AllPetAndBulVO {
      * 发布布告的时间
      */
     private Date gmtCreate;
+    /**
+     * 布告状态
+     */
+    private Integer bulletinStatus;
+    /**
+     * 是否绝育
+     */
+    private Integer isSterilization;
+    /**
+     * 健康状态
+     */
+    private String petHealthStatus;
 }

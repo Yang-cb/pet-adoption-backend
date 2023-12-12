@@ -3,7 +3,7 @@ package com.ycb.service;
 import com.ycb.pojo.dto.AccIdPetIdDTO;
 import com.ycb.pojo.dto.PublishBulletinDTO;
 import com.ycb.pojo.dto.UpdateBulletinDTO;
-import com.ycb.pojo.vo.AllPetAndBulVO;
+import com.ycb.pojo.vo.AllPetBulletinVO;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public interface AccPostBulService {
      * @param id 用户id
      * @return 用户发布的宠物和布告
      */
-    List<AllPetAndBulVO> getPostPBById(Integer id);
+    List<AllPetBulletinVO> getPostPBById(Integer id);
 
     /**
      * 根据宠物id删除用户发布的宠物和布告

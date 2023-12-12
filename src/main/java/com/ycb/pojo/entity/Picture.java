@@ -15,4 +15,8 @@ public class Picture {
      * 图片名
      */
     private String picName;
+    /**
+     * 图片类型
+     */
+    private String picType;
 }

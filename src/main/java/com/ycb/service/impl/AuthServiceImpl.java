@@ -1,11 +1,8 @@
 package com.ycb.service.impl;
 
-import com.ycb.common.constant.DefaultConstant;
-import com.ycb.common.constant.MessageConstant;
-import com.ycb.common.constant.TypeConstant;
+import com.ycb.common.constant.*;
 import com.ycb.pojo.entity.Account;
 import com.ycb.pojo.dto.RegisterDTO;
-import com.ycb.common.constant.RedisConstant;
 import com.ycb.pojo.dto.ResetPwDTO;
 import com.ycb.exception.*;
 import com.ycb.mapper.AccountMapper;
@@ -17,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -54,6 +52,9 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if (accountMapper.isDisableByUsername(username) == StatusConstant.DISABLE) {
+            throw new DisabledException("用户已被禁用");
+        }
         Account account = accountMapper.getByUsername(username);
         // 没查到
         if (Objects.isNull(account)) {
@@ -72,7 +73,7 @@ public class AuthServiceImpl implements AuthService {
     public void sendEmail(String email, String type, String ip) {
         // 频繁请求
         if (frequent(ip)) {
-            throw new RequestFrequentException(HttpStatus.TOO_MANY_REQUESTS.value(), MessageConstant.REQUEST_FREQUENT);
+            throw new RequestFrequentException();
         }
         // 删除已经生成验证码
         String key = RedisConstant.RECEIVE_MAIL + email;
@@ -125,7 +126,8 @@ public class AuthServiceImpl implements AuthService {
         Date date = new Date(new java.util.Date().getTime());
         account.setGmtCreate(date);
         account.setGmtModified(date);
-        account.setAuthority(DefaultConstant.DEFAULT_AUTHORITY);
+        // 默认权限
+        account.setAuthority(AuthorityConstant.DEFAULT_AUTHORITY);
         int len = accountMapper.save(account);
         if (len < 1) {
             throw new SystemException();

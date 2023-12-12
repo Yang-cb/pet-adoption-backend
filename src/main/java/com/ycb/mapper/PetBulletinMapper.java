@@ -2,8 +2,8 @@ package com.ycb.mapper;
 
 import com.ycb.pojo.entity.Bulletin;
 import com.ycb.pojo.entity.Pet;
-import com.ycb.pojo.vo.AllPetAndBulVO;
-import com.ycb.pojo.vo.OnePB2PicVO;
+import com.ycb.pojo.vo.AllPetBulletinVO;
+import com.ycb.pojo.vo.OnePetBulletinVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public interface PetBulletinMapper {
      *
      * @return 所有宠物和布告
      */
-    List<AllPetAndBulVO> getAll();
+    List<AllPetBulletinVO> getAll();
 
     /**
      * 根据宠物id获取单个宠物和布告
@@ -26,7 +26,7 @@ public interface PetBulletinMapper {
      * @param petId 宠物id
      * @return 宠物和布告
      */
-    OnePB2PicVO getByPetId(Integer petId);
+    OnePetBulletinVO getOneByPetId(Integer petId);
 
     /**
      * 根据宠物种类获取宠物和布告
@@ -34,7 +34,7 @@ public interface PetBulletinMapper {
      * @param type 宠物种类
      * @return 宠物和布告
      */
-    List<Pet> getAllByType(String type);
+    List<Pet> getAllByPetType(String type);
 
     /**
      * 保存布告
@@ -57,7 +57,7 @@ public interface PetBulletinMapper {
      * @param id 用户id
      * @return 用户发布的宠物和布告
      */
-    List<AllPetAndBulVO> getPostPBById(Integer id);
+    List<AllPetBulletinVO> getPostPBByAccountId(Integer id);
 
     /**
      * 根据宠物id获取布告id
@@ -65,7 +65,7 @@ public interface PetBulletinMapper {
      * @param petId 宠物id
      * @return 布告id
      */
-    int getBIdByPid(Integer petId);
+    int getBulletinIdByPetId(Integer petId);
 
     /**
      * 根据布告id修改用户发布的布告信息
@@ -88,15 +88,7 @@ public interface PetBulletinMapper {
      *
      * @param petId 宠物id
      */
-    int updatePostPIsDeleteByPetId(Integer petId);
-
-    /**
-     * 根据布告id获取宠物id
-     *
-     * @param bulletinId 布告id
-     * @return 宠物id
-     */
-    int getBulIdByPetId(Integer bulletinId);
+    int updatePostPet2IsDeleteByPetId(Integer petId);
 
     /**
      * 根据布告id删除用户发布的布告信息
@@ -116,6 +108,7 @@ public interface PetBulletinMapper {
 
     /**
      * 根据宠物id修改宠物图片
+     *
      * @param petId 宠物id
      * @param picId 图片id
      */

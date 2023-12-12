@@ -1,5 +1,6 @@
 package com.ycb.config;
 
+import com.ycb.common.constant.AuthorityConstant;
 import com.ycb.filter.JwtVerifyFilter;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
@@ -29,11 +30,12 @@ public class SecurityConfiguration {
                 // 不需要csrf
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(conf ->
-                                // 当前路径允许任何人请求
-                                conf.requestMatchers("/api/auth/**").permitAll()
-                                        // 除上述路径，任何人必须认证后请求
-                                        .anyRequest().authenticated()
-//                                .anyRequest().permitAll()
+                        // 当前路径允许任何人请求
+                        conf.requestMatchers("/api/auth/**").permitAll()
+                                // 管理员路径，需要管理员权限
+                                .requestMatchers("/api/admin/**").hasAnyAuthority('[' + AuthorityConstant.ADMIN_AUTHORITY + ']')
+                                // 除上述路径，任何人必须认证后请求
+                                .anyRequest().authenticated()
                 )
                 .formLogin(conf ->
                         // 指定登录url

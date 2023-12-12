@@ -7,6 +7,8 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ycb.common.constant.RedisConstant;
+import com.ycb.exception.RequestFrequentException;
+import com.ycb.exception.SystemException;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -109,24 +111,22 @@ public class JwtUtils {
     }
 
     /**
-     * jwt写入黑名单
+     * jwt写入黑名单 （退出登录）
      *
      * @param jwt jwt
-     * @return 错误信息
      */
-    public String jwtJoinBlackList(DecodedJWT jwt) {
+    public void jwtJoinBlackList(DecodedJWT jwt) {
         if (jwt == null) {
-            return "系统异常，请稍后重试";
+            throw new SystemException();
         }
         String key = RedisConstant.LOGOUT_JWT_BLACK_LIST + jwt.getId();
         // 已经在黑名单
         if (Boolean.TRUE.equals(stringRedisTemplate.hasKey(key))) {
-            return "操作频繁，请稍后重试";
+            throw new RequestFrequentException();
         }
         // 设置过期时间
         long timeOut = Math.max(new Date(jwt.getExpiresAt().getTime() - System.currentTimeMillis()).getTime(), 0);
         stringRedisTemplate.opsForValue().set(key, "", timeOut, TimeUnit.MILLISECONDS);
-        return null;
     }
 
 

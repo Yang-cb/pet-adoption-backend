@@ -1,12 +1,11 @@
-package com.ycb.pojo.vo;
+package com.ycb.pojo.vo.admin;
 
 import lombok.Data;
 
-/**
- * 获取所有想要领养信息
- */
+import java.sql.Date;
+
 @Data
-public class AllWantAdoptVO {
+public class AdminAllWantAdoptVO {
     /**
      * 自增id
      */
@@ -48,35 +47,11 @@ public class AllWantAdoptVO {
      */
     private String wantText;
     /**
-     * 宠物姓名
+     * 发布时间
      */
-    private String petName;
+    private Date gmtCreate;
     /**
-     * 宠物类型：cat猫、dog狗、other其他
+     * 更新时间
      */
-    private String petType;
-    /**
-     * 性别 1公0母
-     */
-    private Integer petSex;
-    /**
-     * 是否免费
-     */
-    private Integer isFree;
-    /**
-     * 照片名
-     */
-    private String picName;
-    /**
-     * 文章内容
-     */
-    private String text;
-    /**
-     * 文章标题
-     */
-    private String title;
-    /**
-     * 是否已被领养 1是0否
-     */
-    private Integer isAdopt;
+    private Date gmtModified;
 }

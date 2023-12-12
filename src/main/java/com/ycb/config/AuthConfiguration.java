@@ -1,6 +1,5 @@
 package com.ycb.config;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ycb.pojo.entity.Account;
 import com.ycb.common.result.RestBean;
 import com.ycb.pojo.vo.LoginVO;
@@ -9,6 +8,7 @@ import com.ycb.common.utils.JwtUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -58,7 +58,7 @@ public class AuthConfiguration {
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(RestBean.failure(401, exception.getMessage()).jsonToString());
+        response.getWriter().write(RestBean.failure(HttpStatus.FORBIDDEN.value(), exception.getMessage()).jsonToString());
     }
 
     /**
@@ -70,13 +70,8 @@ public class AuthConfiguration {
         response.setContentType("application/json;charset=utf-8");
         PrintWriter writer = response.getWriter();
         // jwt写入黑名单
-        DecodedJWT jwt = jwtUtils.parseJwt(request.getHeader("Authorization"));
-        String message = jwtUtils.jwtJoinBlackList(jwt);
-        if (message == null) {
-            writer.write(RestBean.success("退出成功").jsonToString());
-        } else {
-            writer.write(RestBean.failure(403, message).jsonToString());
-        }
+        jwtUtils.jwtJoinBlackList(jwtUtils.parseJwt(request.getHeader("Authorization")));
+        writer.write(RestBean.success().jsonToString());
     }
 
     /**
@@ -86,7 +81,7 @@ public class AuthConfiguration {
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(RestBean.failure(401, authException.getMessage()).jsonToString());
+        response.getWriter().write(RestBean.failure(HttpStatus.UNAUTHORIZED.value(), authException.getMessage()).jsonToString());
     }
 
     /**
@@ -96,6 +91,6 @@ public class AuthConfiguration {
                        HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(RestBean.failure(403, accessDeniedException.getMessage()).jsonToString());
+        response.getWriter().write(RestBean.failure(HttpStatus.UNAUTHORIZED.value(), accessDeniedException.getMessage()).jsonToString());
     }
 }

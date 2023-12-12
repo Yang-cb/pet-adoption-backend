@@ -22,6 +22,10 @@ public class Bulletin {
      */
     private String type;
     /**
+     * 布告状态
+     */
+    private Integer bulletinStatus;
+    /**
      * 联系人
      */
     private String contactsName;

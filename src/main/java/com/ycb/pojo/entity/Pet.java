@@ -34,6 +34,14 @@ public class Pet {
      */
     private Integer isFree;
     /**
+     * 是否绝育
+     */
+    private Integer isSterilization;
+    /**
+     * 健康状态
+     */
+    private String petHealthStatus;
+    /**
      * 照片ID
      */
     private Integer pictureId;

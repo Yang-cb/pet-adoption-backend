@@ -1,7 +1,7 @@
 package com.ycb.service;
 
 import com.ycb.pojo.dto.AccIdPetIdDTO;
-import com.ycb.pojo.vo.AllPetAndBulVO;
+import com.ycb.pojo.vo.AllPetBulletinVO;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public interface AccCollectBulService {
      * @param id 用户id
      * @return 用户收藏的宠物和布告
      */
-    List<AllPetAndBulVO> getCollectPBById(Integer id);
+    List<AllPetBulletinVO> getCollectPBById(Integer id);
 
     /**
      * 根据宠物id、宠物id判断用户是否收藏该宠物

@@ -1,8 +1,8 @@
 package com.ycb.service.impl;
 
 import com.ycb.pojo.entity.Pet;
-import com.ycb.pojo.vo.AllPetAndBulVO;
-import com.ycb.pojo.vo.OnePB2PicVO;
+import com.ycb.pojo.vo.AllPetBulletinVO;
+import com.ycb.pojo.vo.OnePetBulletinVO;
 import com.ycb.mapper.PetBulletinMapper;
 import com.ycb.service.PetService;
 import jakarta.annotation.Resource;
@@ -20,19 +20,19 @@ public class PetServiceImpl implements PetService {
     private PetBulletinMapper petBulletinMapper;
 
     @Override
-    public List<AllPetAndBulVO> getAll() {
+    public List<AllPetBulletinVO> getAll() {
         return petBulletinMapper.getAll();
     }
 
     @Override
     public List<Pet> getAllByType(String type) {
-        return petBulletinMapper.getAllByType(type);
+        return petBulletinMapper.getAllByPetType(type);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public OnePB2PicVO getPBByPetId(Integer petId) {
+    public OnePetBulletinVO getPBByPetId(Integer petId) {
         // 获取宠物信息
-        return petBulletinMapper.getByPetId(petId);
+        return petBulletinMapper.getOneByPetId(petId);
     }
 }

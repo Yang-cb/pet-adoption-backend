@@ -1,14 +1,16 @@
 package com.ycb.controller;
 
 import com.ycb.common.result.RestBean;
+import com.ycb.pojo.dto.UpdateWantStatusDTO;
 import com.ycb.pojo.entity.WantAdopt;
-import com.ycb.pojo.dto.UpdateWantAdoptDTO;
+import com.ycb.pojo.dto.UpdateWantStatus34DTO;
 import com.ycb.pojo.vo.AllWantAdoptVO;
 import com.ycb.service.WantAdoptService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,14 +65,16 @@ public class WantAdoptController {
     }
 
     /**
-     * 更新想领状态
+     * 用户更新想领状态
      *
-     * @param vo 想领信息
+     * @param dto 想领信息
      * @return 错误信息
      */
     @PutMapping("/updateWantAdoptStatus")
-    public RestBean<String> updateWantAdoptStatus(@Valid @RequestBody UpdateWantAdoptDTO vo) {
-        wantAdoptService.updateWantAdoptStatus(vo);
+    public RestBean<String> updateWantAdoptStatus(@Valid @RequestBody UpdateWantStatus34DTO dto) {
+        UpdateWantStatusDTO updateWantStatusDTO = new UpdateWantStatusDTO();
+        BeanUtils.copyProperties(dto, updateWantStatusDTO);
+        wantAdoptService.updateWantAdoptStatus(updateWantStatusDTO);
         return RestBean.success();
     }
 }

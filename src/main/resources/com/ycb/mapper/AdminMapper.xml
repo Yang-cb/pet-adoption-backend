@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ycb.mapper.AdminMapper">
+    <select id="getAllAccount" resultType="com.ycb.pojo.vo.admin.AdminAllAccountVO">
+        select *
+        from `pet-adoption`.account
+                 join `pet-adoption`.picture on account.picture_id = picture.pic_id
+        order by account_id
+    </select>
+
+    <select id="getAllPet" resultType="com.ycb.pojo.vo.admin.AdminAllPetBulVO">
+        select *
+        from `pet-adoption`.pet pet
+                 join `pet-adoption`.bulletin b on b.bulletin_id = pet.bulletin_id
+                 join `pet-adoption`.picture p on p.pic_id = pet.picture_id
+        where pet.is_delete = 0
+          and b.is_delete = 0
+        order by pet_id
+    </select>
+
+    <select id="getAllWantAdopt" resultType="com.ycb.pojo.vo.admin.AdminAllWantAdoptVO">
+        select *
+        from `pet-adoption`.pet
+                 join `pet-adoption`.want_adopt wa on pet.pet_id = wa.pet_id
+        where wa.is_delete = 0
+        order by want_id
+    </select>
+
+    <update id="updateBulletinStatus">
+        update `pet-adoption`.bulletin
+        set bulletin_status = #{bulletinStatus}
+        where bulletin_id = #{bulletinId}
+    </update>
+
+    <update id="updateAccountStatus">
+        update `pet-adoption`.account
+        set account_status = #{accountStatus}
+        where account_id = #{accountId}
+    </update>
+</mapper>

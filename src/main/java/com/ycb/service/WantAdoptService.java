@@ -1,7 +1,7 @@
 package com.ycb.service;
 
+import com.ycb.pojo.dto.UpdateWantStatusDTO;
 import com.ycb.pojo.entity.WantAdopt;
-import com.ycb.pojo.dto.UpdateWantAdoptDTO;
 import com.ycb.pojo.vo.AllWantAdoptVO;
 
 import java.util.List;
@@ -38,5 +38,5 @@ public interface WantAdoptService {
      *
      * @param vo 想领信息
      */
-    void updateWantAdoptStatus(UpdateWantAdoptDTO vo);
+    void updateWantAdoptStatus(UpdateWantStatusDTO vo);
 }

@@ -4,8 +4,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ycb.mapper.CollectAccPetMapper">
+    <insert id="save">
+        insert into `pet-adoption`.collect_acc_pet(acc_id, pet_id)
+            value (#{accId}, #{petId})
+    </insert>
 
-    <select id="getCollectPBById" resultType="com.ycb.pojo.vo.AllPetAndBulVO">
+    <delete id="delete">
+        delete
+        from `pet-adoption`.collect_acc_pet
+        where acc_id = #{accId}
+          and pet_id = #{petId}
+    </delete>
+
+    <select id="getOneByAccIdAndPetId" resultType="com.ycb.pojo.dto.AccIdPetIdDTO">
+        select *
+        from `pet-adoption`.collect_acc_pet
+        where acc_id = #{accId}
+          and pet_id = #{petId}
+    </select>
+
+    <select id="getCollectPBById" resultType="com.ycb.pojo.vo.AllPetBulletinVO">
         select distinct *
         from `pet-adoption`.account a
                  join `pet-adoption`.collect_acc_pet cap on a.account_id = cap.acc_id
@@ -15,6 +33,8 @@
         where cap.acc_id = #{accId}
           and b.is_delete = 0
           and p.is_delete = 0
+          and a.account_status = 1
+          and a.is_delete = 0
+        order by b.gmt_modified
     </select>
-
 </mapper>

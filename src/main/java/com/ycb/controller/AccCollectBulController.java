@@ -2,7 +2,7 @@ package com.ycb.controller;
 
 import com.ycb.common.result.RestBean;
 import com.ycb.pojo.dto.AccIdPetIdDTO;
-import com.ycb.pojo.vo.AllPetAndBulVO;
+import com.ycb.pojo.vo.AllPetBulletinVO;
 import com.ycb.service.AccCollectBulService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -42,10 +42,10 @@ public class AccCollectBulController {
      * @return 用户收藏的宠物和布告
      */
     @GetMapping("/getCollectPB")
-    public RestBean<List<AllPetAndBulVO>> getCollectPB(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "id格式有误")
+    public RestBean<List<AllPetBulletinVO>> getCollectPB(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "id格式有误")
                                                        @RequestParam String id) {
-        List<AllPetAndBulVO> allPetAndBulVOS = accCollectBulService.getCollectPBById(Integer.valueOf(id));
-        return RestBean.success(allPetAndBulVOS);
+        List<AllPetBulletinVO> allPetBulletinVOS = accCollectBulService.getCollectPBById(Integer.valueOf(id));
+        return RestBean.success(allPetBulletinVOS);
     }
 
     /**

@@ -16,6 +16,16 @@ public class UpdateBulletinDTO {
     @NotNull(message = "宠物id不能为空")
     private Integer petId;
     /**
+     * 布告id
+     */
+    @NotNull(message = "布告id不能为空")
+    private Integer bulletinId;
+    /**
+     * 用户id
+     */
+    @NotNull(message = "用户id不能为空")
+    private Integer accountId;
+    /**
      * 宠物姓名
      */
     private String petName;
@@ -39,6 +49,18 @@ public class UpdateBulletinDTO {
     @Min(value = 0, message = "是否免费格式有误")
     @Max(value = 1, message = "是否免费格式有误")
     private Integer isFree;
+    /**
+     * 是否绝育
+     */
+    @NotNull(message = "请指定是否绝育")
+    @Min(value = 0, message = "是否绝育格式有误")
+    @Max(value = 1, message = "是否绝育格式有误")
+    private Integer isSterilization;
+    /**
+     * 健康状态
+     */
+    @NotNull(message = "健康状态不能为空")
+    private String petHealthStatus;
     /**
      * 宠物照片
      */
@@ -88,4 +110,17 @@ public class UpdateBulletinDTO {
     @NotNull(message = "详细内容不能为空")
     @Length(min = 1, max = 300, message = "详细内容长度不能大于300字")
     private String text;
+    /**
+     * 布告状态
+     */
+    @NotNull(message = "状态不能为空")
+    @Min(value = 0, message = "状态格式有误")
+    @Max(value = 2, message = "状态格式有误")
+    private Integer bulletinStatus;
+    /**
+     * 请求类型：想领养，求抱走
+     */
+    @NotNull(message = "请求类型不能为空")
+    @Pattern(regexp = "^(adopt|away)$", message = "请求类型有误")
+    private String type;
 }

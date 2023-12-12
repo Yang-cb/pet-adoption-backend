@@ -4,7 +4,7 @@ import com.ycb.common.result.RestBean;
 import com.ycb.pojo.dto.AccIdPetIdDTO;
 import com.ycb.pojo.dto.PublishBulletinDTO;
 import com.ycb.pojo.dto.UpdateBulletinDTO;
-import com.ycb.pojo.vo.AllPetAndBulVO;
+import com.ycb.pojo.vo.AllPetBulletinVO;
 import com.ycb.service.AccPostBulService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -41,10 +41,10 @@ public class AccPostBulController {
      * @return 用户发布的宠物和布告
      */
     @GetMapping("/getPostPB")
-    public RestBean<List<AllPetAndBulVO>> getPostPB(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "id格式有误")
+    public RestBean<List<AllPetBulletinVO>> getPostPB(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "id格式有误")
                                                     @RequestParam String id) {
-        List<AllPetAndBulVO> allPetAndBulVOS = accPostBulService.getPostPBById(Integer.valueOf(id));
-        return RestBean.success(allPetAndBulVOS);
+        List<AllPetBulletinVO> allPetBulletinVOS = accPostBulService.getPostPBById(Integer.valueOf(id));
+        return RestBean.success(allPetBulletinVOS);
     }
 
     /**

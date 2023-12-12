@@ -2,8 +2,8 @@ package com.ycb.controller;
 
 import com.ycb.common.result.RestBean;
 import com.ycb.pojo.entity.Pet;
-import com.ycb.pojo.vo.AllPetAndBulVO;
-import com.ycb.pojo.vo.OnePB2PicVO;
+import com.ycb.pojo.vo.AllPetBulletinVO;
+import com.ycb.pojo.vo.OnePetBulletinVO;
 import com.ycb.service.PetService;
 import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotBlank;
@@ -29,8 +29,8 @@ public class PetController {
      * @return 宠物列表
      */
     @GetMapping("/getAllPB")
-    public RestBean<List<AllPetAndBulVO>> getAll() {
-        List<AllPetAndBulVO> pets = petService.getAll();
+    public RestBean<List<AllPetBulletinVO>> getAll() {
+        List<AllPetBulletinVO> pets = petService.getAll();
         return RestBean.success(pets);
     }
 
@@ -40,9 +40,9 @@ public class PetController {
      * @param petId 宠物id
      */
     @GetMapping("/getPBByPetId")
-    public RestBean<OnePB2PicVO> getPBByPetId(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "用户id格式有误")
+    public RestBean<OnePetBulletinVO> getPBByPetId(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "用户id格式有误")
                                                   @RequestParam String petId) {
-        OnePB2PicVO pet = petService.getPBByPetId(Integer.valueOf(petId));
+        OnePetBulletinVO pet = petService.getPBByPetId(Integer.valueOf(petId));
         return RestBean.success(pet);
     }
 

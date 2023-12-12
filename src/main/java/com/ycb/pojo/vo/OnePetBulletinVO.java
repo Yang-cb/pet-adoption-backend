@@ -8,7 +8,7 @@ import java.sql.Date;
  * 宠物信息（含图片）
  */
 @Data
-public class OnePB2PicVO {
+public class OnePetBulletinVO {
     /**
      * 宠物照片名字
      */
@@ -69,4 +69,24 @@ public class OnePB2PicVO {
      * 布告最后一次修改的时间
      */
     private Date gmtModified;
+    /**
+     * 布告ID
+     */
+    private Integer bulletinId;
+    /**
+     * 布告状态
+     */
+    private Integer bulletinStatus;
+    /**
+     * 是否绝育
+     */
+    private Integer isSterilization;
+    /**
+     * 健康状态
+     */
+    private String petHealthStatus;
+    /**
+     * 布告类型
+     */
+    private String type;
 }

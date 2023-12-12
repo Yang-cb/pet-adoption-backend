@@ -1,7 +1,10 @@
 package com.ycb.service.impl;
 
+import com.ycb.common.constant.StatusConstant;
+import com.ycb.exception.OperationException;
+import com.ycb.mapper.AccountMapper;
 import com.ycb.pojo.dto.AccIdPetIdDTO;
-import com.ycb.pojo.vo.AllPetAndBulVO;
+import com.ycb.pojo.vo.AllPetBulletinVO;
 import com.ycb.exception.SystemException;
 import com.ycb.mapper.CollectAccPetMapper;
 import com.ycb.service.AccCollectBulService;
@@ -17,9 +20,15 @@ import java.util.List;
 public class AccCollectBulServiceImpl implements AccCollectBulService {
     @Resource
     private CollectAccPetMapper collectAccPetMapper;
+    @Resource
+    private AccountMapper accountMapper;
 
     @Override
     public void collectPB(AccIdPetIdDTO vo) {
+        // 该用户是否被禁用
+        if (accountMapper.isDisableByAccountId(vo.getAccId()) == StatusConstant.DISABLE) {
+            throw new OperationException();
+        }
         // 该用户是否已经收藏该宠物
         AccIdPetIdDTO collect = collectAccPetMapper.getOneByAccIdAndPetId(vo);
         int line = 0;
@@ -36,7 +45,7 @@ public class AccCollectBulServiceImpl implements AccCollectBulService {
     }
 
     @Override
-    public List<AllPetAndBulVO> getCollectPBById(Integer id) {
+    public List<AllPetBulletinVO> getCollectPBById(Integer id) {
         return collectAccPetMapper.getCollectPBById(id);
     }
 

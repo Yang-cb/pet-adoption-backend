@@ -1,13 +1,14 @@
 package com.ycb.service.impl;
 
 import com.ycb.common.constant.MessageConstant;
+import com.ycb.common.constant.StatusConstant;
 import com.ycb.pojo.entity.Bulletin;
 import com.ycb.pojo.entity.Pet;
 import com.ycb.pojo.entity.Picture;
 import com.ycb.pojo.dto.AccIdPetIdDTO;
 import com.ycb.pojo.dto.PublishBulletinDTO;
 import com.ycb.pojo.dto.UpdateBulletinDTO;
-import com.ycb.pojo.vo.AllPetAndBulVO;
+import com.ycb.pojo.vo.AllPetBulletinVO;
 import com.ycb.exception.FileException;
 import com.ycb.exception.OperationException;
 import com.ycb.mapper.PetBulletinMapper;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 用户发布宠物和布告的服务实现类
@@ -47,6 +49,7 @@ public class AccPostBulServiceImpl implements AccPostBulService {
         bulletin.setGmtCreate(date);
         bulletin.setGmtModified(date);
         bulletin.setAccountId(vo.getAccountId());
+        bulletin.setBulletinStatus(0);
         BeanUtils.copyProperties(vo, pet);
         pet.setGmtCreate(date);
         pet.setGmtModified(date);
@@ -57,14 +60,14 @@ public class AccPostBulServiceImpl implements AccPostBulService {
     }
 
     @Override
-    public List<AllPetAndBulVO> getPostPBById(Integer id) {
-        return petBulletinMapper.getPostPBById(id);
+    public List<AllPetBulletinVO> getPostPBById(Integer id) {
+        return petBulletinMapper.getPostPBByAccountId(id);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updatePostPBIsDelete(AccIdPetIdDTO vo) {
-        int bulletinId = petBulletinMapper.getBulIdByPetId(vo.getPetId());
+        int bulletinId = petBulletinMapper.getBulletinIdByPetId(vo.getPetId());
         if ("null".equals(String.valueOf(bulletinId))) {
             throw new OperationException();
         }
@@ -73,7 +76,7 @@ public class AccPostBulServiceImpl implements AccPostBulService {
         if (bul < 0) {
             throw new OperationException();
         }
-        int line = petBulletinMapper.updatePostPIsDeleteByPetId(vo.getPetId());
+        int line = petBulletinMapper.updatePostPet2IsDeleteByPetId(vo.getPetId());
         line += petBulletinMapper.updatePostBIsDeleteByBulId(bulletinId);
         if (line != 2) {
             throw new OperationException();
@@ -83,6 +86,12 @@ public class AccPostBulServiceImpl implements AccPostBulService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updatePetByPetId(UpdateBulletinDTO vo) {
+        // 判断用户是否发布了该宠物
+        int one = petBulletinMapper.getBulByBulIdAndAccId(vo.getBulletinId(), vo.getAccountId());
+        if (one != 1) throw new OperationException();
+        // 该布告是否已经审核
+        if (Objects.equals(vo.getBulletinStatus(), StatusConstant.PENDING_REVIEW))
+            throw new OperationException(HttpStatus.BAD_REQUEST.value(), MessageConstant.PENDING_REVIEW);
         // 如果上传了图片
         if (vo.getFile() != null) {
             // 上传图片
@@ -98,10 +107,9 @@ public class AccPostBulServiceImpl implements AccPostBulService {
         Pet pet = new Pet();
         BeanUtils.copyProperties(vo, bulletin);
         bulletin.setGmtModified(date);
+        bulletin.setBulletinStatus(StatusConstant.PENDING_REVIEW);
         BeanUtils.copyProperties(vo, pet);
         pet.setGmtModified(date);
-        int bId = petBulletinMapper.getBIdByPid(vo.getPetId());
-        bulletin.setBulletinId(bId);
         int line = petBulletinMapper.updateBulletinByBulId(bulletin);
         line += petBulletinMapper.updatePetByPetId(pet);
         if (line != 2) {

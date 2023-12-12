@@ -1,11 +1,8 @@
 package com.ycb.mapper;
 
 import com.ycb.pojo.dto.AccIdPetIdDTO;
-import com.ycb.pojo.vo.AllPetAndBulVO;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
+import com.ycb.pojo.vo.AllPetBulletinVO;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -19,7 +16,6 @@ public interface CollectAccPetMapper {
      *
      * @param vo 用户id和宠物id
      */
-    @Insert("insert into `pet-adoption`.collect_acc_pet(acc_id, pet_id) value(#{accId}, #{petId})")
     int save(AccIdPetIdDTO vo);
 
     /**
@@ -27,7 +23,6 @@ public interface CollectAccPetMapper {
      *
      * @param vo 用户id和宠物id
      */
-    @Delete("delete from `pet-adoption`.collect_acc_pet where acc_id = #{accId} and pet_id = #{petId}")
     int delete(AccIdPetIdDTO vo);
 
     /**
@@ -36,7 +31,6 @@ public interface CollectAccPetMapper {
      * @param vo 用户id和宠物id
      * @return 收藏信息
      */
-    @Select("select * from `pet-adoption`.collect_acc_pet where acc_id = #{accId} and pet_id = #{petId}")
     AccIdPetIdDTO getOneByAccIdAndPetId(AccIdPetIdDTO vo);
 
     /**
@@ -44,5 +38,5 @@ public interface CollectAccPetMapper {
      * @param id 用户id
      * @return 用户收藏的宠物和布告
      */
-    List<AllPetAndBulVO> getCollectPBById(Integer id);
+    List<AllPetBulletinVO> getCollectPBById(Integer id);
 }

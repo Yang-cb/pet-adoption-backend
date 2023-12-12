@@ -56,6 +56,18 @@ public class PublishBulletinDTO {
     @Max(value = 1, message = "是否免费格式有误")
     private Integer isFree;
     /**
+     * 是否绝育
+     */
+    @NotNull(message = "请指定是否绝育")
+    @Min(value = 0, message = "是否绝育格式有误")
+    @Max(value = 1, message = "是否绝育格式有误")
+    private Integer isSterilization;
+    /**
+     * 健康状态
+     */
+    @NotNull(message = "健康状态不能为空")
+    private String petHealthStatus;
+    /**
      * 领养地址
      */
     @NotNull(message = "领养地址不能为空")
@@ -95,4 +107,8 @@ public class PublishBulletinDTO {
     @NotNull(message = "详细内容不能为空")
     @Length(min = 1, max = 300, message = "详细内容长度不能大于300字")
     private String text;
+    /**
+     * 布告状态
+     */
+    private Integer bulletinStatus;
 }

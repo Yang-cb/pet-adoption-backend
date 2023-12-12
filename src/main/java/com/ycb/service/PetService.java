@@ -1,8 +1,8 @@
 package com.ycb.service;
 
 import com.ycb.pojo.entity.Pet;
-import com.ycb.pojo.vo.AllPetAndBulVO;
-import com.ycb.pojo.vo.OnePB2PicVO;
+import com.ycb.pojo.vo.AllPetBulletinVO;
+import com.ycb.pojo.vo.OnePetBulletinVO;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface PetService {
      *
      * @return 宠物列表
      */
-    List<AllPetAndBulVO> getAll();
+    List<AllPetBulletinVO> getAll();
 
     /**
      * 根据宠物类型获取所有宠物
@@ -30,5 +30,5 @@ public interface PetService {
      * @param petId 宠物id
      * @return 宠物信息
      */
-    OnePB2PicVO getPBByPetId(Integer petId);
+    OnePetBulletinVO getPBByPetId(Integer petId);
 }

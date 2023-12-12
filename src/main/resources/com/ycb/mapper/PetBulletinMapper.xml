@@ -7,46 +7,84 @@
 
     <update id="updateBulletinByBulId">
         update `pet-adoption`.bulletin
-        set contacts_name   = #{contactsName},
-            contacts_phone  = #{contactsPhone},
-            contacts_wechat = #{contactsWechat},
-            contacts_email  = #{contactsEmail},
-            location        = #{location},
-            title           = #{title},
-            text            = #{text},
-            gmt_modified    = #{gmtModified}
+        <set>
+            <if test="contactsName != null">
+                contacts_name = #{contactsName},
+            </if>
+            <if test="contactsPhone != null">
+                contacts_phone = #{contactsPhone},
+            </if>
+            <if test="contactsWechat != null">
+                contacts_wechat = #{contactsWechat},
+            </if>
+            <if test="contactsEmail != null">
+                contacts_email = #{contactsEmail},
+            </if>
+            <if test="location != null">
+                location = #{location},
+            </if>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="text != null">
+                text = #{text},
+            </if>
+            <if test="bulletinStatus != null">
+                bulletin_status = #{bulletinStatus},
+            </if>
+            gmt_modified = #{gmtModified}
+        </set>
         where bulletin_id = #{bulletinId}
     </update>
 
     <update id="updatePetByPetId">
         update `pet-adoption`.pet
-        set pet_name     = #{petName},
-            pet_type     = #{petType},
-            pet_sex      = #{petSex},
-            is_free      = #{isFree},
+        <set>
+            <if test="petName != null">
+                pet_name = #{petName},
+            </if>
+            <if test="petType != null">
+                pet_type = #{petType},
+            </if>
+            <if test="petSex != null">
+                pet_sex = #{petSex},
+            </if>
+            <if test="isFree != null">
+                is_free = #{isFree},
+            </if>
+            <if test="isSterilization != null">
+                is_sterilization = #{isSterilization},
+            </if>
+            <if test="petHealthStatus != null">
+                pet_health_status = #{petHealthStatus},
+            </if>
             gmt_modified = #{gmtModified}
+        </set>
         where pet_id = #{petId}
     </update>
 
-    <select id="getAll" resultType="com.ycb.pojo.vo.AllPetAndBulVO">
+    <select id="getAll" resultType="com.ycb.pojo.vo.AllPetBulletinVO">
         select *
         from `pet-adoption`.pet pet
                  join `pet-adoption`.bulletin b on b.bulletin_id = pet.bulletin_id
                  join `pet-adoption`.picture p on p.pic_id = pet.picture_id
         where pet.is_delete = 0
           and b.is_delete = 0
+          and b.bulletin_status = 1
         order by b.gmt_create
     </select>
 
-    <select id="getByPetId" resultType="com.ycb.pojo.vo.OnePB2PicVO">
+    <select id="getOneByPetId" resultType="com.ycb.pojo.vo.OnePetBulletinVO">
         select *
         from `pet-adoption`.pet
                  join `pet-adoption`.bulletin b on b.bulletin_id = pet.bulletin_id
                  join `pet-adoption`.picture p on p.pic_id = pet.picture_id
         where pet.pet_id = #{petId}
+            and pet.is_delete = 0
+            and b.is_delete = 0
     </select>
 
-    <select id="getAllByType" resultType="com.ycb.pojo.entity.Pet">
+    <select id="getAllByPetType" resultType="com.ycb.pojo.entity.Pet">
         select *
         from `pet-adoption`.pet
                  join `pet-adoption`.bulletin b on b.bulletin_id = pet.bulletin_id
@@ -54,23 +92,24 @@
         where pet_type = #{type}
           and pet.is_delete = 0
           and b.is_delete = 0
+          and b.bulletin_status = 1
         order by b.gmt_modified
     </select>
 
-    <select id="getBIdByPid" resultType="java.lang.Integer">
+    <select id="getBulletinIdByPetId" resultType="java.lang.Integer">
         select bulletin_id
         from `pet-adoption`.pet
         where pet_id = #{petId}
     </select>
 
     <insert id="savePet">
-        insert into `pet-adoption`.pet(pet_name, pet_type, pet_sex, picture_id, gmt_create, gmt_modified,
-                                       bulletin_id)
-            value (#{petName}, #{petType}, #{petSex}, #{pictureId}, #{gmtCreate}, #{gmtModified},
-                   #{bulletinId})
+        insert into `pet-adoption`.pet(bulletin_id, picture_id, pet_name, pet_type, pet_health_status,
+                                       is_sterilization, gmt_create, gmt_modified)
+            value (#{bulletinId}, #{pictureId}, #{petName}, #{petType}, #{petHealthStatus}, #{isSterilization},
+                   #{gmtCreate}, #{gmtModified})
     </insert>
 
-    <select id="getPostPBById" resultType="com.ycb.pojo.vo.AllPetAndBulVO">
+    <select id="getPostPBByAccountId" resultType="com.ycb.pojo.vo.AllPetBulletinVO">
         select *
         from `pet-adoption`.bulletin b
                  join `pet-adoption`.account a on a.account_id = b.account_id
@@ -79,17 +118,21 @@
         where b.account_id = #{id}
           and b.is_delete = 0
           and pet.is_delete = 0
+          and a.account_status = 1
+          and a.is_delete = 0
+        order by b.gmt_create
     </select>
 
     <insert id="saveBulletin" parameterType="com.ycb.pojo.entity.Bulletin" useGeneratedKeys="true"
             keyProperty="bulletinId">
-        insert into `pet-adoption`.bulletin(type, contacts_name, contacts_phone, contacts_wechat, contacts_email,
-                                            location, title, text, gmt_create, gmt_modified, account_id)
-            value (#{type}, #{contactsName}, #{contactsPhone}, #{contactsWechat}, #{contactsEmail}, #{location},
-                   #{title}, #{text}, #{gmtCreate}, #{gmtModified}, #{accountId})
+        insert into `pet-adoption`.bulletin(account_id, type, bulletin_status, contacts_name, contacts_phone,
+                                            contacts_wechat, contacts_email, location, title, text, gmt_create,
+                                            gmt_modified)
+            value (#{accountId}, #{type}, #{bulletinStatus}, #{contactsName}, #{contactsPhone}, #{contactsWechat},
+                   #{contactsEmail}, #{location}, #{title}, #{text}, #{gmtCreate}, #{gmtModified})
     </insert>
 
-    <update id="updatePostPIsDeleteByPetId">
+    <update id="updatePostPet2IsDeleteByPetId">
         update `pet-adoption`.pet
         set is_delete = 1
         where pet_id = #{petId}
@@ -101,14 +144,8 @@
         where bulletin_id = #{bId}
     </update>
 
-    <select id="getBulIdByPetId" resultType="java.lang.Integer">
-        select pet.bulletin_id
-        from `pet-adoption`.pet
-        where pet_id = #{pet_id}
-    </select>
-
     <select id="getBulByBulIdAndAccId" resultType="java.lang.Integer">
-        select *
+        select count(1)
         from `pet-adoption`.bulletin
         where bulletin_id = #{bulletinId}
           and account_id = #{accId}

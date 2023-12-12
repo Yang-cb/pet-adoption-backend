@@ -52,6 +52,7 @@ public class FileServiceImpl implements FileService {
             // 上传
             file.transferTo(dest);
             picture.setPicName(fileName);
+            picture.setPicType(type);
             fileMapper.upload(picture);
         } catch (Exception e) {
             throw new OperationException();

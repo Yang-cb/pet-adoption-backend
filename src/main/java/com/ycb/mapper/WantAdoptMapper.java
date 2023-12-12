@@ -1,5 +1,6 @@
 package com.ycb.mapper;
 
+import com.ycb.pojo.dto.UpdateWantStatusDTO;
 import com.ycb.pojo.entity.WantAdopt;
 import com.ycb.pojo.vo.AllWantAdoptVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -33,19 +34,17 @@ public interface WantAdoptMapper {
     List<AllWantAdoptVO> getReceiveWantAdoptByAccId(Integer accountId);
 
     /**
-     * 根据发布宠物布告的用户id和想领id查看审核通过的（status = 1）想领信息是否存在
+     * 根据发布宠物布告的用户id和想领id查看审核通过的（status = ?）想领信息是否存在
      *
-     * @param accountId 用户id
-     * @param wantId    想领id
+     * @param vo 想领信息
      * @return 想领信息
      */
-    int existByAccIdAndWantId(Integer accountId, Integer wantId);
+    int existByAccIdAndWantId(UpdateWantStatusDTO vo);
 
     /**
      * 更新想领状态
-     * @param wantId 想领id
-     * @param wantStatus 想领状态
+     * @param vo 想领信息
      * @return 更新行数
      */
-    int updateWantAdoptStatus(Integer wantId, Integer wantStatus);
+    int updateWantAdoptStatus(UpdateWantStatusDTO vo);
 }
