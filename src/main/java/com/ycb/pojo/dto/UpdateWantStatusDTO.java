@@ -2,6 +2,8 @@ package com.ycb.pojo.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * 更新想领状态（中间态）
  */
@@ -23,4 +25,8 @@ public class UpdateWantStatusDTO {
      * 想领状态
      */
     private Integer wantStatus;
+    /**
+     * 更新时间
+     */
+    private LocalDateTime gmtModified;
 }

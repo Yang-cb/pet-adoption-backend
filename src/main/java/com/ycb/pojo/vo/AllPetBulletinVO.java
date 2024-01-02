@@ -2,10 +2,10 @@ package com.ycb.pojo.vo;
 
 import lombok.Data;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 /**
- * 宠物信息及布告信息
+ * 管理员获取全部宠物信息
  */
 @Data
 public class AllPetBulletinVO {
@@ -30,6 +30,10 @@ public class AllPetBulletinVO {
      */
     private Integer isFree;
     /**
+     * 是否已被领养
+     */
+    private Integer isAdopt;
+    /**
      * 宠物照片名字
      */
     private String picName;
@@ -37,10 +41,6 @@ public class AllPetBulletinVO {
      * 领养人地点
      */
     private String location;
-    /**
-     * 是否已被领养
-     */
-    private Integer isAdopt;
     /**
      * 联系人
      */
@@ -68,7 +68,19 @@ public class AllPetBulletinVO {
     /**
      * 发布布告的时间
      */
-    private Date gmtCreate;
+    private LocalDateTime gmtCreate;
+    /**
+     * 更新布告的时间
+     */
+    private LocalDateTime gmtModified;
+    /**
+     * 布告状态 1正常0删除
+     */
+    private Integer isDelete;
+    /**
+     * 发布人id
+     */
+    private Integer accountId;
     /**
      * 布告状态
      */

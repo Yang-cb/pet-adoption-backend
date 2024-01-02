@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(DataAccessException.class)
     public RestBean<String> exceptionHandler(DataAccessException e) {
-        log.error(e.getClass() + " - 异常信息：{}", e.getMessage());
+        log.error(e.getClass() + " - 异常信息：{}", e.getCause().getMessage());
         return RestBean.failure(HttpStatus.INTERNAL_SERVER_ERROR.value(), MessageConstant.DATABASE_ERROR);
     }
 }

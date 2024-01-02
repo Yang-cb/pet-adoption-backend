@@ -18,4 +18,5 @@ public class MessageConstant {
     public static final String OPERATION_FAILED = "操作失败";
     public static final String PENDING_REVIEW = "未审核";
     public static final String DATABASE_ERROR = "数据库异常";
+    public static final String NOT_EXIST_TYPE = "不存在的类型";
 }

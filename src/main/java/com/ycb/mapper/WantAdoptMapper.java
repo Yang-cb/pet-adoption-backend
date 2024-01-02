@@ -1,5 +1,9 @@
 package com.ycb.mapper;
 
+import com.github.pagehelper.Page;
+import com.ycb.annotation.AutoFill;
+import com.ycb.common.enumerate.OperationType;
+import com.ycb.pojo.dto.PageWantAdoptDTO;
 import com.ycb.pojo.dto.UpdateWantStatusDTO;
 import com.ycb.pojo.entity.WantAdopt;
 import com.ycb.pojo.vo.AllWantAdoptVO;
@@ -14,24 +18,27 @@ import java.util.List;
 public interface WantAdoptMapper {
     /**
      * 添加想领
+     *
      * @param wantAdopt 想领信息
-     * @return 添加行数
      */
-    int addWantAdopt(WantAdopt wantAdopt);
+    @AutoFill(OperationType.INSERT)
+    void addWantAdopt(WantAdopt wantAdopt);
 
     /**
      * 根据用户id获取用户发布的全部想领信息
+     *
      * @param accountId 用户id
      * @return 发布的全部想领信息
      */
-    List<AllWantAdoptVO> getWantAdoptByAccId(Integer accountId);
+    List<AllWantAdoptVO> getSendWant(Integer accountId);
 
     /**
      * 根据用户id获取用户收到的全部想领信息
-     * @param accountId 用户id
+     *
+     * @param dto 分页查询想领数据传输对象
      * @return 收到的全部想领信息
      */
-    List<AllWantAdoptVO> getReceiveWantAdoptByAccId(Integer accountId);
+    Page<AllWantAdoptVO> getReceiveWant(PageWantAdoptDTO dto);
 
     /**
      * 根据发布宠物布告的用户id和想领id查看审核通过的（status = ?）想领信息是否存在
@@ -43,8 +50,18 @@ public interface WantAdoptMapper {
 
     /**
      * 更新想领状态
+     *
      * @param vo 想领信息
      * @return 更新行数
      */
+    @AutoFill(OperationType.UPDATE)
     int updateWantAdoptStatus(UpdateWantStatusDTO vo);
+
+    /**
+     * 判断用户是否有新的想领
+     *
+     * @param accountId 用户id
+     * @return 是否有新的想领
+     */
+    int hasNewReceiveWant(Integer accountId);
 }

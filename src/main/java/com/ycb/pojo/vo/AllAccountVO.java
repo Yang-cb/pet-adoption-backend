@@ -1,14 +1,15 @@
-package com.ycb.pojo.vo.admin;
+package com.ycb.pojo.vo;
 
 import lombok.Data;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 /**
  * 管理员获取全部用户信息
  */
 @Data
-public class AdminAllAccountVO {
+public class AllAccountVO {
     /**
      * 用户id
      */
@@ -48,11 +49,11 @@ public class AdminAllAccountVO {
     /**
      * 创建日期
      */
-    private Date gmtCreate;
+    private LocalDateTime gmtCreate;
     /**
      * 更新日期
      */
-    private Date gmtModified;
+    private LocalDateTime gmtModified;
     /**
      * 状态
      */

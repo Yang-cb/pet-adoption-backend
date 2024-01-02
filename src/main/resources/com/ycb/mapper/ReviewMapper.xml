@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ycb.mapper.ReviewMapper">
+
+    <insert id="addReview">
+        insert into `pet-adoption`.review(review_text, gmt_create, gmt_modified,
+                                          is_delete, reviewer_id, reviewed_pet_id)
+            value (#{reviewText}, #{gmtCreate}, #{gmtModified},
+                   #{isDelete}, #{reviewerId}, #{reviewedPetId})
+    </insert>
+
+    <select id="getReviewByPetId" resultType="com.ycb.pojo.vo.AllReviewVO">
+        select r.*, a.username, nike_name, p.pic_name
+        from `pet-adoption`.review r
+                 join `pet-adoption`.account a on r.reviewer_id = a.account_id
+                 join `pet-adoption`.picture p on a.picture_id = p.pic_id
+        where reviewed_pet_id = #{petId}
+          and r.is_delete = 0
+        order by gmt_create desc
+    </select>
+
+    <select id="getReviewByReviewIdAndAccountId" resultType="java.lang.Integer">
+        select count(*)
+        from `pet-adoption`.review
+        where review_id = #{reviewId}
+          and reviewer_id = #{accountId}
+          and is_delete = 0
+    </select>
+
+    <update id="deleteReview">
+        update `pet-adoption`.review
+        set is_delete    = #{isDelete},
+            gmt_modified = #{gmtModified}
+        where review_id = #{reviewId}
+    </update>
+</mapper>

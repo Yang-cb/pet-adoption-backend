@@ -3,6 +3,7 @@ package com.ycb.pojo.entity;
 import lombok.Data;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class Account {
@@ -45,7 +46,7 @@ public class Account {
     /**
      * 出生日期
      */
-    private Data birthday;
+    private Date birthday;
     /**
      * 性别
      */
@@ -57,11 +58,11 @@ public class Account {
     /**
      * 创建时间
      */
-    private Date gmtCreate;
+    private LocalDateTime gmtCreate;
     /**
      * 修改时间
      */
-    private Date gmtModified;
+    private LocalDateTime gmtModified;
     /**
      * 是否删除
      */

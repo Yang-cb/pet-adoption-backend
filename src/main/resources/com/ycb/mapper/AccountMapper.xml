@@ -11,6 +11,14 @@
           and account_status = 1
     </select>
 
+    <select id="getLoginVOByUsername" resultType="com.ycb.pojo.vo.LoginVO">
+        select *
+        from `pet-adoption`.account
+                 join `pet-adoption`.picture p on p.pic_id = account.picture_id
+        where username = #{username}
+          and account_status = 1
+    </select>
+
     <insert id="save">
         insert into `pet-adoption`.account(username, password, email,
                                            gmt_create, gmt_modified, authority, nike_name)
@@ -26,7 +34,8 @@
 
     <update id="updatePwByEmail">
         update `pet-adoption`.account
-        set password = #{password}
+        set password     = #{password},
+            gmt_modified = #{gmtModified}
         where email = #{email}
           and account_status = 1
     </update>
@@ -42,29 +51,33 @@
     <update id="updateAccountById">
         update `pet-adoption`.account
         <set>
-            <if test="location != null">
+            <if test="location != null and location != ''">
                 location = #{location},
             </if>
-            <if test="nikeName != null">
+            <if test="nikeName != null and nikeName != ''">
                 nike_name = #{nikeName},
             </if>
             <if test="birthday != null">
                 birthday = #{birthday},
             </if>
-            <if test="signature != null">
+            <if test="signature != null and signature != ''">
                 signature = #{signature},
             </if>
             <if test="sex != null">
                 sex = #{sex},
             </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified},
+            </if>
         </set>
-        where account_id = #{id}
+        where account_id = #{accountId}
         and account_status = 1
     </update>
 
     <update id="updateAccPic">
         update `pet-adoption`.account
-        set picture_id = #{pictureId}
+        set picture_id   = #{picture.picId},
+            gmt_modified = #{picture.gmtModified}
         where account_id = #{accId}
           and account_status = 1
     </update>
@@ -79,5 +92,27 @@
         select account_status
         from `pet-adoption`.account
         where account_id = #{id}
+    </select>
+
+    <select id="getEmailById" resultType="java.lang.String">
+        select email
+        from `pet-adoption`.account
+        where account_id = #{accountId}
+    </select>
+
+    <select id="getAccountByBulletinId" resultType="com.ycb.pojo.vo.AccountVO">
+        select *
+        from `pet-adoption`.account a
+                 join `pet-adoption`.bulletin b on b.account_id = a.account_id
+                 join `pet-adoption`.picture p on p.pic_id = a.picture_id
+        where b.bulletin_id = #{bulletinId}
+          and a.account_status = 1
+    </select>
+
+    <select id="getAccPicNameByAccId" resultType="java.lang.String">
+        select pic.pic_name
+        from `pet-adoption`.picture pic
+                 join `pet-adoption`.account a on pic.pic_id = a.picture_id
+        where a.account_id = #{accountId}
     </select>
 </mapper>

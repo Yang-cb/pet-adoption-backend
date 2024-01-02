@@ -1,17 +1,14 @@
 package com.ycb.controller;
 
+import com.ycb.common.result.PageResult;
 import com.ycb.common.result.RestBean;
 import com.ycb.pojo.dto.AccIdPetIdDTO;
-import com.ycb.pojo.vo.AllPetBulletinVO;
-import com.ycb.service.AccCollectBulService;
+import com.ycb.pojo.dto.PageCollectPetDTO;
+import com.ycb.service.CollectPetService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 用户收藏宠物和布告的控制器
@@ -19,9 +16,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/collectBul")
 @Validated
-public class AccCollectBulController {
+public class CollectPetController {
     @Resource
-    private AccCollectBulService accCollectBulService;
+    private CollectPetService collectPetService;
 
     /**
      * 收藏/取消收藏宠物
@@ -31,33 +28,31 @@ public class AccCollectBulController {
      */
     @PostMapping("/collectPB")
     public RestBean<String> collectPB(@Valid @RequestBody AccIdPetIdDTO vo) {
-        accCollectBulService.collectPB(vo);
+        collectPetService.collectPB(vo);
         return RestBean.success();
     }
 
     /**
      * 获取用户收藏的宠物和布告
      *
-     * @param id 用户id
+     * @param dto 分页信息
      * @return 用户收藏的宠物和布告
      */
     @GetMapping("/getCollectPB")
-    public RestBean<List<AllPetBulletinVO>> getCollectPB(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "id格式有误")
-                                                       @RequestParam String id) {
-        List<AllPetBulletinVO> allPetBulletinVOS = accCollectBulService.getCollectPBById(Integer.valueOf(id));
-        return RestBean.success(allPetBulletinVOS);
+    public RestBean<PageResult> getCollectPB(PageCollectPetDTO dto) {
+        PageResult pageResult = collectPetService.getAllCollect(dto);
+        return RestBean.success(pageResult);
     }
 
     /**
      * 根据宠物id、宠物id判断用户是否收藏该宠物
      *
-     * @param accId 用户id
-     * @param petId 宠物id
+     * @param dto 用户id 宠物id
      * @return 是否收藏
      */
     @GetMapping("/isCollect")
-    public RestBean<Boolean> isCollect(@RequestParam Integer accId, @RequestParam Integer petId) {
-        Boolean isCollect = accCollectBulService.isCollect(new AccIdPetIdDTO(accId, petId));
+    public RestBean<Boolean> isCollect(@Valid AccIdPetIdDTO dto) {
+        Boolean isCollect = collectPetService.isCollect(dto);
         return RestBean.success(isCollect);
     }
 }

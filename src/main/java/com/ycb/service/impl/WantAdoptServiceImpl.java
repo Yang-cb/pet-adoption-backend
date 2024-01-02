@@ -1,16 +1,20 @@
 package com.ycb.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.ycb.common.constant.StatusConstant;
+import com.ycb.common.result.PageResult;
+import com.ycb.mapper.AccountMapper;
+import com.ycb.pojo.dto.PageWantAdoptDTO;
 import com.ycb.pojo.dto.UpdateWantStatusDTO;
 import com.ycb.pojo.entity.WantAdopt;
 import com.ycb.pojo.vo.AllWantAdoptVO;
 import com.ycb.exception.OperationException;
-import com.ycb.exception.SystemException;
 import com.ycb.mapper.WantAdoptMapper;
 import com.ycb.service.WantAdoptService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.List;
 
 /**
@@ -20,27 +24,30 @@ import java.util.List;
 public class WantAdoptServiceImpl implements WantAdoptService {
     @Resource
     private WantAdoptMapper wantAdoptMapper;
+    @Resource
+    private AccountMapper accountMapper;
 
     @Override
     public void addWantAdopt(WantAdopt wantAdopt) {
-        Date date = new Date(new java.util.Date().getTime());
-        wantAdopt.setGmtCreate(date);
-        wantAdopt.setGmtModified(date);
-        wantAdopt.setWantStatus(0);
-        int i = wantAdoptMapper.addWantAdopt(wantAdopt);
-        if (i != 1) {
-            throw new SystemException();
-        }
+        wantAdopt.setWantStatus(StatusConstant.PENDING_REVIEW);
+        wantAdoptMapper.addWantAdopt(wantAdopt);
     }
 
     @Override
-    public List<AllWantAdoptVO> getWantAdoptByAccId(Integer accountId) {
-        return wantAdoptMapper.getWantAdoptByAccId(accountId);
+    public List<AllWantAdoptVO> getSendWant(Integer accountId) {
+        return wantAdoptMapper.getSendWant(accountId);
     }
 
     @Override
-    public List<AllWantAdoptVO> getReceiveWantAdopt(Integer accountId) {
-        return wantAdoptMapper.getReceiveWantAdoptByAccId(accountId);
+    public PageResult getReceiveWant(PageWantAdoptDTO dto) {
+        PageHelper.startPage(dto.getPage(), dto.getPageSize());
+        Page<AllWantAdoptVO> page = wantAdoptMapper.getReceiveWant(dto);
+        // 填充用户头像
+        page.getResult().forEach(allWantAdoptVO ->
+                allWantAdoptVO.setAccPicName(
+                        accountMapper.getAccPicNameByAccId(allWantAdoptVO.getAccountId())
+                ));
+        return PageResult.builder().records(page.getResult()).total(page.getTotal()).build();
     }
 
     @Override
@@ -52,5 +59,10 @@ public class WantAdoptServiceImpl implements WantAdoptService {
         }
         // 更新想领状态
         wantAdoptMapper.updateWantAdoptStatus(vo);
+    }
+
+    @Override
+    public boolean hasNewReceiveWant(Integer accountId) {
+        return wantAdoptMapper.hasNewReceiveWant(accountId) > 0;
     }
 }

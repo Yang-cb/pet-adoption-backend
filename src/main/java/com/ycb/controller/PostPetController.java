@@ -1,27 +1,25 @@
 package com.ycb.controller;
 
+import com.ycb.common.result.PageResult;
 import com.ycb.common.result.RestBean;
 import com.ycb.pojo.dto.AccIdPetIdDTO;
-import com.ycb.pojo.dto.PublishBulletinDTO;
+import com.ycb.pojo.dto.AddBulletinDTO;
+import com.ycb.pojo.dto.PagePostPetDTO;
 import com.ycb.pojo.dto.UpdateBulletinDTO;
-import com.ycb.pojo.vo.AllPetBulletinVO;
-import com.ycb.service.AccPostBulService;
+import com.ycb.service.PostPetService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 /**
  * 用户发布宠物和布告的控制器
  */
 @RestController
 @RequestMapping("/api/postBul")
-public class AccPostBulController {
+public class PostPetController {
     @Resource
-    private AccPostBulService accPostBulService;
+    private PostPetService postPetService;
 
     /**
      * 发布领养信息：想领养adopt，求抱走away
@@ -29,22 +27,21 @@ public class AccPostBulController {
      * @return 发布结果
      */
     @PostMapping("/publishBulletin")
-    public RestBean<String> publishBulletin(@Valid PublishBulletinDTO vo) {
-        accPostBulService.publishBulletin(vo);
+    public RestBean<String> publishBulletin(@Valid AddBulletinDTO vo) {
+        postPetService.publishBulletin(vo);
         return RestBean.success();
     }
 
     /**
      * 获取用户发布的宠物和布告
      *
-     * @param id 用户id
+     * @param dto 分页发布的宠物数据传输对象
      * @return 用户发布的宠物和布告
      */
     @GetMapping("/getPostPB")
-    public RestBean<List<AllPetBulletinVO>> getPostPB(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "id格式有误")
-                                                    @RequestParam String id) {
-        List<AllPetBulletinVO> allPetBulletinVOS = accPostBulService.getPostPBById(Integer.valueOf(id));
-        return RestBean.success(allPetBulletinVOS);
+    public RestBean<PageResult> getPostPB(PagePostPetDTO dto) {
+        PageResult page = postPetService.getPostPBById(dto);
+        return RestBean.success(page);
     }
 
     /**
@@ -54,8 +51,8 @@ public class AccPostBulController {
      * @return 删除结果
      */
     @PostMapping("/deletePostPB")
-    public RestBean<String> updatePostPBIsDeleteByPetId(@Valid @RequestBody AccIdPetIdDTO vo) {
-        accPostBulService.updatePostPBIsDelete(vo);
+    public RestBean<String> deletePostPB(@Valid @RequestBody AccIdPetIdDTO vo) {
+        postPetService.deletePostPB(vo);
         return RestBean.success();
     }
 
@@ -66,7 +63,7 @@ public class AccPostBulController {
      */
     @PutMapping("/updatePetByPetId")
     public RestBean<String> updatePetByPetId(@Valid UpdateBulletinDTO vo) {
-        accPostBulService.updatePetByPetId(vo);
+        postPetService.updatePetByPetId(vo);
         return RestBean.success();
     }
 }

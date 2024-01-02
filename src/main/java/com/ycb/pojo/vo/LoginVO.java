@@ -12,7 +12,7 @@ public class LoginVO {
     /**
      * 用户id
      */
-    private Integer id;
+    private Integer accountId;
     /**
      * 用户名
      */
@@ -29,4 +29,8 @@ public class LoginVO {
      * token过期时间
      */
     private Date expireTime;
+    /**
+     * 用户头像
+     */
+    private String picName;
 }

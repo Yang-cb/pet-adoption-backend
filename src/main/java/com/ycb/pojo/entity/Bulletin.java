@@ -2,7 +2,8 @@ package com.ycb.pojo.entity;
 
 import lombok.Data;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+
 
 /**
  * 布告
@@ -56,11 +57,11 @@ public class Bulletin {
     /**
      * 创建时间
      */
-    private Date gmtCreate;
+    private LocalDateTime gmtCreate;
     /**
      * 修改时间
      */
-    private Date gmtModified;
+    private LocalDateTime gmtModified;
     /**
      * 是否删除 1是0否
      */

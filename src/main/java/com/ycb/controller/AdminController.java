@@ -1,18 +1,15 @@
 package com.ycb.controller;
 
+import com.ycb.common.result.PageResult;
 import com.ycb.common.result.RestBean;
 import com.ycb.pojo.dto.*;
-import com.ycb.pojo.vo.admin.AdminAllAccountVO;
-import com.ycb.pojo.vo.admin.AdminAllPetBulVO;
-import com.ycb.pojo.vo.admin.AdminAllWantAdoptVO;
 import com.ycb.service.AdminService;
+import com.ycb.service.PetService;
 import com.ycb.service.WantAdoptService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 管理员控制器
@@ -26,34 +23,55 @@ public class AdminController {
     @Resource
     private WantAdoptService wantAdoptService;
 
+    @Resource
+    private PetService petService;
+
     /**
      * 获取所有账户信息
      *
+     * @param dto 分页信息
      * @return 所有账户信息
      */
     @GetMapping("/getAllAccount")
-    public RestBean<List<AdminAllAccountVO>> getAllAccount() {
-        return RestBean.success(adminService.getAllAccount());
+    public RestBean<PageResult> getAllAccount(PageAccountDTO dto) {
+        PageResult pageResult = adminService.getAllAccount(dto);
+        return RestBean.success(pageResult);
     }
 
     /**
      * 获取所有宠物信息
      *
+     * @param dto 分页信息
      * @return 所有宠物信息
      */
     @GetMapping("/getAllPet")
-    public RestBean<List<AdminAllPetBulVO>> getAllPet() {
-        return RestBean.success(adminService.getAllPet());
+    public RestBean<PageResult> getAllPet(PagePetDTO dto) {
+        PageResult pageResult = petService.page(dto);
+        return RestBean.success(pageResult);
     }
 
     /**
      * 获取所有想要领养的信息
      *
+     * @param dto 分页信息
      * @return 所有想要领养的信息
      */
     @GetMapping("/getAllWantAdopt")
-    public RestBean<List<AdminAllWantAdoptVO>> getAllWantAdopt() {
-        return RestBean.success(adminService.getAllWantAdopt());
+    public RestBean<PageResult> getAllWantAdopt(PageWantAdoptDTO dto) {
+        PageResult pageResult = adminService.getAllWantAdopt(dto);
+        return RestBean.success(pageResult);
+    }
+
+    /**
+     * 获取所有举报信息
+     *
+     * @param dto 分页信息
+     * @return 所有举报信息
+     */
+    @GetMapping("/getAllReport")
+    public RestBean<PageResult> getAllReport(PageReportDTO dto) {
+        PageResult pageResult = adminService.getAllReport(dto);
+        return RestBean.success(pageResult);
     }
 
     /**
@@ -68,13 +86,13 @@ public class AdminController {
     }
 
     /**
-     * 修改用户状态（禁用、启用）
+     * 修改举报状态（禁用、启用）
      *
-     * @param dto 用户id和要修改的用户状态
+     * @param dto 举报类型、举报id、要修改的举报状态等
      */
-    @PutMapping("/updateAccountStatus")
-    public RestBean<String> updateAccountStatus(@Valid @RequestBody UpdateAccountStatusDTO dto) {
-        adminService.updateAccountStatus(dto);
+    @PutMapping("/updateReportStatus")
+    public RestBean<String> updateReportStatus(@Valid @RequestBody UpdateReportStatusDTO dto) {
+        adminService.updateReportStatus(dto);
         return RestBean.success();
     }
 

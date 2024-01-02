@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ycb.mapper.FollowMapper">
+    <insert id="addFollow">
+        insert into `pet-adoption`.follow(follower_id, followed_id, gmt_create, gmt_modified, is_delete)
+            value (#{followerId}, #{followedId}, #{gmtCreate}, #{gmtModified}, #{isDelete})
+    </insert>
+
+    <update id="deleteFollow">
+        update `pet-adoption`.follow
+        set is_delete    = #{isDelete},
+            gmt_modified = #{gmtModified}
+        where followed_id = #{followedId}
+          and follower_id = #{followerId}
+    </update>
+
+    <select id="getOneByFerIdFedId" resultType="com.ycb.pojo.entity.Follow">
+        select *
+        from `pet-adoption`.follow
+        where followed_id = #{followedId}
+          and follower_id = #{followerId}
+          and is_delete = 0
+    </select>
+
+    <select id="getFollowNumByAccountId" resultType="java.lang.Integer">
+        select count(1)
+        from `pet-adoption`.follow
+        where follower_id = #{accountId}
+          and is_delete = 0
+    </select>
+
+    <select id="getFollowedList" resultType="com.ycb.pojo.vo.FollowVO">
+        select a.*, p.pic_name
+        from `pet-adoption`.follow f
+                 join `pet-adoption`.account a on f.followed_id = a.account_id
+                 join `pet-adoption`.picture p on a.picture_id = p.pic_id
+        where follower_id = #{accountId}
+          and f.is_delete = 0
+    </select>
+</mapper>

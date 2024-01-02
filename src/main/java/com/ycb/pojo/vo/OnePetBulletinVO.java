@@ -2,7 +2,7 @@ package com.ycb.pojo.vo;
 
 import lombok.Data;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 /**
  * 宠物信息（含图片）
@@ -64,11 +64,11 @@ public class OnePetBulletinVO {
     /**
      * 发布布告的时间
      */
-    private Date gmtCreate;
+    private LocalDateTime gmtCreate;
     /**
      * 布告最后一次修改的时间
      */
-    private Date gmtModified;
+    private LocalDateTime gmtModified;
     /**
      * 布告ID
      */
@@ -89,4 +89,12 @@ public class OnePetBulletinVO {
      * 布告类型
      */
     private String type;
+    /**
+     * 是否已被领养
+     */
+    private Integer isAdopt;
+    /**
+     * 发布人id
+     */
+    private Integer accountId;
 }

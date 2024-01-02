@@ -2,6 +2,8 @@ package com.ycb.pojo.vo;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * 获取所有想要领养信息
  */
@@ -64,9 +66,13 @@ public class AllWantAdoptVO {
      */
     private Integer isFree;
     /**
-     * 照片名
+     * 宠物图片
      */
-    private String picName;
+    private String petPicName;
+    /**
+     * 用户图片
+     */
+    private String accPicName;
     /**
      * 文章内容
      */
@@ -79,4 +85,12 @@ public class AllWantAdoptVO {
      * 是否已被领养 1是0否
      */
     private Integer isAdopt;
+    /**
+     * 发布时间
+     */
+    private LocalDateTime gmtCreate;
+    /**
+     * 更新时间
+     */
+    private LocalDateTime gmtModified;
 }

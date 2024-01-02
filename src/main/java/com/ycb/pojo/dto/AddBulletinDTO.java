@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
  * 发布公告请求封装对象
  */
 @Data
-public class PublishBulletinDTO {
+public class AddBulletinDTO {
     /**
      * 发布者id
      */

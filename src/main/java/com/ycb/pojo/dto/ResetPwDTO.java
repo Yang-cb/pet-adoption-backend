@@ -3,7 +3,7 @@ package com.ycb.pojo.dto;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 /**
  * 重置密码封装对象
@@ -29,5 +29,5 @@ public class ResetPwDTO {
     /**
      * 重置时间
      */
-    private Date gmtModified;
+    private LocalDateTime gmtModified;
 }

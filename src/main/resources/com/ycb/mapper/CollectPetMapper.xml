@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ycb.mapper.CollectPetMapper">
+    <insert id="save">
+        insert into `pet-adoption`.collect_acc_pet(acc_id, pet_id, gmt_create, gmt_modified, is_delete)
+            value (#{accId}, #{petId}, #{gmtCreate}, #{gmtModified}, #{isDelete})
+    </insert>
+
+    <update id="delete">
+        update `pet-adoption`.collect_acc_pet
+        set is_delete    = #{isDelete},
+            gmt_modified = #{gmtModified}
+        where acc_id = #{accId}
+          and pet_id = #{petId}
+          and is_delete = 0
+    </update>
+
+    <select id="getOneByAccIdAndPetId" resultType="com.ycb.pojo.entity.CollectAccPet">
+        select *
+        from `pet-adoption`.collect_acc_pet
+        where acc_id = #{accId}
+          and pet_id = #{petId}
+          and is_delete = 0
+    </select>
+
+    <select id="getCollectPBById" resultType="com.ycb.pojo.vo.AllCollectVO">
+        select p.pet_id, b.title, a.nike_name, a.account_id, pic.pic_name as petPicName
+        from `pet-adoption`.collect_acc_pet cap
+                 join `pet-adoption`.pet p on cap.pet_id = p.pet_id
+                 join `pet-adoption`.bulletin b on p.bulletin_id = b.bulletin_id
+                 join `pet-adoption`.account a on b.account_id = a.account_id
+                 join `pet-adoption`.picture pic on p.picture_id = pic.pic_id
+        where cap.acc_id = #{accountId}
+          and cap.is_delete = 0
+    </select>
+</mapper>

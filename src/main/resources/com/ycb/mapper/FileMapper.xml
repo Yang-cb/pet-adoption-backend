@@ -5,7 +5,7 @@
 
 <mapper namespace="com.ycb.mapper.FileMapper">
     <insert id="upload" parameterType="com.ycb.pojo.entity.Picture" useGeneratedKeys="true" keyProperty="picId">
-        insert into `pet-adoption`.picture(pic_name, pic_type)
-            value (#{picName}, #{picType})
+        insert into `pet-adoption`.picture(pic_name, pic_type, gmt_create, gmt_modified)
+            value (#{picName}, #{picType}, #{gmtCreate}, #{gmtModified})
     </insert>
 </mapper>

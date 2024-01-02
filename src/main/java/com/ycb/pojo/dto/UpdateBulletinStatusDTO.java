@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * 修改布告状态（审核）
  */
@@ -22,4 +24,12 @@ public class UpdateBulletinStatusDTO {
     @Min(value = 1, message = "status格式有误")
     @Max(value = 2, message = "status格式有误")
     private Integer bulletinStatus;
+    /**
+     * 布告id
+     */
+    private Integer bulletinId;
+    /**
+     * 修改时间
+     */
+    private LocalDateTime gmtModified;
 }

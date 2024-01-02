@@ -17,7 +17,7 @@ public class UpdateAccountDTO {
      * 用户id
      */
     @NotNull(message = "用户id不能为空")
-    private Integer id;
+    private Integer accountId;
     /**
      * 地址
      */

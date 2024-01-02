@@ -3,6 +3,7 @@ package com.ycb.controller;
 import com.ycb.common.result.RestBean;
 import com.ycb.pojo.dto.UpdateAccPicDTO;
 import com.ycb.pojo.dto.UpdateAccountDTO;
+import com.ycb.pojo.entity.Picture;
 import com.ycb.pojo.vo.AccountVO;
 import com.ycb.service.AccountService;
 import jakarta.annotation.Resource;
@@ -41,7 +42,7 @@ public class AccountController {
      * @param vo 账户信息
      * @return 更新结果
      */
-    @PostMapping("/updateAccountById")
+    @PutMapping("/updateAccountById")
     public RestBean<String> updateAccountById(@Valid @RequestBody UpdateAccountDTO vo) {
         accountService.updateAccountById(vo);
         return RestBean.success();
@@ -53,8 +54,22 @@ public class AccountController {
      * @param vo 用户id和头像
      * @return 更新后的头像数据
      */
-    @PostMapping("/updateAccPic")
-    public String updateAccPic(@Valid UpdateAccPicDTO vo) {
-        return accountService.updateAccPic(vo);
+    @PutMapping("/updateAccPic")
+    public RestBean<Picture> updateAccPic(@Valid UpdateAccPicDTO vo) {
+        Picture picture = accountService.updateAccPic(vo);
+        return RestBean.success(picture);
+    }
+
+    /**
+     * 根据宠物id获取发布宠物的账户信息
+     *
+     * @param petId 宠物id
+     * @return 账户信息
+     */
+    @GetMapping("/getAccountByPetId")
+    public RestBean<AccountVO> getAccountByPetId(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "宠物id格式有误")
+                                                 @RequestParam String petId) {
+        AccountVO accountVO = accountService.getAccountByPetId(Integer.valueOf(petId));
+        return RestBean.success(accountVO);
     }
 }

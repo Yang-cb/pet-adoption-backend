@@ -1,6 +1,8 @@
 package com.ycb.controller;
 
+import com.ycb.common.result.PageResult;
 import com.ycb.common.result.RestBean;
+import com.ycb.pojo.dto.PageWantAdoptDTO;
 import com.ycb.pojo.dto.UpdateWantStatusDTO;
 import com.ycb.pojo.entity.WantAdopt;
 import com.ycb.pojo.dto.UpdateWantStatus34DTO;
@@ -44,23 +46,22 @@ public class WantAdoptController {
      * @param accountId 用户id
      * @return 想领信息
      */
-    @GetMapping("/getWantAdopt")
-    public RestBean<List<AllWantAdoptVO>> getWantAdoptByAccId(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "id格式有误")
+    @GetMapping("/getSendWant")
+    public RestBean<List<AllWantAdoptVO>> getSendWant(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "id格式有误")
                                                               @RequestParam("accountId") String accountId) {
-        List<AllWantAdoptVO> wantAdopts = wantAdoptService.getWantAdoptByAccId(Integer.valueOf(accountId));
+        List<AllWantAdoptVO> wantAdopts = wantAdoptService.getSendWant(Integer.valueOf(accountId));
         return RestBean.success(wantAdopts);
     }
 
     /**
      * 获取用户收到的想领信息
      *
-     * @param accountId 用户id
+     * @param dto 分页查询想领数据传输对象
      * @return 想领信息
      */
-    @GetMapping("/getReceiveWantAdopt")
-    public RestBean<List<AllWantAdoptVO>> getReceiveWantAdopt(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "id格式有误")
-                                                              @RequestParam("accountId") String accountId) {
-        List<AllWantAdoptVO> wantAdopts = wantAdoptService.getReceiveWantAdopt(Integer.valueOf(accountId));
+    @GetMapping("/getReceiveWant")
+    public RestBean<PageResult> getReceiveWant(PageWantAdoptDTO dto) {
+        PageResult wantAdopts = wantAdoptService.getReceiveWant(dto);
         return RestBean.success(wantAdopts);
     }
 
@@ -76,5 +77,18 @@ public class WantAdoptController {
         BeanUtils.copyProperties(dto, updateWantStatusDTO);
         wantAdoptService.updateWantAdoptStatus(updateWantStatusDTO);
         return RestBean.success();
+    }
+
+    /**
+     * 是否有新地想领请求
+     *
+     * @param accountId 用户id
+     * @return 是否有新地想领请求
+     */
+    @GetMapping("/hasNewReceive")
+    public RestBean<Boolean> hasNewReceiveWant(@NotBlank @Pattern(regexp = "^[0-9]+$", message = "id格式有误")
+                                             @RequestParam("accountId") String accountId) {
+        boolean hasNewWantAdopt = wantAdoptService.hasNewReceiveWant(Integer.valueOf(accountId));
+        return RestBean.success(hasNewWantAdopt);
     }
 }

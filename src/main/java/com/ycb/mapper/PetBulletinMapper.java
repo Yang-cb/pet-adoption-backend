@@ -1,12 +1,16 @@
 package com.ycb.mapper;
 
+import com.github.pagehelper.Page;
+import com.ycb.annotation.AutoFill;
+import com.ycb.common.enumerate.OperationType;
+import com.ycb.pojo.dto.DeletePetBulletinDTO;
+import com.ycb.pojo.dto.PagePetDTO;
+import com.ycb.pojo.dto.PagePostPetDTO;
 import com.ycb.pojo.entity.Bulletin;
 import com.ycb.pojo.entity.Pet;
 import com.ycb.pojo.vo.AllPetBulletinVO;
 import com.ycb.pojo.vo.OnePetBulletinVO;
 import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
 
 /**
  * 宠物和布告mapper
@@ -14,11 +18,12 @@ import java.util.List;
 @Mapper
 public interface PetBulletinMapper {
     /**
-     * 获取所有宠物和布告
+     * 获取全部宠物和布告
      *
-     * @return 所有宠物和布告
+     * @param dto 分页参数
+     * @return 宠物和布告列表
      */
-    List<AllPetBulletinVO> getAll();
+    Page<AllPetBulletinVO> page(PagePetDTO dto);
 
     /**
      * 根据宠物id获取单个宠物和布告
@@ -29,35 +34,28 @@ public interface PetBulletinMapper {
     OnePetBulletinVO getOneByPetId(Integer petId);
 
     /**
-     * 根据宠物种类获取宠物和布告
-     *
-     * @param type 宠物种类
-     * @return 宠物和布告
-     */
-    List<Pet> getAllByPetType(String type);
-
-    /**
      * 保存布告
      *
      * @param bulletin 布告
-     * @return 布告id
      */
-    int saveBulletin(Bulletin bulletin);
+    @AutoFill(OperationType.INSERT)
+    void saveBulletin(Bulletin bulletin);
 
     /**
      * 保存宠物
      *
      * @param pet 宠物
      */
+    @AutoFill(OperationType.INSERT)
     void savePet(Pet pet);
 
     /**
      * 根据用户id获取用户发布的宠物和布告
      *
-     * @param id 用户id
+     * @param dto 分页发布的宠物数据传输对象
      * @return 用户发布的宠物和布告
      */
-    List<AllPetBulletinVO> getPostPBByAccountId(Integer id);
+    Page<AllPetBulletinVO> getPostPBByAccountId(PagePostPetDTO dto);
 
     /**
      * 根据宠物id获取布告id
@@ -73,6 +71,7 @@ public interface PetBulletinMapper {
      * @param bulletin 布告
      * @return 修改结果
      */
+    @AutoFill(OperationType.UPDATE)
     int updateBulletinByBulId(Bulletin bulletin);
 
     /**
@@ -81,21 +80,24 @@ public interface PetBulletinMapper {
      * @param pet 宠物
      * @return 修改结果
      */
+    @AutoFill(OperationType.UPDATE)
     int updatePetByPetId(Pet pet);
 
     /**
      * 根据宠物id删除用户发布的宠物信息
      *
-     * @param petId 宠物id
+     * @param dto 宠物id
      */
-    int updatePostPet2IsDeleteByPetId(Integer petId);
+    @AutoFill(OperationType.DELETE)
+    int deletePetByPetId(DeletePetBulletinDTO dto);
 
     /**
      * 根据布告id删除用户发布的布告信息
      *
-     * @param bId 布告id
+     * @param dto 布告id
      */
-    int updatePostBIsDeleteByBulId(Integer bId);
+    @AutoFill(OperationType.DELETE)
+    int deleteBulletinByBulletinId(DeletePetBulletinDTO dto);
 
     /**
      * 根据宠物id和用户id获取宠物

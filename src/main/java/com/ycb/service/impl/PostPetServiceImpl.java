@@ -1,34 +1,33 @@
 package com.ycb.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.ycb.common.constant.MessageConstant;
 import com.ycb.common.constant.StatusConstant;
+import com.ycb.common.result.PageResult;
+import com.ycb.pojo.dto.*;
 import com.ycb.pojo.entity.Bulletin;
 import com.ycb.pojo.entity.Pet;
 import com.ycb.pojo.entity.Picture;
-import com.ycb.pojo.dto.AccIdPetIdDTO;
-import com.ycb.pojo.dto.PublishBulletinDTO;
-import com.ycb.pojo.dto.UpdateBulletinDTO;
-import com.ycb.pojo.vo.AllPetBulletinVO;
 import com.ycb.exception.FileException;
 import com.ycb.exception.OperationException;
 import com.ycb.mapper.PetBulletinMapper;
+import com.ycb.pojo.vo.AllPetBulletinVO;
 import com.ycb.service.FileService;
-import com.ycb.service.AccPostBulService;
+import com.ycb.service.PostPetService;
 import jakarta.annotation.Resource;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
-import java.util.List;
 import java.util.Objects;
 
 /**
  * 用户发布宠物和布告的服务实现类
  */
 @Service
-public class AccPostBulServiceImpl implements AccPostBulService {
+public class PostPetServiceImpl implements PostPetService {
     @Resource
     private FileService fileService;
     @Resource
@@ -36,23 +35,18 @@ public class AccPostBulServiceImpl implements AccPostBulService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void publishBulletin(PublishBulletinDTO vo) {
+    public void publishBulletin(AddBulletinDTO vo) {
         // 上传图片
         Picture picture = fileService.upload(vo.getFile(), vo.getPicType());
         if (picture == null)
             throw new FileException();
         // 对象赋值
-        Date date = new Date(new java.util.Date().getTime());
         Bulletin bulletin = new Bulletin();
         Pet pet = new Pet();
         BeanUtils.copyProperties(vo, bulletin);
-        bulletin.setGmtCreate(date);
-        bulletin.setGmtModified(date);
         bulletin.setAccountId(vo.getAccountId());
-        bulletin.setBulletinStatus(0);
+        bulletin.setBulletinStatus(StatusConstant.PENDING_REVIEW);
         BeanUtils.copyProperties(vo, pet);
-        pet.setGmtCreate(date);
-        pet.setGmtModified(date);
         petBulletinMapper.saveBulletin(bulletin);
         pet.setBulletinId(bulletin.getBulletinId());
         pet.setPictureId(picture.getPicId());
@@ -60,13 +54,18 @@ public class AccPostBulServiceImpl implements AccPostBulService {
     }
 
     @Override
-    public List<AllPetBulletinVO> getPostPBById(Integer id) {
-        return petBulletinMapper.getPostPBByAccountId(id);
+    public PageResult getPostPBById(PagePostPetDTO dto) {
+        PageHelper.startPage(dto.getPage(), dto.getPageSize());
+        Page<AllPetBulletinVO> page = petBulletinMapper.getPostPBByAccountId(dto);
+        return PageResult.builder()
+                .total(page.getTotal())
+                .records(page.getResult())
+                .build();
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void updatePostPBIsDelete(AccIdPetIdDTO vo) {
+    public void deletePostPB(AccIdPetIdDTO vo) {
         int bulletinId = petBulletinMapper.getBulletinIdByPetId(vo.getPetId());
         if ("null".equals(String.valueOf(bulletinId))) {
             throw new OperationException();
@@ -76,8 +75,10 @@ public class AccPostBulServiceImpl implements AccPostBulService {
         if (bul < 0) {
             throw new OperationException();
         }
-        int line = petBulletinMapper.updatePostPet2IsDeleteByPetId(vo.getPetId());
-        line += petBulletinMapper.updatePostBIsDeleteByBulId(bulletinId);
+        DeletePetBulletinDTO dto =
+                DeletePetBulletinDTO.builder().petId(vo.getPetId()).bulletinId(bulletinId).build();
+        int line = petBulletinMapper.deletePetByPetId(dto);
+        line += petBulletinMapper.deleteBulletinByBulletinId(dto);
         if (line != 2) {
             throw new OperationException();
         }
@@ -102,14 +103,11 @@ public class AccPostBulServiceImpl implements AccPostBulService {
             petBulletinMapper.updatePictureByPetId(vo.getPetId(), picture.getPicId());
         }
         // 对象赋值
-        Date date = new Date(new java.util.Date().getTime());
         Bulletin bulletin = new Bulletin();
         Pet pet = new Pet();
         BeanUtils.copyProperties(vo, bulletin);
-        bulletin.setGmtModified(date);
         bulletin.setBulletinStatus(StatusConstant.PENDING_REVIEW);
         BeanUtils.copyProperties(vo, pet);
-        pet.setGmtModified(date);
         int line = petBulletinMapper.updateBulletinByBulId(bulletin);
         line += petBulletinMapper.updatePetByPetId(pet);
         if (line != 2) {

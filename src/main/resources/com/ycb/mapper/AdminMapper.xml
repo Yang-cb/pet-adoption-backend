@@ -4,40 +4,76 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ycb.mapper.AdminMapper">
-    <select id="getAllAccount" resultType="com.ycb.pojo.vo.admin.AdminAllAccountVO">
+    <select id="getAllAccount" resultType="com.ycb.pojo.vo.AllAccountVO">
         select *
         from `pet-adoption`.account
-                 join `pet-adoption`.picture on account.picture_id = picture.pic_id
-        order by account_id
+        join `pet-adoption`.picture on account.picture_id = picture.pic_id
+        <where>
+            <if test="username != null and username != ''">
+                and username like concat('%', #{username}, '%')
+            </if>
+            <if test="accountStatus != null">
+                and account_status = #{accountStatus}
+            </if>
+        </where>
+        order by account.gmt_create desc
     </select>
 
-    <select id="getAllPet" resultType="com.ycb.pojo.vo.admin.AdminAllPetBulVO">
-        select *
-        from `pet-adoption`.pet pet
-                 join `pet-adoption`.bulletin b on b.bulletin_id = pet.bulletin_id
-                 join `pet-adoption`.picture p on p.pic_id = pet.picture_id
-        where pet.is_delete = 0
-          and b.is_delete = 0
-        order by pet_id
-    </select>
-
-    <select id="getAllWantAdopt" resultType="com.ycb.pojo.vo.admin.AdminAllWantAdoptVO">
+    <select id="getAllWantAdopt" resultType="com.ycb.pojo.vo.AllWantAdoptVO">
         select *
         from `pet-adoption`.pet
-                 join `pet-adoption`.want_adopt wa on pet.pet_id = wa.pet_id
-        where wa.is_delete = 0
-        order by want_id
+        join `pet-adoption`.want_adopt wa on pet.pet_id = wa.pet_id
+        <where>
+            <if test="petType != null and petType != ''">
+                and pet_type = #{petType}
+            </if>
+            <if test="wantStatus != null">
+                and want_status = #{wantStatus}
+            </if>
+        </where>
+        order by wa.gmt_create desc
+    </select>
+
+    <select id="getAllReport" resultType="com.ycb.pojo.vo.AllReportVO">
+        select *
+        from `pet-adoption`.report
+        <where>
+            <if test="reportType != null">
+                    and report_type = #{reportType}
+            </if>
+            <if test="reportStatus != null">
+                and report_status = #{reportStatus}
+            </if>
+        </where>
+        order by gmt_create desc
     </select>
 
     <update id="updateBulletinStatus">
         update `pet-adoption`.bulletin
-        set bulletin_status = #{bulletinStatus}
+        set bulletin_status = #{bulletinStatus},
+            gmt_modified    = #{gmtModified}
         where bulletin_id = #{bulletinId}
     </update>
 
     <update id="updateAccountStatus">
         update `pet-adoption`.account
-        set account_status = #{accountStatus}
-        where account_id = #{accountId}
+        set account_status = #{toStatus},
+            gmt_modified   = #{gmtModified}
+        where account_id = #{disableId}
+    </update>
+
+    <insert id="addDisable">
+        insert into `pet-adoption`.admin_operation_status
+        (disable_id, disable_type, modified_id, disable_check,
+         disable_text, gmt_create, gmt_modified)
+            value (#{disableId}, #{disableType}, #{modifiedId}, #{disableCheck},
+                   #{disableText}, #{gmtCreate}, #{gmtModified})
+    </insert>
+
+    <update id="updateReportStatus">
+        update `pet-adoption`.report
+        set report_status = #{toStatus},
+            gmt_modified  = #{gmtModified}
+        where report_id = #{reportId}
     </update>
 </mapper>

@@ -1,5 +1,7 @@
 package com.ycb.service;
 
+import com.ycb.common.result.PageResult;
+import com.ycb.pojo.dto.PageWantAdoptDTO;
 import com.ycb.pojo.dto.UpdateWantStatusDTO;
 import com.ycb.pojo.entity.WantAdopt;
 import com.ycb.pojo.vo.AllWantAdoptVO;
@@ -23,15 +25,15 @@ public interface WantAdoptService {
      * @param accountId 用户id
      * @return 想领信息
      */
-    List<AllWantAdoptVO> getWantAdoptByAccId(Integer accountId);
+    List<AllWantAdoptVO> getSendWant(Integer accountId);
 
     /**
      * 获取用户收到的想领信息
      *
-     * @param accountId 用户id
+     * @param dto 分页查询想领数据传输对象
      * @return 想领信息
      */
-    List<AllWantAdoptVO> getReceiveWantAdopt(Integer accountId);
+    PageResult getReceiveWant(PageWantAdoptDTO dto);
 
     /**
      * 更新想领状态
@@ -39,4 +41,12 @@ public interface WantAdoptService {
      * @param vo 想领信息
      */
     void updateWantAdoptStatus(UpdateWantStatusDTO vo);
+
+    /**
+     * 判断用户是否有新的想领
+     *
+     * @param accountId 用户id
+     * @return 是否有新的想领
+     */
+    boolean hasNewReceiveWant(Integer accountId);
 }

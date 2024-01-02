@@ -2,6 +2,8 @@ package com.ycb.pojo.entity;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * 收藏账号宠物关联表
  */
@@ -19,4 +21,16 @@ public class CollectAccPet {
      * 宠物id
      */
     private Integer petId;
+    /**
+     * 创建时间
+     */
+    private LocalDateTime gmtCreate;
+    /**
+     * 修改时间
+     */
+    private LocalDateTime gmtModified;
+    /**
+     * 是否删除 1是0否
+     */
+    private Integer isDelete;
 }

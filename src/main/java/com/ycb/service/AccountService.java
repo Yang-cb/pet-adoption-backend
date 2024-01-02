@@ -2,6 +2,7 @@ package com.ycb.service;
 
 import com.ycb.pojo.dto.UpdateAccPicDTO;
 import com.ycb.pojo.dto.UpdateAccountDTO;
+import com.ycb.pojo.entity.Picture;
 import com.ycb.pojo.vo.AccountVO;
 
 /**
@@ -26,8 +27,17 @@ public interface AccountService {
 
     /**
      * 更新头像
+     *
      * @param vo 用户id和头像
      * @return 更新后的头像数据
      */
-    String updateAccPic(UpdateAccPicDTO vo);
+    Picture updateAccPic(UpdateAccPicDTO vo);
+
+    /**
+     * 根据宠物id获取账户信息
+     *
+     * @param petId 宠物id
+     * @return 账户信息
+     */
+    AccountVO getAccountByPetId(Integer petId);
 }

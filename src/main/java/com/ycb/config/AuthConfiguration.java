@@ -1,6 +1,5 @@
 package com.ycb.config;
 
-import com.ycb.pojo.entity.Account;
 import com.ycb.common.result.RestBean;
 import com.ycb.pojo.vo.LoginVO;
 import com.ycb.mapper.AccountMapper;
@@ -38,13 +37,9 @@ public class AuthConfiguration {
         // 获取认证成功的用户信息
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         // 获取数据库中的用户信息
-        Account account = accountMapper.getByUsername(userDetails.getUsername());
+        LoginVO vo = accountMapper.getLoginVOByUsername(userDetails.getUsername());
         // 生成jwt
-        String jwt = jwtUtils.createJwt(account.getAccountId(), userDetails);
-        LoginVO vo = new LoginVO();
-        vo.setId(account.getAccountId());
-        vo.setUsername(account.getUsername());
-        vo.setAuthority(account.getAuthority());
+        String jwt = jwtUtils.createJwt(vo.getAccountId(), userDetails);
         vo.setToken(jwt);
         vo.setExpireTime(jwtUtils.getExpireTime());
         response.setContentType("application/json;charset=utf-8");

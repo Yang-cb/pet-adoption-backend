@@ -1,6 +1,7 @@
 package com.ycb.service.impl;
 
 import com.ycb.common.constant.*;
+import com.ycb.common.utils.EmailUtils;
 import com.ycb.pojo.entity.Account;
 import com.ycb.pojo.dto.RegisterDTO;
 import com.ycb.pojo.dto.ResetPwDTO;
@@ -8,7 +9,6 @@ import com.ycb.exception.*;
 import com.ycb.mapper.AccountMapper;
 import com.ycb.service.AuthService;
 import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.MailException;
@@ -21,7 +21,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -31,10 +30,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class AuthServiceImpl implements AuthService {
-    // 发件人
-    @Value("${spring.mail.username}")
-    private String fromEmail;
-
     @Resource
     private AccountMapper accountMapper;
     @Resource
@@ -43,6 +38,8 @@ public class AuthServiceImpl implements AuthService {
     private JavaMailSender javaMailSender;
     @Resource
     private BCryptPasswordEncoder encoder;
+    @Resource
+    private EmailUtils emailUtils;
 
     /**
      * 根据用户名获取用户信息
@@ -82,16 +79,16 @@ public class AuthServiceImpl implements AuthService {
         Random random = new Random();
         int code = random.nextInt(899999) + 100000;
         SimpleMailMessage mailMessage = switch (type) {
-            case TypeConstant.SEND_MAIL_REGISTER ->
-                    this.createMailMessage(code + "是你的注册验证码", "你好！在创建帐号之前，你需要一个简单的步骤，让我们确保这是正确的邮件地址————\n\n请输入此验证码以开始使用：" + code + "\n验证码有效时间3分钟。如非本人操作可忽略。", email);
-            case TypeConstant.SEND_MAIL_RESET_PASSWORD ->
-                    this.createMailMessage(code + "是你的重置密码验证码", "亲爱的用户：\n注意！你正在进行重置密码操作！\n请输入此验证码以重置密码：" + code + "，验证码有效时间3分钟。\n\n提供给他人会导致账户被盗和资产损失，如非本人操作，请尽快修改密码。\n如果是您本人操作，请忽略本次提醒。", email);
-            default -> throw new IllegalStateException("Unexpected value: " + type);
+            case EmailTypeConstant.REGISTER ->
+                    emailUtils.createMailMessage(code + "是你的注册验证码", "你好！在创建帐号之前，你需要一个简单的步骤，让我们确保这是正确的邮件地址————\n\n请输入此验证码以开始使用：" + code + "\n验证码有效时间3分钟。如非本人操作可忽略。", email);
+            case EmailTypeConstant.RESET_PASSWORD ->
+                    emailUtils.createMailMessage(code + "是你的重置密码验证码", "亲爱的用户：\n注意！你正在进行重置密码操作！\n请输入此验证码以重置密码：" + code + "，验证码有效时间3分钟。\n\n提供给他人会导致账户被盗和资产损失，如非本人操作，请尽快修改密码。\n如果是您本人操作，请忽略本次提醒。", email);
+            default -> throw new IllegalStateException(MessageConstant.NOT_EXIST_TYPE + type);
         };
         try {
             javaMailSender.send(mailMessage);
         } catch (MailException e) {
-            throw new BaseException(HttpStatus.INTERNAL_SERVER_ERROR.value(), MessageConstant.EMAIL_SEND_FAILED);
+            throw new EmailException(HttpStatus.INTERNAL_SERVER_ERROR.value(), MessageConstant.EMAIL_SEND_FAILED);
         }
         // 邮箱、验证码存入redis，有效时间3分钟
         stringRedisTemplate.opsForValue()
@@ -123,9 +120,6 @@ public class AuthServiceImpl implements AuthService {
         account.setPassword(encoder.encode(registerDTO.getPassword()));
         account.setEmail(registerDTO.getEmail());
         account.setNikeName(registerDTO.getUsername());
-        Date date = new Date(new java.util.Date().getTime());
-        account.setGmtCreate(date);
-        account.setGmtModified(date);
         // 默认权限
         account.setAuthority(AuthorityConstant.DEFAULT_AUTHORITY);
         int len = accountMapper.save(account);
@@ -156,7 +150,6 @@ public class AuthServiceImpl implements AuthService {
             throw new ResetPasswordException(HttpStatus.BAD_REQUEST.value(), MessageConstant.NEW_PASSWORD_SAME_AS_OLD_PASSWORD);
         }
         // 更新密码
-        resetPwDTO.setGmtModified(new Date(new java.util.Date().getTime()));
         resetPwDTO.setPassword(encoder.encode(resetPwDTO.getPassword()));
         int len = accountMapper.updatePwByEmail(resetPwDTO);
         if (len < 1) {
@@ -183,24 +176,6 @@ public class AuthServiceImpl implements AuthService {
             throw new VerificationCodeException(HttpStatus.BAD_REQUEST.value(), MessageConstant.VERIFICATION_CODE_ERROR);
         }
     }
-
-    /**
-     * 创建邮件
-     *
-     * @param subject 邮件主题
-     * @param text    邮件内容
-     * @param toEmail 收件人
-     * @return 邮件
-     */
-    private SimpleMailMessage createMailMessage(String subject, String text, String toEmail) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setSubject(subject);
-        mailMessage.setText(text);
-        mailMessage.setTo(toEmail);
-        mailMessage.setFrom(fromEmail);
-        return mailMessage;
-    }
-
 
     /**
      * 如果redis中有key，就删除

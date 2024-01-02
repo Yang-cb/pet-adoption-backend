@@ -15,7 +15,7 @@
                 #{wantText}, #{wantStatus}, #{gmtCreate}, #{gmtModified})
     </insert>
 
-    <select id="getWantAdoptByAccId" resultType="com.ycb.pojo.vo.AllWantAdoptVO">
+    <select id="getSendWant" resultType="com.ycb.pojo.vo.AllWantAdoptVO">
         select *
         from `pet-adoption`.want_adopt
                  join `pet-adoption`.pet p on want_adopt.pet_id = p.pet_id
@@ -23,22 +23,34 @@
         where account_id = #{accountId}
           and want_adopt.is_delete = 0
           and p.is_delete = 0
+        order by want_adopt.gmt_create desc
     </select>
 
-    <select id="getReceiveWantAdoptByAccId" resultType="com.ycb.pojo.vo.AllWantAdoptVO">
-        select pet_name, pet_type, pet_sex, is_free, is_adopt,
-               title, text, location,
-               pic_name,
-               wa.*
+    <select id="getReceiveWant" resultType="com.ycb.pojo.vo.AllWantAdoptVO">
+        select pet_name,
+        pet_type,
+        pet_sex,
+        is_free,
+        is_adopt,
+        title,
+        text,
+        location,
+        pic_name as petPicName,
+        wa.*
         from `pet-adoption`.pet
-                 join `pet-adoption`.bulletin b on pet.bulletin_id = b.bulletin_id
-                 join `pet-adoption`.want_adopt wa on pet.pet_id = wa.pet_id
-                 join `pet-adoption`.picture p on p.pic_id = pet.picture_id
-        where b.account_id = #{accountId}
-            and want_status = 1
-           or want_status = 3
-           or want_status = 4
+        join `pet-adoption`.bulletin b on pet.bulletin_id = b.bulletin_id
+        join `pet-adoption`.want_adopt wa on pet.pet_id = wa.pet_id
+        join `pet-adoption`.picture p on p.pic_id = pet.picture_id
+        <where>
+            <if test="wantStatus != null">
+                and want_status = #{wantStatus}
+            </if>
+            and b.account_id = #{accountId}
+            and want_status != 2
+            and want_status != 0
             and pet.is_delete = 0
+        </where>
+        order by wa.gmt_create desc
     </select>
 
     <select id="existByAccIdAndWantId" resultType="java.lang.Integer">
@@ -52,7 +64,16 @@
 
     <update id="updateWantAdoptStatus">
         update `pet-adoption`.want_adopt
-        set want_status = #{wantStatus}
+        set want_status  = #{wantStatus},
+            gmt_modified = #{gmtModified}
         where want_id = #{wantId}
     </update>
+
+    <select id="hasNewReceiveWant" resultType="java.lang.Integer">
+        select count(1)
+        from `pet-adoption`.want_adopt
+        where account_id = #{accountId}
+          and want_status = 1
+          and is_delete = 0
+    </select>
 </mapper>

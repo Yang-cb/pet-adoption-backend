@@ -1,15 +1,16 @@
 package com.ycb.service.impl;
 
-import com.ycb.pojo.entity.Pet;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.ycb.common.constant.IsFreeConstant;
+import com.ycb.common.result.PageResult;
+import com.ycb.pojo.dto.PagePetDTO;
 import com.ycb.pojo.vo.AllPetBulletinVO;
 import com.ycb.pojo.vo.OnePetBulletinVO;
 import com.ycb.mapper.PetBulletinMapper;
 import com.ycb.service.PetService;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * 获取宠物布告的服务实现类
@@ -20,16 +21,29 @@ public class PetServiceImpl implements PetService {
     private PetBulletinMapper petBulletinMapper;
 
     @Override
-    public List<AllPetBulletinVO> getAll() {
-        return petBulletinMapper.getAll();
+    public PageResult page(PagePetDTO dto) {
+        String isFreeStr = dto.getIsFreeStr();
+        // 如果isFree为null或者空字符串，则设置为null
+        if (isFreeStr == null || isFreeStr.isEmpty()) {
+            dto.setIsFree(null);
+        } else {
+            // 如果isFree为免费，则设置为1
+            if (IsFreeConstant.IS_FREE_STR.equals(isFreeStr)) {
+                dto.setIsFree(IsFreeConstant.IS_FREE);
+            } else {
+                // 如果isFree为收费，则设置为0
+                dto.setIsFree(IsFreeConstant.NOT_FREE);
+            }
+        }
+        // 分页查询
+        PageHelper.startPage(dto.getPage(), dto.getPageSize());
+        Page<AllPetBulletinVO> page = petBulletinMapper.page(dto);
+        return PageResult.builder()
+                .total(page.getTotal())
+                .records(page.getResult())
+                .build();
     }
 
-    @Override
-    public List<Pet> getAllByType(String type) {
-        return petBulletinMapper.getAllByPetType(type);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public OnePetBulletinVO getPBByPetId(Integer petId) {
         // 获取宠物信息
